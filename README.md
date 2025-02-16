@@ -12,3 +12,7 @@ To run
 * ```cd regression```
 * ```pytest```
 
+To clean up files after run
+
+* ```cd regression```
+* ```make clean```
