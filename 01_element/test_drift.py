@@ -19,7 +19,7 @@ def test() :
     }
 
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,data)
-    pybdsim.Run.Bdsim(gmad_name,base_name,100,1)
+    pybdsim.Run.Bdsim(gmad_name,base_name,2500,1)
     pybdsim.Run.RebdsimOptics(root_name,optics_name)
 
     do = pybdsim.DataPandas.REBDSIMOptics(optics_name)
