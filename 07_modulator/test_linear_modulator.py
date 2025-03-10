@@ -2,7 +2,7 @@ import pybdsim
 import numpy as np
 
 
-def modulator(t, t0=-0.51, t1=0.51, amplitudeScale=2, amplitudeOffset=2):
+def modulator(t, t0, t1, amplitudeScale, amplitudeOffset):
     if t0 <= t <= t1:
         return amplitudeScale * t + amplitudeOffset
     else:
