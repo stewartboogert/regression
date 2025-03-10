@@ -29,10 +29,10 @@ def test():
     b_fields = np.array([scaling_factor(t, float(t0), float(t1), float(scale), float(offset)) for t in particle_times])
     deflection_angles = -0.299792458 * b_fields * float(magnet_length) / float(momentum)
 
-    base_name     = "modulation-lineart"
-    template_name = base_name+".tpl"
-    gmad_name     = base_name+".gmad"
-    root_name     = base_name+".root"
+    base_name = "linear_modulator"
+    template_name = base_name + ".tpl"
+    gmad_name = base_name + ".gmad"
+    root_name = base_name + ".root"
 
     data = {
         'T0': t0,
