@@ -2,7 +2,7 @@ import pybdsim
 import numpy as np
 
 
-def scaling_factor(t, t0=-0.51, t1=0.51, amplitudeScale=2.0, amplitudeOffset=2.0):
+def modulator(t, t0=-0.51, t1=0.51, amplitudeScale=2, amplitudeOffset=2):
     if t0 <= t <= t1:
         return amplitudeScale * t + amplitudeOffset
     else:
@@ -26,7 +26,7 @@ def test():
     write_beamfile(particle_times)
 
     #B-Field is defined as uniform [0, 1, 0]
-    b_fields = np.array([scaling_factor(t, float(t0), float(t1), float(scale), float(offset)) for t in particle_times])
+    b_fields = np.array([modulator(t, float(t0), float(t1), float(scale), float(offset)) for t in particle_times])
     deflection_angles = -0.299792458 * b_fields * float(magnet_length) / float(momentum)
 
     base_name = "linear_modulator"
