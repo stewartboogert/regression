@@ -6,7 +6,7 @@ def modulator(t, t0=-0.51, t1=0.51, amplitudeScale=2, amplitudeOffset=2):
     if t0 <= t <= t1:
         return amplitudeScale * t + amplitudeOffset
     else:
-        return 0.0
+        return 0
     
 def write_beamfile(particle_times):
     with open('beam.dat', 'w') as f:
@@ -22,7 +22,7 @@ def test():
     scale = '2.0'
     offset = '2.0'
 
-    particle_times = np.array([-1.0, -0.5, -0.25, 0.0, 0.25, 0.5, 1.0])
+    particle_times = np.array([-1, -0.5, -0.25, 0, 0.25, 0.5, 1])
     write_beamfile(particle_times)
 
     #B-Field is defined as uniform [0, 1, 0]
