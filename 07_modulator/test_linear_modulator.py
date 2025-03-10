@@ -7,11 +7,6 @@ def modulator(t, t0=-0.51, t1=0.51, amplitudeScale=2, amplitudeOffset=2):
         return amplitudeScale * t + amplitudeOffset
     else:
         return 0
-    
-def write_beamfile(particle_times):
-    with open('beam.dat', 'w') as f:
-        for t in particle_times:
-            f.write('0.0\t' + str(t) + '\n')
 
 
 def test():
@@ -23,7 +18,9 @@ def test():
     offset = '2.0'
 
     particle_times = np.array([-1, -0.5, -0.25, 0, 0.25, 0.5, 1])
-    write_beamfile(particle_times)
+    coordinates = [[0, t] for t in particle_times]
+    beamfilename = 'beam.dat.gz'
+    pybdsim.Beam.WriteUserFile(beamfilename, coordinates)
 
     #B-Field is defined as uniform [0, 1, 0]
     b_fields = np.array([modulator(t, float(t0), float(t1), float(scale), float(offset)) for t in particle_times])
@@ -40,7 +37,8 @@ def test():
         'SCALE': scale,
         'OFFSET': offset,
         'LENGTH': magnet_length,
-        'MOMENTUM': momentum
+        'MOMENTUM': momentum,
+        'BEAMFILENAME': beamfilename
     }
 
     pybdsim.Run.RenderGmadJinjaTemplate(template_name, gmad_name, data)
