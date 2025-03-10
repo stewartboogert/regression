@@ -8,7 +8,7 @@ use, l1;
 beam, particle = "proton",
 	momentum = {{ MOMENTUM }}*GeV,
 	distrType = "userfile",
-	distrFile = "beam.dat",
+	distrFile = "{{ BEAMFILENAME }}",
 	distrFileFormat = "z[m]:t[s]";
 
 sample, all;
