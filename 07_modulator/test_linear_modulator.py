@@ -45,6 +45,4 @@ def test():
     pybdsim.Run.Bdsim(gmad_name, base_name, len(particle_times))
     d = pybdsim.Data.Load(root_name)
 
-    results = np.array([np.abs(event.d1.xp[0] - deflection_angles[i]) < 1e-6 for i, event in enumerate(d.GetEventTree())])
-
-    assert np.all(results)
+    assert np.all(np.array([np.abs(event.d1.xp[0] - deflection_angles[i]) < 1e-6 for i, event in enumerate(d.GetEventTree())]))
