@@ -19,7 +19,7 @@ def test():
 
     particle_times = np.array([-1, -0.5, -0.25, 0, 0.25, 0.5, 1])
     coordinates = [[0, t] for t in particle_times]
-    beamfilename = 'beam.dat.gz'
+    beamfilename = 'beam_linear_modulator.dat.gz'
     pybdsim.Beam.WriteUserFile(beamfilename, coordinates)
 
     #B-Field is defined as uniform [0, 1, 0]
