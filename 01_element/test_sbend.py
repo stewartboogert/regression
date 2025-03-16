@@ -1,5 +1,7 @@
 import pybdsim
-from numpy import pi 
+from numpy import pi
+from numpy import sin
+from numpy import cos
 import os
 
 def test() :
@@ -11,26 +13,31 @@ def test() :
     gmad_name     = base_name+".gmad"
     root_name     = base_name+".root"
     optics_name   = base_name+"_optics.root"
-    
+
+    length = 1.0
+    angle = 10/180*pi
+    rho = length/angle
     data = {
-        'LENGTH': '1.0',
-        'ANGLE': 10/180*pi,
+        'LENGTH': length,
+        'ANGLE': angle,
         'BEAM_ENERGY' : '1'
     }
 
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,data)
-    pybdsim.Run.Bdsim(gmad_name,base_name,1000,1)
+    pybdsim.Run.Bdsim(gmad_name,base_name,3000,1)
     pybdsim.Run.RebdsimOptics(root_name,optics_name)
 
     rmat = pybdsim.Analysis.CalculateRMatrix(root_name,"d1.","t1.",size=6, average=True)
-    ref_rmat = [[ 1.,   1.,   0.,   0.,   0.,   0.1],
-                [-0.,   1.,   0.,   0.,   0.,   0.2],
-                [-0.,   0.,   1.,   1.,   0.,   0. ],
-                [-0.,   0.,  -0.,   1.,   0.,   0. ],
-                [ 0.,   0.,  -0.,  -0.,   1.,   0. ],
-                [-0.,   0.,   0.,  -0.,  -0.,   1. ]]
+    ref_rmat = [[ cos(angle)      ,  rho*sin(angle),   0.,      0.,   0.,   0  ],
+                [-1/rho*sin(angle),      cos(angle),   0.,      0.,   0.,   0  ],
+                [               0.,              0.,   1.,  length,   0.,   0. ],
+                [               0.,              0.,   0.,      1.,   0.,   0. ],
+                [               0.,              0.,   0.,      0.,   1.,   0. ],
+                [               0.,              0.,   0.,      0.,   0.,   0. ]]
     print('rounded matrix')
-    print(pybdsim.Testing.round_matrix(rmat))
+    print(pybdsim.Testing.round_matrix(rmat,3))
+    print('rounded reference matrix')
+    print(pybdsim.Testing.round_matrix(ref_rmat,3))
     print('maximum matrix difference')
     print(pybdsim.Testing.max_matrix_diff(rmat,ref_rmat))
     

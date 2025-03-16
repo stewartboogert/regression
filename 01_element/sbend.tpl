@@ -25,5 +25,5 @@ beam, particle="e-",
       distrType="gausstwiss",
       emitx=5e-7*m,
       emity=5e-7*m,
-      sigmaE=0.02,
+      sigmaE=0.0,
       sigmaT=1e-11;
