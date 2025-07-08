@@ -1,6 +1,6 @@
 import pybdsim
 import numpy as np
-
+import os
 
 def modulator(t, t0, t1, amplitudeScale, amplitudeOffset):
     if t0 <= t <= t1:
@@ -10,6 +10,9 @@ def modulator(t, t0, t1, amplitudeScale, amplitudeOffset):
 
 
 def test():
+
+    os.chdir(os.path.dirname(__file__))
+    
     momentum = '50.0'
     magnet_length = '1.0'
     t0 = '-0.51'
