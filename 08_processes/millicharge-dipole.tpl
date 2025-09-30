@@ -9,10 +9,8 @@ beam, particle="millicharged",
 
 option, enableMillicharge=1,
         millichargeName="millicharged",
-        millichargeMass=1*GeV,
-        millichargeCharge=0.5,
+        millichargeMass={{ MASS }}*GeV,
+        millichargeCharge={{ CHARGE }},
         millichargeID=411000;
-
-sample, all;
 
 sampler: samplerplacement, z=52*m, aper1=10*m, aper2=10*m, shape="rectangular", partID={411000};

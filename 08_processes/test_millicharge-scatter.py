@@ -6,13 +6,13 @@ def test() :
 
     os.chdir(os.path.dirname(__file__))
     
-    base_name     = "millicharge-dipole"
+    base_name     = "millicharge-scatter"
     template_name = base_name+".tpl"
     gmad_name     = base_name+".gmad"
     root_name     = base_name+".root"
 
     # mass [GeV], charge [e+], resulting x-offset [m]
-    assertions = [[0.1,1,-7.55956],[1,0.5,-3.46201],[5,0.1,-0.536]]
+    assertions = [[0.1,1,0.03022],[1,0.5,-0.04656],[5,0.1,-0.00668]]
 
     for assertion in assertions:
 
