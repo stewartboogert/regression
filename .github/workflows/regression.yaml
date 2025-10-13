@@ -1,0 +1,28 @@
+name: run bdsim regression
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+
+  regression:
+    name: run regression
+    runs-on: ubuntu-latest
+    container: bdsim/${{ matrix.dockerimage }}:develop
+
+  strategy:
+    fail-fast: false
+    matrix:
+      dockerimage: [ alma9-g4.10.7-bdsim, alma9-g4.11.0-bdsim,
+                     alma9-g4.11.1-bdsim, alma9-g4.11.2-bdsim,
+                     alma9-g4.11.3-bdsim ]
+
+    steps:
+      - name: Checkout regression
+        uses: actions/checkout@v4
+        id: checkout
+
+      - name: Run regression tests
+        run: |
+          pytest
