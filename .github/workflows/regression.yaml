@@ -25,4 +25,5 @@ jobs:
 
       - name: Run regression tests
         run: |
+          /tmp/venv-bdsim/bin/pip install pytest
           pytest
