@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     container: bdsim/${{ matrix.dockerimage }}:develop
 
-  strategy:
-    fail-fast: false
-    matrix:
-      dockerimage: [ alma9-g4.10.7-bdsim, alma9-g4.11.0-bdsim,
-                     alma9-g4.11.1-bdsim, alma9-g4.11.2-bdsim,
-                     alma9-g4.11.3-bdsim ]
+    strategy:
+      fail-fast: false
+      matrix:
+        dockerimage: [ alma9-g4.10.7-bdsim, alma9-g4.11.0-bdsim,
+                       alma9-g4.11.1-bdsim, alma9-g4.11.2-bdsim,
+                       alma9-g4.11.3-bdsim ]
 
     steps:
       - name: Checkout regression
