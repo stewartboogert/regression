@@ -26,6 +26,6 @@ jobs:
       - name: Run regression tests
         run: |
           source /root/.bashrc
-          source /tmp/venv-bdsim/bin/activate
-          /tmp/venv-bdsim/bin/pip install pytest
+          source /bdsim/venv-bdsim/bin/activate
+          /bdsim/venv-bdsim/bin/pip install pytest
           pytest
