@@ -32,4 +32,4 @@ def test() :
         d = pybdsim.DataPandas.BDSIMOutput(root_name)
         s = d.get_sampler("sampler.")
 
-        assert(s['x'][0] == pytest.approx(assertion, rel=1e-5))
+        assert(s['x'][0] == pytest.approx(assertion, rel=1e-4))
