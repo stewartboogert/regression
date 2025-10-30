@@ -22,10 +22,12 @@ def test() :
     d = pybdsim.Data.Load(root_name)
     samplerData = pybdsim.Data.SamplerData(d,'laser1') 
     weights=samplerData.data.get("weight")
+    partid=samplerData.data.get("partID")
+
     we=[]
     for i in range(len(weights)):
-        if i%2==0:
-            we.append(weights[i+1])
+        if partid[i]==11:
+            we.append(weights[i])
     Ne=sum(we)
     ref_Ne=5.843840659450507
     

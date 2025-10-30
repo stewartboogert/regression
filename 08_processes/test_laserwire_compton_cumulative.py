@@ -22,14 +22,16 @@ def test() :
     d = pybdsim.Data.Load(root_name)
     samplerData = pybdsim.Data.SamplerData(d,'laser1') 
     weights=samplerData.data.get("weight")
+    partid=samplerData.data.get("partID")
     wpho=[]
-    for i in range(len(weights)):
-        if i%2==0:
-            wpho.append(weights[i+1])
+
+    for i in range(len(partid)):
+        if partid[i]==22:
+            wpho.append(weights[i])
+            
 
     Npho=sum(wpho)
     ref_Npho=0.626774271968543
-    
 
     
 
