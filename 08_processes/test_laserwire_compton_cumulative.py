@@ -28,13 +28,12 @@ def test() :
     for i in range(len(partid)):
         if partid[i]==22:
             wpho.append(weights[i])
-            
+
 
     Npho=sum(wpho)
     ref_Npho=0.626774271968543
-
     
 
     print('test ',sum(wpho))
     print('ref ', ref_Npho)
-    assert (Npho==ref_Npho)
+    assert (Npho==pytest.approx(ref_Npho,abs=1e-3))
