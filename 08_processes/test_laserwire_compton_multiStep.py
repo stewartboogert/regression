@@ -32,4 +32,4 @@ def test() :
     
     print('test ',Npho)
     print('ref ', ref_Npho)
-    assert pybdsim.Testing.compare_matrix(Npho,ref_Npho)
+    assert (Npho==ref_Npho)

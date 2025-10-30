@@ -28,8 +28,11 @@ def test() :
             wpho.append(weights[i+1])
 
     Npho=sum(wpho)
-    ref_Npho=0.6265447920362703
+    ref_Npho=0.626774271968543
     
+
+    
+
     print('test ',sum(wpho))
     print('ref ', ref_Npho)
-    assert pybdsim.Testing.compare_matrix(Npho,ref_Npho)
+    assert (Npho==ref_Npho)

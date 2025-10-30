@@ -31,4 +31,4 @@ def test() :
     
     print('test ',Ne)
     print('ref ', ref_Ne)
-    assert pybdsim.Testing.compare_matrix(Ne,ref_Ne)
+    assert (Ne==ref_Ne)
