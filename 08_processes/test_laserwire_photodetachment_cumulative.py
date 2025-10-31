@@ -31,6 +31,5 @@ def test() :
     Ne=sum(we)
     ref_Ne=5.843840659450507
     
-    print('test ', Ne)
-    print('ref ', ref_Ne)
+
     assert (Ne==ref_Ne)

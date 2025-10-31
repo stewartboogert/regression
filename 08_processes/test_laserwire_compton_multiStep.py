@@ -29,7 +29,5 @@ def test() :
             Npho+=1
 
     ref_Npho=637
-    
-    print('test ',Npho)
-    print('ref ', ref_Npho)
+
     assert (Npho==ref_Npho)

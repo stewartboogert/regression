@@ -29,6 +29,5 @@ def test() :
 
     ref_Ne=6852
     
-    print('test ',Ne)
-    print('ref ', ref_Ne)
+
     assert (Ne==ref_Ne)

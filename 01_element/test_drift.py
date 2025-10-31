@@ -33,8 +33,6 @@ def test() :
                 [0,0,0,1,0,0],
                 [0,0,0,0,1,0],
                 [0,0,0,0,0,1]]
-    print('rounded matrix',pybdsim.Testing.round_matrix(rmat))
-    print('maximum matrix difference',pybdsim.Testing.max_matrix_diff(rmat,ref_rmat))    
 
     assert pybdsim.Testing.compare_matrix(rmat,ref_rmat)
     
