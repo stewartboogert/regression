@@ -15,11 +15,11 @@ def test() :
     # secondary aperture and outside of the secondary aperture (yoke)
     listX0 = [0,19.4,19.4]
     listY0 = [0,0,4]
-    listAssert = [1.9062219,-0.1165236,-0.1521038]
+    listXoffset = [1.9062219,-0.1165236,-0.1521038]
 
-    for i in range(len(listAssert)):
+    for i in range(len(listXoffset)):
 
-        X0,Y0,assertion = listX0[i],listY0[i],listAssert[i]
+        X0,Y0,Xoffset = listX0[i],listY0[i],listXoffset[i]
 
         data = {
             'X0': str(X0),
@@ -32,4 +32,4 @@ def test() :
         d = pybdsim.DataPandas.BDSIMOutput(root_name)
         s = d.get_sampler("sampler.")
 
-        assert(s['x'][0] == pytest.approx(assertion, rel=1e-4))
+        assert(s['x'][0] == pytest.approx(Xoffset, rel=1e-4))
