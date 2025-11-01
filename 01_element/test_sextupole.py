@@ -28,7 +28,7 @@ def test() :
 
     do = pybdsim.DataPandas.REBDSIMOptics(optics_name)
     do_df = do.get_optics()
-    print(do_df)
+
     
     rmat = pybdsim.Analysis.CalculateTaylorMapOrder2(root_name,"d1.","s1.", average=True)
 
@@ -38,8 +38,7 @@ def test() :
     #            [0,0,0,1,0,0],
     #            [0,0,0,0,1,0],
     #            [0,0,0,0,0,1]]
-    print('rounded matrix')
-    print(pybdsim.Testing.round_matrix(rmat,3))
+
 
     #print('maximum matrix difference',pybdsim.Testing.max_matrix_diff(rmat,ref_rmat))
     #assert pybdsim.Testing.compare_matrix(rmat,ref_rmat)

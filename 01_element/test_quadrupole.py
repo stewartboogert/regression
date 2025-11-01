@@ -46,12 +46,9 @@ def test() :
                     [                    0,                      0, sqrt(abs(k1))*sinh(a),                 cosh(a),0,0],
                     [                    0,                      0,                     0,                       0,1,0],
                     [                    0,                      0,                     0,                       0,0,0]]
-    print('rounded matrix')
     print(pybdsim.Testing.round_matrix(rmat,3))
-    print('rounded reference matrix')
     print(pybdsim.Testing.round_matrix(ref_rmat,3))
 
-    print('maximum matrix difference',pybdsim.Testing.max_matrix_diff(rmat,ref_rmat))    
 
     assert pybdsim.Testing.compare_matrix(rmat,ref_rmat)
     

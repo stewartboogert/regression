@@ -34,6 +34,4 @@ def test() :
     ref_Npho=0.626774271968543
     
 
-    print('test ',sum(wpho))
-    print('ref ', ref_Npho)
     assert (Npho==pytest.approx(ref_Npho,abs=1e-3))
