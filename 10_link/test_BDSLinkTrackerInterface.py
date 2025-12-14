@@ -214,6 +214,17 @@ def addParticleMomentum():
     tracker_l.Reset()
     return 0
 
+def pdgAccessors() :
+    import bdsim
+
+    tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance("./trackerInterface.gmad")
+
+    assert tracker_l.GetMassRatio(2212) == pytest.approx(1836.1526700712534)
+    assert tracker_l.GetChargeRatio(2212) == -1
+    assert tracker_l.GetChi(2212) == pytest.approx(-0.0005446170224838625)
+
+    return 0
+
 def test_constructor(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
 
     code = make_bdsim_test_code(constructor, args="", dir=os.path.dirname(os.path.abspath(__file__)))
@@ -247,4 +258,9 @@ def test_addParticleXSuite(make_bdsim_test_code, run_bdsim_test_code_as_subproce
 def test_addParticleMomentum(make_bdsim_test_code, run_bdsim_test_code_as_subprocess):
 
     code = make_bdsim_test_code(addParticleMomentum, args="", dir=os.path.dirname(os.path.abspath(__file__)))
+    result = run_bdsim_test_code_as_subprocess(code)
+
+def test_pdgAccessors(make_bdsim_test_code, run_bdsim_test_code_as_subprocess):
+
+    code = make_bdsim_test_code(pdgAccessors, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     result = run_bdsim_test_code_as_subprocess(code)
