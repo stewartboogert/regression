@@ -30,6 +30,8 @@ def accessors():
     assert tracker_l.GetBatchMode() == True
     assert tracker_l.GetMinimumKineticEnergy() == tracker_l.GetReferenceParticleKineticEnergy() * tracker_l.GetRelativeEnergyCut()
 
+    return 0
+
 def noNeutralParticles():
 
     tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance("./trackerInterface.gmad")
@@ -41,6 +43,8 @@ def noNeutralParticles():
     tracker_l.SetNoNeutralParticles(False)
     assert tracker_l.GetNoNeutralParticles() == False
 
+    return 0
+
 def referenceParticle():
 
     tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance("./trackerInterface.gmad")
@@ -49,6 +53,32 @@ def referenceParticle():
     assert rpd.Name() == "e-"
     assert rpd.PDGID() == 11
     assert rpd.KineticEnergy() == 100
+
+    return 0
+
+def addParticleXSuite():
+    tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance("./trackerInterface.gmad")
+    bunch_l = tracker_l.GetBunchLink()
+
+    # reference particle like
+    tracker_l.AddParticle(0,0, 0,0, 0,0, 1,1, 0, 0, 11)
+    bunch_l.ClearParticles()
+
+    # position/angles
+    tracker_l.AddParticle(1,2, 3,4, 0,0, 1,1, 0, 0, 11)
+    bunch_l.ClearParticles()
+
+    # momentum deviation and ct
+
+    # s?
+
+    # particle id
+
+    tracker_l.Reset()
+
+
+def addParticleMomentum():
+    pass
 
 def test_constructor(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
 
