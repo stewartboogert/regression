@@ -104,3 +104,8 @@ def test_referenceParticle(make_bdsim_test_code, run_bdsim_test_code_as_subproce
 
     code = make_bdsim_test_code(referenceParticle, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     result = run_bdsim_test_code_as_subprocess(code)
+
+def test_addParticleXSuite(make_bdsim_test_code, run_bdsim_test_code_as_subprocess):
+
+    code = make_bdsim_test_code(addParticleXSuite, args="", dir=os.path.dirname(os.path.abspath(__file__)))
+    result = run_bdsim_test_code_as_subprocess(code)
