@@ -1,6 +1,9 @@
+import pytest
+
 import numpy as np
 import xtrack as xt
 import bdsim
+
 
 def drift() :
 
@@ -23,6 +26,7 @@ def drift() :
 
     d.track(particles)
 
+@pytest.mark.skip(reason="Not implemented yet")
 def test_drift(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code = make_bdsim_test_code(drift)
     result = run_bdsim_test_code_as_subprocess(code)

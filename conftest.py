@@ -4,19 +4,22 @@ import sys
 import subprocess
 import inspect
 
-import bdsim
-
 @pytest.fixture
 def make_bdsim_test_code() :
     return make_bdsim_test_code_func
 
-def make_bdsim_test_code_func(func) :
+def make_bdsim_test_code_func(func, args = "", dir="") :
     func_name = func.__name__
 
     code_to_run  = "import bdsim\n"
     code_to_run += "import pytest\n"
+    code_to_run += "import sys\n"
+    code_to_run += "import os\n"
+    if dir != "" :
+        code_to_run += 'os.chdir("' + dir + '")\n'
     code_to_run += inspect.getsource(func)
-    code_to_run += func_name+"()\n"
+    code_to_run += "ret ="+func_name+"("+args+")\n"
+    code_to_run += "sys.exit(ret)"
 
     return code_to_run
 
@@ -29,6 +32,7 @@ def run_bdsim_test_code_as_subprocess_func(code) :
         [sys.executable, "-c", code],
         capture_output=True,
         text=True,
+        check=True
     )
     return result.stdout.strip()
 
@@ -38,12 +42,13 @@ def simple_bdslink() :
 
 def simple_bdslink_code(gmadFile = "./trackerInterface.gmad",
                         pdgID = 2212,
-                        kineticEnergy = 5*bdsim.clhep.TeV,
+                        kineticEnergy = 5e6,
                         relativeEnergyCutIn = 0.01,
                         seed=1234,
                         referenceIonCharge=1,
                         batchMode=True) :
 
+    import bdsim
     bds_ti = bdsim.BDSLinkTrackerInterface.GetInstance(gmadFile,
                                                        pdgID,
                                                        kineticEnergy,
