@@ -82,10 +82,10 @@ def addParticleXSuite():
     tracker_l.AddParticle(1*bdsim.clhep.um, 2*bdsim.clhep.um, 3e-6,4e-6, 0,0, 1,1, 0, 0, 11)
     p = bunch_l.GetNextParticleLocal()
     assert p.totalEnergy == pytest.approx(100.51099891)
-    assert p.Position() == [1,2,0]
+    assert p.Position() == [1e-3,2e-3,0]
     assert p.Momentum() == [3e-06, 4e-06, 0.9999999999875]
-    assert p.x == 1
-    assert p.y == 2
+    assert p.x == 1e-3
+    assert p.y == 2e-3
     assert p.xp == 3e-6
     assert p.yp == 4e-6
     assert p.T == 0
@@ -172,7 +172,47 @@ def addParticleXSuite():
     return 0
 
 def addParticleMomentum():
-    pass
+    import bdsim
+
+    tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance("./trackerInterface.gmad")
+    bunch_l = tracker_l.GetBunchLink()
+    rp = tracker_l.GetReferenceParticleDefinition()
+
+    # reference particle like
+    tracker_l.AddParticle(0,0,  0,0,rp.Momentum(),  0,0,  0,11)
+    p = bunch_l.GetNextParticleLocal()
+    assert p.totalEnergy == pytest.approx(100.51099891)
+    assert p.Position() == [0,0,0]
+    assert p.Momentum() == [0,0,1]
+    assert p.x == 0
+    assert p.y == 0
+    assert p.xp == 0
+    assert p.yp == 0
+    assert p.T == 0
+    assert p.s == 0
+    assert p.weight == 1
+    bunch_l.ClearParticles()
+
+    # position
+    tracker_l.AddParticle(1*bdsim.clhep.um, 2*bdsim.clhep.um,
+                          0,0,rp.Momentum(),
+                          0,0,
+                          0,11)
+    p = bunch_l.GetNextParticleLocal()
+    assert p.totalEnergy == pytest.approx(100.51099891)
+    assert p.Position() == [1e-3,2e-3,0]
+    assert p.Momentum() == [0,0,1]
+    assert p.x == 1e-3
+    assert p.y == 2e-3
+    assert p.xp == 0
+    assert p.yp == 0
+    assert p.T == 0
+    assert p.s == 0
+    assert p.weight == 1
+    bunch_l.ClearParticles()
+
+    tracker_l.Reset()
+    return 0
 
 def test_constructor(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
 
@@ -202,4 +242,9 @@ def test_referenceParticle(make_bdsim_test_code, run_bdsim_test_code_as_subproce
 def test_addParticleXSuite(make_bdsim_test_code, run_bdsim_test_code_as_subprocess):
 
     code = make_bdsim_test_code(addParticleXSuite, args="", dir=os.path.dirname(os.path.abspath(__file__)))
+    result = run_bdsim_test_code_as_subprocess(code)
+
+def test_addParticleMomentum(make_bdsim_test_code, run_bdsim_test_code_as_subprocess):
+
+    code = make_bdsim_test_code(addParticleMomentum, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     result = run_bdsim_test_code_as_subprocess(code)
