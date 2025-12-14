@@ -1,5 +1,6 @@
 import bdsim
 import os
+import pytest
 
 def constructor() :
 
@@ -57,25 +58,118 @@ def referenceParticle():
     return 0
 
 def addParticleXSuite():
+    import bdsim
+
     tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance("./trackerInterface.gmad")
     bunch_l = tracker_l.GetBunchLink()
 
     # reference particle like
     tracker_l.AddParticle(0,0, 0,0, 0,0, 1,1, 0, 0, 11)
+    p = bunch_l.GetNextParticleLocal()
+    assert p.totalEnergy == pytest.approx(100.51099891)
+    assert p.Position() == [0,0,0]
+    assert p.Momentum() == [0,0,1]
+    assert p.x == 0
+    assert p.y == 0
+    assert p.xp == 0
+    assert p.yp == 0
+    assert p.T == 0
+    assert p.s == 0
+    assert p.weight == 1
     bunch_l.ClearParticles()
 
     # position/angles
-    tracker_l.AddParticle(1,2, 3,4, 0,0, 1,1, 0, 0, 11)
+    tracker_l.AddParticle(1*bdsim.clhep.um, 2*bdsim.clhep.um, 3e-6,4e-6, 0,0, 1,1, 0, 0, 11)
+    p = bunch_l.GetNextParticleLocal()
+    assert p.totalEnergy == pytest.approx(100.51099891)
+    assert p.Position() == [1,2,0]
+    assert p.Momentum() == [3e-06, 4e-06, 0.9999999999875]
+    assert p.x == 1
+    assert p.y == 2
+    assert p.xp == 3e-6
+    assert p.yp == 4e-6
+    assert p.T == 0
+    assert p.s == 0
+    assert p.weight == 1
     bunch_l.ClearParticles()
 
-    # momentum deviation and ct
+    # momentum deviation
+    tracker_l.AddParticle(0,0, 0,0, 0, 0.05, 1,1, 0, 0, 11)
+    p = bunch_l.GetNextParticleLocal()
+    assert p.totalEnergy == pytest.approx(105.53642205201491)
+    assert p.Position() == [0,0,0]
+    assert p.Momentum() == [0,0,1]
+    assert p.x == 0
+    assert p.y == 0
+    assert p.xp == 0
+    assert p.yp == 0
+    assert p.T == 0
+    assert p.s == 0
+    assert p.weight == 1
+    bunch_l.ClearParticles()
 
-    # s?
+    # ct
+    tracker_l.AddParticle(0,0, 0,0, 1e-6, 0, 1,1, 0, 0, 11)
+    p = bunch_l.GetNextParticleLocal()
+    assert p.totalEnergy == pytest.approx(100.51099891)
+    assert p.Position() == [0,0,0]
+    assert p.Momentum() == [0,0,1]
+    assert p.x == 0
+    assert p.y == 0
+    assert p.xp == 0
+    assert p.yp == 0
+    assert p.T == pytest.approx(-3.335684061233747e-06)
+    assert p.s == 0
+    assert p.weight == 1
+    bunch_l.ClearParticles()
+
+    # charge ratio
+    tracker_l.AddParticle(0,0, 0,0, 0,0, 1,0.5, 0, 0, 11)
+    p = bunch_l.GetNextParticleLocal()
+    assert p.totalEnergy == pytest.approx(50.25744785985477)
+    assert p.Position() == [0,0,0]
+    assert p.Momentum() == [0,0,1]
+    assert p.x == 0
+    assert p.y == 0
+    assert p.xp == 0
+    assert p.yp == 0
+    assert p.T == 0
+    assert p.s == 0
+    assert p.weight == 1
+    bunch_l.ClearParticles()
+
+    # chi
+    tracker_l.AddParticle(0,0, 0,0, 0,0, 2,1, 0, 0, 11)
+    p = bunch_l.GetNextParticleLocal()
+    assert p.totalEnergy == pytest.approx(50.25744785985477)
+    assert p.Position() == [0,0,0]
+    assert p.Momentum() == [0,0,1]
+    assert p.x == 0
+    assert p.y == 0
+    assert p.xp == 0
+    assert p.yp == 0
+    assert p.T == 0
+    assert p.s == 0
+    assert p.weight == 1
+    bunch_l.ClearParticles()
 
     # particle id
-
+    tracker_l.AddParticle(0,0, 0,0, 0,0, 1,1, 0, 0, 2212) # electron -> proton
+    p = bunch_l.GetNextParticleLocal()
+    assert p.totalEnergy == pytest.approx(943.6400638808593) # expect total energy to change
+    assert p.Position() == [0,0,0]
+    assert p.Momentum() == [0,0,1]
+    assert p.x == 0
+    assert p.y == 0
+    assert p.xp == 0
+    assert p.yp == 0
+    assert p.T == 0
+    assert p.s == 0
+    assert p.weight == 1
+    bunch_l.ClearParticles()
     tracker_l.Reset()
 
+    return 0
 
 def addParticleMomentum():
     pass
