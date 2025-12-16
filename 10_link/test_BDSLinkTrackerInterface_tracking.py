@@ -1,12 +1,21 @@
 # pip install pytest-xdist
 # pytest -n auto
-import pytest
-import bdsim
-from pathlib import Path
 
-def addLinkElement() :
+import os
+
+def drift_proton_5TeV() :
     import bdsim
+    import numpy as np
+
+    def polarToCartesianMomenta(theta, phi, momentum):
+        px = momentum*np.sin(theta)*np.cos(phi)
+        py = momentum*np.sin(theta)*np.sin(phi)
+        pz = momentum*np.cos(theta)
+
+        return [float(px), float(py), float(pz)]
+
     tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance("./trackerInterface.gmad", 2212, 5*bdsim.clhep.TeV, 0.01, 1234, 1, 1)
+    bdsim_l = tracker_l.GetBDSIMLink()
 
     # create element
     e = bdsim.Element()
@@ -24,37 +33,30 @@ def addLinkElement() :
     # reference particle
     rp = tracker_l.GetReferenceParticleDefinition()
 
+    # number of particles
+    ngenerate = 1000
+
     # add particle
-    tracker_l.AddParticle(0,  0,  0,  0,  rp.Momentum(), 0.,  0.,  0, 2212)  # pdgid;
-    tracker_l.Reset()
+    theta = np.random.uniform(0, 0.01, ngenerate)
+    phi = np.random.uniform(0, 2*np.pi,ngenerate)
+    xmm = np.random.uniform(-1, 1, ngenerate)
+    ymm = np.random.uniform(-1, 1, ngenerate)
+    for i, [t,p,x,y] in enumerate(zip(theta, phi, xmm,ymm)) :
+        mom = polarToCartesianMomenta(t, p, rp.Momentum())
+        tracker_l.AddParticle(x, y,  *mom , 0.,0.,  i,2212)  # pdgid;
 
-    return 0
+    # beam on
+    bdsim_l.BeamOn(ngenerate)
 
-@pytest.mark.skip(reason="Not implemented yet")
-def test_addLinkElement(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
-    code = make_bdsim_test_code(construct)
-    result = run_bdsim_test_code_as_subprocess(code)
+    # get sampler data
+    sh = bdsim_l.SamplerHits()
 
-def referenceParticle(simple_bdslink) :
-    tracker_l = simple_bdslink(gmadFile = str(Path(__file__).parent / "trackerInterface.gmad"))
-    bdsim_l = tracker_l.GetBDSIMLink()
-    bdsim_l.Reset()
+    if "PYTEST_CURRENT_TEST" in os.environ:
+        tracker_l.Reset()
+        return 0
+    else :
+        return tracker_l
 
-    return 0
-
-@pytest.mark.skip(reason="Not implemented yet")
-def test_referenceParticle(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
-    code = make_bdsim_test_code(referenceParticle)
-    result = run_bdsim_test_code_as_subprocess(code)
-
-def beamOn(simple_bdslink) :
-    tracker_l = simple_bdslink(gmadFile = str(Path(__file__).parent / "trackerInterface.gmad"))
-    bdsim_l = tracker_l.GetBDSIMLink()
-    bdsim_l.BeamOn(1)
-    tracker_l.Reset()
-    return 0
-
-@pytest.mark.skip(reason="Not implemented yet")
-def test_beamOn(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
-    code = make_bdsim_test_code(beamOn)
+def test_proton_5TeV(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+    code = make_bdsim_test_code(drift_proton_5TeV, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     result = run_bdsim_test_code_as_subprocess(code)

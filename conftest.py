@@ -1,6 +1,7 @@
 import pytest
 
 import sys
+import os
 import subprocess
 import inspect
 
@@ -8,7 +9,7 @@ import inspect
 def make_bdsim_test_code() :
     return make_bdsim_test_code_func
 
-def make_bdsim_test_code_func(func, args = "", dir="") :
+def make_bdsim_test_code_func(func, args = "", dir="", functions=[]) :
     func_name = func.__name__
 
     code_to_run  = "import bdsim\n"
@@ -17,6 +18,8 @@ def make_bdsim_test_code_func(func, args = "", dir="") :
     code_to_run += "import os\n"
     if dir != "" :
         code_to_run += 'os.chdir("' + dir + '")\n'
+    for f in functions :
+        code_to_run += inspect.getsource(func)
     code_to_run += inspect.getsource(func)
     code_to_run += "ret ="+func_name+"("+args+")\n"
     code_to_run += "sys.exit(ret)"
@@ -39,6 +42,13 @@ def run_bdsim_test_code_as_subprocess_func(code) :
 @pytest.fixture
 def simple_bdslink() :
     return simple_bdslink_code
+
+@pytest.fixture
+def running_under_pytest() :
+    return running_under_pytest_func
+
+def running_under_pytest_func():
+    return "PYTEST_CURRENT_TEST" in os.environ
 
 def simple_bdslink_code(gmadFile = "./trackerInterface.gmad",
                         pdgID = 2212,

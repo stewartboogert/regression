@@ -173,6 +173,14 @@ def addParticleXSuite():
 
 def addParticleMomentum():
     import bdsim
+    import numpy as np
+
+    def polarToCartesianMomenta(theta, phi, momentum):
+        px = momentum*np.sin(theta)*np.cos(phi)
+        py = momentum*np.sin(theta)*np.sin(phi)
+        pz = momentum*np.cos(theta)
+
+        return [float(px), float(py), float(pz)]
 
     tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance("./trackerInterface.gmad")
     bunch_l = tracker_l.GetBunchLink()
@@ -207,6 +215,37 @@ def addParticleMomentum():
     assert p.xp == 0
     assert p.yp == 0
     assert p.T == 0
+    assert p.s == 0
+    assert p.weight == 1
+    bunch_l.ClearParticles()
+
+    # momentum
+    mom = polarToCartesianMomenta(0.01, 0, rp.Momentum())
+    tracker_l.AddParticle(0,0,  *mom,  0,0,  0,11)
+    p = bunch_l.GetNextParticleLocal()
+    assert p.totalEnergy == pytest.approx(100.51099891)
+    assert p.Position() == [0,0,0]
+    assert p.Momentum() == [0.010000333346667205, 0.0, 0.9999500004166654]
+    assert p.x == 0
+    assert p.y == 0
+    assert p.xp == 0.010000333346667205
+    assert p.yp == 0
+    assert p.T == 0
+    assert p.s == 0
+    assert p.weight == 1
+    bunch_l.ClearParticles()
+
+    # time
+    tracker_l.AddParticle(0,0,  0,0,rp.Momentum(),  1e-8,0,  0,11)
+    p = bunch_l.GetNextParticleLocal()
+    assert p.totalEnergy == pytest.approx(100.51099891)
+    assert p.Position() == [0,0,0]
+    assert p.Momentum() == [0.0, 0.0, 1]
+    assert p.x == 0
+    assert p.y == 0
+    assert p.xp == 0
+    assert p.yp == 0
+    assert p.T == 1e-8
     assert p.s == 0
     assert p.weight == 1
     bunch_l.ClearParticles()
