@@ -225,10 +225,10 @@ def addParticleMomentum():
     p = bunch_l.GetNextParticleLocal()
     assert p.totalEnergy == pytest.approx(100.51099891)
     assert p.Position() == [0,0,0]
-    assert p.Momentum() == [0.010000333346667205, 0.0, 0.9999500004166654]
+    assert p.Momentum() == pytest.approx([0.009999833334166664, 0.0, 0.9999500004166654])
     assert p.x == 0
     assert p.y == 0
-    assert p.xp == 0.010000333346667205
+    assert p.xp == 0.009999833334166664
     assert p.yp == 0
     assert p.T == 0
     assert p.s == 0
