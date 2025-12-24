@@ -22,7 +22,7 @@ def drift_proton_5TeV(batch=1) :
     e = bdsim.Element()
     e.name = "drift1"
     e.type = bdsim.elementtype.ElementType.DRIFT
-    e.l = 1.0
+    e['l'] = 1.0
 
     # add element
     bdsim_l = tracker_l.GetBDSIMLink()
@@ -105,10 +105,10 @@ def collimator_proton_5TeV(batch=1) :
     e = bdsim.Element()
     e.name = "rcol1"
     e.type = bdsim.elementtype.ElementType.RCOL
-    e.material = "G4_Fe"
-    e.l = 0.1
-    e.xsize = 0.0
-    e.ysize = 0.0
+    e['material'] = "G4_Fe"
+    e['l'] = 0.1
+    e['xsize'] = 0.0
+    e['ysize'] = 0.0
 
     # add element
     bdsim_l = tracker_l.GetBDSIMLink()
