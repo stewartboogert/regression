@@ -739,7 +739,6 @@ def bdsimParserTunnel() :
 
     return 0
 
-
 def test_bdsimSetup_fromFile(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserSetup_fromFile, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
