@@ -200,6 +200,7 @@ def bdsimParserBLMPlacement() :
 
 def bdsimParserBeamline() :
     import bdsim
+    import os
 
     p = bdsim.BDSParser()
 
@@ -227,22 +228,33 @@ def bdsimParserBeamline() :
 
     # line 0
     e.flush()
+    p.add_element_temp("d1",1,False,bdsim.elementtype.ElementType.DRIFT)
+    p.add_element_temp("d2",1,False,bdsim.elementtype.ElementType.DRIFT)
+    p.write_table("l0",bdsim.elementtype.ElementType.LINE,False)
 
-    #p.add_element_temp("d1",1,False,bdsim.elementtype.ElementType.DRIFT)
-    # p.add_element_temp("d2",1,False,bdsim.elementtype.ElementType.DRIFT) # TODO duplicate name
-    #p.write_table(e.name, e.type, False)
-
-    #p.expand_line("l0","d1","d2")
-    # p.GetSequence("l0")
+    p.expand_line("l0","d1","d2")
+    p.current_line = "l0"
+    p.current_start = "d1"
+    p.current_end = "d2"
 
     # print out beamlines
+    print("Elements")
     p.PrintElements()
+    print("Beamline")
     p.PrintBeamline()
 
-    # b = bdsim.BDSIM(p)
-    # b.BeamOn(10)
+    try:
+        b = bdsim.BDSIM(p)
+        b.BeamOn(10)
+    except Exception as e  :
+        print("BDSIM failed")
+        print(e)
 
-    return 0
+
+    if "PYTEST_CURRENT_TEST" in os.environ:
+        return 0
+    else :
+        return p
 
 def bdsimParserCavityModel() :
     import bdsim
