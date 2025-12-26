@@ -230,7 +230,7 @@ def bdsimParserBeamline() :
     e.flush()
     p.add_element_temp("d1",1,False,bdsim.elementtype.ElementType.DRIFT)
     p.add_element_temp("d2",1,False,bdsim.elementtype.ElementType.DRIFT)
-    p.write_table("l0",bdsim.elementtype.ElementType.LINE,False)
+    p.write_table("l0",bdsim.elementtype.ElementType.LINE,True)
 
     p.expand_line("l0","d1","d2")
     p.current_line = "l0"
