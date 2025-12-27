@@ -165,6 +165,67 @@ def bdsimParserBeam() :
 
     return 0
 
+def bdsimParserBeamline() :
+    import bdsim
+    import os
+
+    p = bdsim.BDSParser()
+
+    b = p.GetBeam()
+    b['particle'] = 'e-'
+    b['energy'] = 10.0
+    b['distrType'] = 'reference'
+
+    o = p.GetOptions()
+    o['batch'] = True
+    o['outputFormat'] = 'none'
+
+    e = p.GetGlobal_Parameters()
+
+    e.name = "d1"
+    e.type = bdsim.elementtype.ElementType.DRIFT
+    e['l'] = 1.0
+    p.write_table("d1",bdsim.elementtype.ElementType.DRIFT,False)
+    p.ClearParams()
+
+    # drift 2
+    e.flush()
+    e.name = "d1"
+    e.type = bdsim.elementtype.ElementType.DRIFT
+    e['l'] = 2.0
+    p.write_table("d2",bdsim.elementtype.ElementType.DRIFT,False) # TODO duplicate name
+    p.ClearParams()
+
+    # line 0
+    e.name = "l0"
+    e.type = bdsim.elementtype.ElementType.LINE
+    p.add_element_temp("d1",1,False,bdsim.elementtype.ElementType.DRIFT)
+    p.add_element_temp("d2",1,False,bdsim.elementtype.ElementType.DRIFT)
+    p.write_table("l0",bdsim.elementtype.ElementType.LINE,True)
+    p.ClearParams()
+
+    p.expand_line("l0","d1","")
+    # p.expand_sequences()
+
+    # print out beamlines
+    print("Elements")
+    p.PrintElements()
+    print("Beamline")
+    p.PrintBeamline()
+
+    try:
+        b = bdsim.BDSIM(p)
+        b.BeamOn(10)
+    except Exception as e  :
+        print("BDSIM failed")
+        print(e)
+
+
+    if "PYTEST_CURRENT_TEST" in os.environ:
+        return 0
+    else :
+        return p
+
 def bdsimParserBLMPlacement() :
     import bdsim
 
@@ -197,64 +258,6 @@ def bdsimParserBLMPlacement() :
     print(ar)
 
     return 0
-
-def bdsimParserBeamline() :
-    import bdsim
-    import os
-
-    p = bdsim.BDSParser()
-
-    b = p.GetBeam()
-    b['particle'] = 'e-'
-    b['energy'] = 10.0
-    b['distrType'] = 'reference'
-
-    o = p.GetOptions()
-    o['batch'] = True
-    o['outputFormat'] = 'none'
-
-    e = p.GetGlobal_Parameters()
-
-    # drift 1
-    e.flush()
-
-    e['l'] = 1.0
-    p.write_table("d1",bdsim.elementtype.ElementType.DRIFT,False)
-
-    # drift 2
-    e.flush()
-    e['l'] = 2.0
-    p.write_table("d2",bdsim.elementtype.ElementType.DRIFT,False) # TODO duplicate name
-
-    # line 0
-    e.flush()
-    p.add_element_temp("d1",1,False,bdsim.elementtype.ElementType.DRIFT)
-    p.add_element_temp("d2",1,False,bdsim.elementtype.ElementType.DRIFT)
-    p.write_table("l0",bdsim.elementtype.ElementType.LINE,True)
-
-    p.expand_line("l0","d1","d2")
-    p.current_line = "l0"
-    p.current_start = "d1"
-    p.current_end = "d2"
-
-    # print out beamlines
-    print("Elements")
-    p.PrintElements()
-    print("Beamline")
-    p.PrintBeamline()
-
-    try:
-        b = bdsim.BDSIM(p)
-        b.BeamOn(10)
-    except Exception as e  :
-        print("BDSIM failed")
-        print(e)
-
-
-    if "PYTEST_CURRENT_TEST" in os.environ:
-        return 0
-    else :
-        return p
 
 def bdsimParserCavityModel() :
     import bdsim
@@ -775,12 +778,12 @@ def test_bdsimParserBeam(make_bdsim_test_code, run_bdsim_test_code_as_subprocess
     code_to_run = make_bdsim_test_code(bdsimParserBeam, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-def test_bdsimParserBLMPlacement(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
-    code_to_run = make_bdsim_test_code(bdsimParserBLMPlacement, args="", dir=os.path.dirname(os.path.abspath(__file__)))
-    output = run_bdsim_test_code_as_subprocess(code_to_run)
-
 def test_bdsimParserBeamline(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserBeamline, args="", dir=os.path.dirname(os.path.abspath(__file__)))
+    output = run_bdsim_test_code_as_subprocess(code_to_run)
+
+def test_bdsimParserBLMPlacement(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+    code_to_run = make_bdsim_test_code(bdsimParserBLMPlacement, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
 def test_bdsimParserCavityModel(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
