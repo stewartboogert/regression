@@ -178,33 +178,36 @@ def bdsimParserBeamline() :
 
     o = p.GetOptions()
     o['batch'] = True
-    o['outputFormat'] = 'none'
+    o['outputFormat'] = 'rootevent'
 
     e = p.GetGlobal_Parameters()
 
+    e.flush()
     e.name = "d1"
     e.type = bdsim.elementtype.ElementType.DRIFT
     e['l'] = 1.0
     p.write_table("d1",bdsim.elementtype.ElementType.DRIFT,False)
-    p.ClearParams()
 
     # drift 2
     e.flush()
-    e.name = "d1"
+    e.name = "d2"
     e.type = bdsim.elementtype.ElementType.DRIFT
     e['l'] = 2.0
     p.write_table("d2",bdsim.elementtype.ElementType.DRIFT,False) # TODO duplicate name
-    p.ClearParams()
 
     # line 0
+    e.flush()
     e.name = "l0"
     e.type = bdsim.elementtype.ElementType.LINE
     p.add_element_temp("d1",1,False,bdsim.elementtype.ElementType.DRIFT)
     p.add_element_temp("d2",1,False,bdsim.elementtype.ElementType.DRIFT)
     p.write_table("l0",bdsim.elementtype.ElementType.LINE,True)
-    p.ClearParams()
 
+    p.current_line = "l0"
     p.expand_line("l0","d1","")
+    # p.expand_sequences()
+
+    p.add_sampler("", -2, bdsim.ElementType.DRIFT, "plane", [])
 
     # print out beamlines
     print("Elements")
