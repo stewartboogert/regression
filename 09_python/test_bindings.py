@@ -205,7 +205,6 @@ def bdsimParserBeamline() :
     p.ClearParams()
 
     p.expand_line("l0","d1","")
-    # p.expand_sequences()
 
     # print out beamlines
     print("Elements")
