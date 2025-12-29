@@ -1,8 +1,8 @@
-d1: drift, l=1*m;
-t1: drift, l=2.0*m;
-d2: drift, l=1*m;
+d1: drift, l=2*m;
+c1: rcol, l=0.1*m, xsize=0*m, ysize=0*m, material="G4_Fe";
+d2: drift, l=2*m;
 
-l0 : line = (d1,t1,d2);
+l0 : line = (d1,c1,d2);
 
 use, period=l0;
 
@@ -28,4 +28,5 @@ beam, particle="e-",
       sigmaE=0.02,
       sigmaT=1e-11;
 
-option, storeTrajectory=1;
+option, physicsList="em",
+	storeTrajectory=1;
