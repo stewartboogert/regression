@@ -14,8 +14,6 @@ def pybdsim_pandas_transfer_check(root_object, pandas_object) :
 
         root_obj_attributes_set.add(str(att_type))
 
-        print(att_key, att_type)
-
         if att_type == types.MethodWrapperType :
             pass
         elif att_type == types.MethodType :
@@ -48,8 +46,6 @@ def pybdsim_pandas_transfer_check(root_object, pandas_object) :
             pandas_object[att_key]
         except :
             print("Not found", att_key)
-    # print(root_obj_attributes_set)
-    # print(root_obj_attributes_tocheck)
 
 def test_import_pybdsim() :
     import pybdsim
