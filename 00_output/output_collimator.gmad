@@ -29,4 +29,4 @@ beam, particle="e-",
       sigmaT=1e-11;
 
 option, physicsList="em",
-	storeTrajectory=1;
+	    storeCollimatorHits=1;

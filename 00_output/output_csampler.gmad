@@ -7,6 +7,7 @@ l0 : line = (d1,c1,d2);
 use, period=l0;
 
 sample, all;
+csample, all;
 
 beam, particle="e-",
       energy=1*GeV,

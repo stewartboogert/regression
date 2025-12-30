@@ -1,6 +1,6 @@
-d1: drift, l=2*m;
-c1: rcol, l=0.1*m, xsize=0*m, ysize=0*m, material="G4_Fe";
-d2: drift, l=2*m;
+d1: drift, l=5*m;
+c1: drift, l=5*m;
+d2: drift, l=5*m;
 
 l0 : line = (d1,c1,d2);
 
@@ -16,8 +16,8 @@ beam, particle="e-",
       Yp0=0.0,
       alfx=0,
       alfy=0,
-      betx=4*m,
-      bety=4*m,
+      betx=1e-3*m,
+      bety=1e-3*m,
       dispx=0.0*m,
       dispxp=0.0,
       dispy=0.0*m,
@@ -28,5 +28,5 @@ beam, particle="e-",
       sigmaE=0.02,
       sigmaT=1e-11;
 
-option, physicsList="em",
-	storeTrajectory=1;
+option, physicsList="",
+        storeApertureImpacts=1;

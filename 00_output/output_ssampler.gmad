@@ -8,6 +8,13 @@ use, period=l0;
 
 sample, all;
 
+
+s1: samplerplacement, samplerType="sphere",
+		      referenceElement="c1",
+                      referenceElementNumber=0,
+                      x=0*cm, y=0*cm, s=0*cm,
+                      aper1=50*cm;
+
 beam, particle="e-",
       energy=1*GeV,
       X0=0.0*m,
@@ -28,5 +35,4 @@ beam, particle="e-",
       sigmaE=0.02,
       sigmaT=1e-11;
 
-option, physicsList="em",
-	storeTrajectory=1;
+option, physicsList="em";
