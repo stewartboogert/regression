@@ -6,3 +6,4 @@ clean :
 	rm -f */*~
 	rm -f *~
 	rm -rf */__pycache__
+	rm -rf #*
