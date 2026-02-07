@@ -63,9 +63,11 @@ def test_output_pandas_file_not_found() :
 def test_output_pandas_basic() :
     import pybdsim
 
-    pybdsim.Run.Bdsim("output.gmad", "output", 10, 1)
+    pybdsim.Run.Bdsim("output.gmad", "output-basic-1", ngenerate=10, seed=1)
+    pybdsim.Run.Bdsim("output.gmad", "output-basic-2", ngenerate=10, seed=1)
+    pybdsim.Run.Bdsim("output.gmad", "output-basic-3", ngenerate=10, seed=1)
 
-    pd = pybdsim.DataPandas.BDSIMOutput("output.root")
+    pd = pybdsim.DataPandas.BDSIMOutput("output-basic-*.root")
 
     # root object
     root_beam = pd.root_file.GetBeam().beam
@@ -76,56 +78,56 @@ def test_output_pandas_basic() :
 def test_output_pandas_header() :
     import pybdsim
 
-    pd = pybdsim.DataPandas.BDSIMOutput("output.root")
+    pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
 
     b = pd.get_header()
 
 def test_output_pandas_run() :
     import pybdsim
 
-    pd = pybdsim.DataPandas.BDSIMOutput("output.root")
+    pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
 
     b = pd.get_run()
 
 def test_output_pandas_beam() :
     import pybdsim
 
-    pd = pybdsim.DataPandas.BDSIMOutput("output.root")
+    pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
 
     b = pd.get_beam()
 
 def test_output_pandas_beam():
     import pybdsim
 
-    pd = pybdsim.DataPandas.BDSIMOutput("output.root")
+    pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
 
     b = pd.get_options()
 
 def test_output_pandas_events():
     import pybdsim
 
-    pd = pybdsim.DataPandas.BDSIMOutput("output.root")
+    pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
 
     e = pd.get_events()
 
 def test_output_pandas_primary():
     import pybdsim
 
-    pd = pybdsim.DataPandas.BDSIMOutput("output.root")
+    pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
 
     p = pd.get_primary()
 
 def test_output_pandas_primary_global():
     import pybdsim
 
-    pd = pybdsim.DataPandas.BDSIMOutput("output.root")
+    pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
 
     pg = pd.get_primary_global()
 
 def test_output_pandas_sampler() :
     import pybdsim
 
-    pd = pybdsim.DataPandas.BDSIMOutput("output.root")
+    pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
 
     snames = pd.get_sampler_names()
     s = pd.get_sampler(snames[0])
@@ -160,7 +162,7 @@ def test_output_pandas_ssampler() :
 def test_output_eloss() :
     import pybdsim
 
-    pd = pybdsim.DataPandas.BDSIMOutput("output.root")
+    pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
 
     e = pd.get_eloss()
 
