@@ -30,4 +30,5 @@ jobs:
           source /root/.bashrc
           source /bdsim/venv-bdsim/bin/activate
           /bdsim/venv-bdsim/bin/pip install pytest
+          /bdsim/venv-bdsim/bin/pip install xsuite
           pytest
