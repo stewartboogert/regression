@@ -31,4 +31,6 @@ jobs:
           source /bdsim/venv-bdsim/bin/activate
           /bdsim/venv-bdsim/bin/pip install pytest
           /bdsim/venv-bdsim/bin/pip install xsuite
+          /bdsim/vend-bdsim/bin/pip install rpyc
+          export LD_PRELOAD=/usr/local/lib64/libG4processes.so
           pytest
