@@ -27,7 +27,7 @@ def bdsimParserSetup_fromEmpty():
     o['batch'] = True
     o['outputFormat'] = 'none'
 
-    #b = bdsim.BDSIM(p)
+    b = bdsim.BDSIM(p)
     #b.BeamOn(10)
 
     return 0

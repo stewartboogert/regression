@@ -9,6 +9,18 @@ def constructor() :
 
     return 0
 
+def constructor_nofile() :
+
+    parser = bdsim.BDSParser()
+    beam = parser.GetBeam()
+    beam['energy'] = 1.0;
+    beam['particleName'] = 'e-'
+
+    tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance(parser)
+    # tracker_l.Reset()
+
+    return 0
+
 def accessLinkObjects() :
 
     tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance("./trackerInterface.gmad")
@@ -268,6 +280,12 @@ def test_constructor(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
 
     code = make_bdsim_test_code(constructor, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     result = run_bdsim_test_code_as_subprocess(code)
+
+def test_constructor_nofile(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+
+    code = make_bdsim_test_code(constructor_nofile, args="", dir=os.path.dirname(os.path.abspath(__file__)))
+    result = run_bdsim_test_code_as_subprocess(code)
+
 
 def test_accessLinkObjects(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
 
