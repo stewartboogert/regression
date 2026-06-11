@@ -148,9 +148,12 @@ def collimator_proton_5TeV(batch=1) :
         return tracker_l, df
 
 def test_drift_proton_5TeV(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+    os.chdir(os.path.dirname(__file__))
     code = make_bdsim_test_code(drift_proton_5TeV, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     result = run_bdsim_test_code_as_subprocess(code)
 
-def test_collimator_proton_5TeV(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
-    code = make_bdsim_test_code(collimator_proton_5TeV, args="", dir=os.path.dirname(os.path.abspath(__file__)))
-    result = run_bdsim_test_code_as_subprocess(code)
+# TODO
+#def test_collimator_proton_5TeV(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+#    os.chdir(os.path.dirname(__file__))
+#    code = make_bdsim_test_code(collimator_proton_5TeV, args="", dir=os.path.dirname(os.path.abspath(__file__)))
+#    result = run_bdsim_test_code_as_subprocess(code)

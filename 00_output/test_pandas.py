@@ -1,3 +1,5 @@
+import os
+
 def pybdsim_pandas_transfer_check(root_object, pandas_object) :
     import types
     import cppyy
@@ -61,6 +63,8 @@ def test_output_pandas_file_not_found() :
         pass
 
 def test_output_pandas_basic() :
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pybdsim.Run.Bdsim("output.gmad", "output-basic-1", ngenerate=10, seed=1)
@@ -76,6 +80,8 @@ def test_output_pandas_basic() :
     # pybdsim_pandas_transfer_check(root_beam, pandas_beam)
 
 def test_output_pandas_header() :
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
@@ -83,6 +89,8 @@ def test_output_pandas_header() :
     b = pd.get_header()
 
 def test_output_pandas_run() :
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
@@ -90,6 +98,8 @@ def test_output_pandas_run() :
     b = pd.get_run()
 
 def test_output_pandas_beam() :
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
@@ -97,6 +107,8 @@ def test_output_pandas_beam() :
     b = pd.get_beam()
 
 def test_output_pandas_beam():
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
@@ -104,6 +116,8 @@ def test_output_pandas_beam():
     b = pd.get_options()
 
 def test_output_pandas_events():
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
@@ -111,6 +125,8 @@ def test_output_pandas_events():
     e = pd.get_events()
 
 def test_output_pandas_primary():
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
@@ -118,6 +134,8 @@ def test_output_pandas_primary():
     p = pd.get_primary()
 
 def test_output_pandas_primary_global():
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
@@ -125,6 +143,8 @@ def test_output_pandas_primary_global():
     pg = pd.get_primary_global()
 
 def test_output_pandas_sampler() :
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
@@ -133,6 +153,8 @@ def test_output_pandas_sampler() :
     s = pd.get_sampler(snames[0])
 
 def test_output_pandas_sampler_placement() :
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pybdsim.Run.Bdsim("output_sampler_placement.gmad", "output_sampler_placement", 10, 1)
@@ -140,6 +162,8 @@ def test_output_pandas_sampler_placement() :
     pd = pybdsim.DataPandas.BDSIMOutput("output_sampler_placement.root")
 
 def test_output_pandas_csampler() :
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pybdsim.Run.Bdsim("output_csampler.gmad", "output_csampler", 10, 1)
@@ -150,6 +174,8 @@ def test_output_pandas_csampler() :
     s = pd.get_csampler(snames[0])
 
 def test_output_pandas_ssampler() :
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pybdsim.Run.Bdsim("output_ssampler.gmad", "output_ssampler", 10, 1)
@@ -160,6 +186,8 @@ def test_output_pandas_ssampler() :
     # s = pd.get_ssampler(snames[0])
 
 def test_output_eloss() :
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
@@ -167,6 +195,8 @@ def test_output_eloss() :
     e = pd.get_eloss()
 
 def test_output_trajectory() :
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pybdsim.Run.Bdsim("output_trajectory.gmad", "output_trajectory", 10, 1)
@@ -177,6 +207,8 @@ def test_output_trajectory() :
     t  = pd.get_trajectory(0,0)
 
 def test_output_pandas_aperture() :
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pybdsim.Run.Bdsim("output_aperture.gmad", "output_aperture", 10, 1)
@@ -184,6 +216,8 @@ def test_output_pandas_aperture() :
     pd = pybdsim.DataPandas.BDSIMOutput("output_aperture.root")
 
 def test_output_pandas_collimators() :
+    os.chdir(os.path.dirname(__file__))
+
     import pybdsim
 
     pybdsim.Run.Bdsim("output_collimator.gmad", "output_collimator", 10, 1)
