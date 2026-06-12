@@ -28,10 +28,11 @@ jobs:
       - name: Run regression tests
         run: |
           source /root/.bashrc
+          source /bdsim/root/bin/thisroot.sh
           source /bdsim/venv-bdsim/bin/activate
           /bdsim/venv-bdsim/bin/pip install pytest
           /bdsim/venv-bdsim/bin/pip install xsuite
           /bdsim/venv-bdsim/bin/pip install rpyc
           export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python/
-          export LD_PRELOAD=/usr/local/lib64/libG4processes.so
+          export LD_PRELOAD="libG4processes.so bdsparticlecoords.cpython-313-x86_64-linux-gnu.so"
           pytest
