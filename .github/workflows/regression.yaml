@@ -32,6 +32,8 @@ jobs:
           source /bdsim/venv-bdsim/bin/activate
           /bdsim/venv-bdsim/bin/pip install pytest
           /bdsim/venv-bdsim/bin/pip install xsuite
+          /bdsim/venv-bdsim/bin/pip install ocelot-desy
+          /bdsim/venv-bdsim/bin/pip install rf-track
           /bdsim/venv-bdsim/bin/pip install rpyc
           export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python/
           export LD_PRELOAD="libG4processes.so bdsparticlecoords.cpython-313-x86_64-linux-gnu.so"
