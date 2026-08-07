@@ -37,5 +37,5 @@ jobs:
           /bdsim/venv-bdsim/bin/pip install rf-track
           /bdsim/venv-bdsim/bin/pip install rpyc
           export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python/
-          export LD_PRELOAD="libG4processes.so bdsparticlecoords.cpython-313-x86_64-linux-gnu.so"
+          export LD_PRELOAD="libG4processes.so bdsparticlecoords.cpython-312-x86_64-linux-gnu.so"
           pytest
