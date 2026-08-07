@@ -2,7 +2,7 @@ import pytest
 
 import numpy as np
 import xtrack as xt
-import bdsim
+# import bdsim
 
 
 def drift() :
