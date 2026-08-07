@@ -27,6 +27,7 @@ jobs:
 
       - name: Run regression tests
         run: |
+          yum install which -y 
           source /root/.bashrc
           source /bdsim/root/bin/thisroot.sh
           source /bdsim/venv-bdsim/bin/activate
