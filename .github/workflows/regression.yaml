@@ -38,4 +38,4 @@ jobs:
           /bdsim/venv-bdsim/bin/pip install rf-track
           /bdsim/venv-bdsim/bin/pip install rpyc
           export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python/
-          pytest
+          pytest -v
