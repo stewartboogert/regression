@@ -2,6 +2,7 @@
 # pytest -n auto
 
 import os
+import pytest
 
 def drift_proton_5TeV(batch=1) :
     import bdsim
