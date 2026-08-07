@@ -32,6 +32,7 @@ jobs:
           source /bdsim/root/bin/thisroot.sh
           source /bdsim/venv-bdsim/bin/activate
           # update pybdsim for development
+          /bdsim/venv-bdsim/bin/pip uninstall pybdsim -y
           /bdsim/venv-bdsim/bin/pip install git+https://github.com/bdsim-collaboration/pybdsim.git@develop
           # install dependencies
           /bdsim/venv-bdsim/bin/pip install pytest
