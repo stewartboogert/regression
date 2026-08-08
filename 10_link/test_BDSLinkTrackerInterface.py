@@ -2,7 +2,7 @@
 import os
 import pytest
 
-pytestmark = pytest.mark.xfail(run=True, reason="requires bdsim")
+pytestmark = pytest.mark.xfail(reason="requires bdsim")
 
 def constructor() :
 
