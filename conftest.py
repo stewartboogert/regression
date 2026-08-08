@@ -4,6 +4,82 @@ import sys
 import os
 import subprocess
 import inspect
+import json
+from pathlib import Path
+
+def pytest_addoption(parser):
+    parser.addoption("--length", action="store", default="short")
+
+@pytest.fixture
+def test_length(request):
+    return request.config.getoption("--length")
+
+def get_testname(testpath) :
+    p = Path(testpath)
+    stem = str(p.stem)
+    base = str(p.parent).split('/')[-1]
+    return base+"/"+stem
+
+def get_testpath(testpath) :
+    p = Path(testpath)
+    return str(p.parent)
+
+class test_nprimary :
+    def __init__(self):
+        self.nprimary = {"01_element/test_drift":{"short":2500,"medium":10000,"long":50000},
+                         "01_element/test_quadrupole":{"short":2500,"medium":10000,"long":50000},
+                         "01_element/test_rbend":{"short":2500,"medium":10000,"long":50000},
+                         "01_element/test_sbend":{"short":2500,"medium":10000,"long":50000},
+                         "01_element/test_sextupole":{"short":2500,"medium":10000,"long":50000}}
+
+    def get_nprimary(self,testpath, length) :
+        testname = get_testname(testpath)
+        return self.nprimary[testname][length]
+
+_test_nprimary = test_nprimary()
+
+@pytest.fixture
+def testlength_primaries():
+    return _test_nprimary
+
+class testdata_store :
+    '''Class to store pytest output files for regression testing'''
+    def __init__(self):
+        self.testname = []
+        self.testfile = []
+        self.testfilepath = []
+        self.testfiletype = []
+        self.testnprimary = []
+
+    def addtestoutput(self, testpath, filename, type, nprimary):
+        testname = get_testname(testpath)
+        path = get_testpath(testpath)
+        self.testname.append(testname)
+        self.testfile.append(filename)
+        self.testfilepath.append(path)
+        self.testfiletype.append(type)
+        self.testnprimary.append(nprimary)
+
+    def write(self):
+
+        with open("testdata_store.dat","w") as f:
+            json.dump({"testname":self.testname,
+                       "testfile":self.testfile,
+                       "testfilepath":self.testfilepath,
+                       "testtfiletype":self.testfiletype,
+                       "testnprimary":self.testnprimary}, f)
+
+# Store that is persistent
+_testdata_store = testdata_store()
+
+@pytest.fixture
+def testdata_store() :
+    return _testdata_store
+
+def pytest_sessionfinish(session, exitstatus):
+    '''Write testdata_store to file'''
+    _testdata_store.write()
+
 
 @pytest.fixture
 def make_bdsim_test_code() :

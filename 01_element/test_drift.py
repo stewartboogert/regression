@@ -3,7 +3,7 @@ import pybdsim
 import pytest
 import os
 
-def test() :
+def test(test_length, testlength_primaries, testdata_store) :
 
     os.chdir(os.path.dirname(__file__))
     
@@ -19,8 +19,10 @@ def test() :
         'BEAM_ENERGY' : '1'
     }
 
+    nprimary = testlength_primaries.get_nprimary(__file__,test_length)
+
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,data)
-    pybdsim.Run.Bdsim(gmad_name,base_name,2500,1)
+    pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1)
     pybdsim.Run.RebdsimOptics(root_name,optics_name)
 
     do = pybdsim.DataPandas.REBDSIMOptics(optics_name)
@@ -36,4 +38,6 @@ def test() :
                 [0,0,0,0,0,1]]
 
     assert pybdsim.Testing.compare_matrix(rmat,ref_rmat)
-    
+
+    testdata_store.addtestoutput(__file__,root_name,"root", nprimary)
+    testdata_store.addtestoutput(__file__,optics_name,"optics", nprimary)
