@@ -8,6 +8,7 @@ pytestmark = pytest.mark.xfail(reason="requires bdsim")
 
 def drift() :
 
+    import bdsim
     d = xt.Drift(length=1)
 
     e = bdsim.Element()
