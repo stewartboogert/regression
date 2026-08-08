@@ -41,5 +41,5 @@ jobs:
           /bdsim/venv-bdsim/bin/pip install rf-track
           /bdsim/venv-bdsim/bin/pip install rpyc
           export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python/
-          export LD_PRELOAD="libG4processes.so:libstdc++.so.6:libG4geometry.so"
+          # export LD_PRELOAD="libG4processes.so:libstdc++.so.6:libG4geometry.so"
           pytest -v
