@@ -1,10 +1,10 @@
-#import bdsim
 import os
 import pytest
 
 pytestmark = pytest.mark.xfail(reason="requires bdsim")
 
 def constructor() :
+    import bdsim
 
     tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance("./trackerInterface.gmad")
     tracker_l.Reset()
@@ -12,6 +12,7 @@ def constructor() :
     return 0
 
 def constructor_nofile() :
+    import bdsim
 
     parser = bdsim.BDSParser()
     beam = parser.GetBeam()
@@ -24,6 +25,7 @@ def constructor_nofile() :
     return 0
 
 def accessLinkObjects() :
+    import bdsim
 
     tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance("./trackerInterface.gmad")
     bdsim_l   = tracker_l.GetBDSIMLink()
@@ -33,6 +35,7 @@ def accessLinkObjects() :
     return 0
 
 def accessors():
+    import bdsim
 
     tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance("./trackerInterface.gmad")
 
@@ -48,6 +51,7 @@ def accessors():
     return 0
 
 def noNeutralParticles():
+    import bdsim
 
     tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance("./trackerInterface.gmad")
 
@@ -61,6 +65,7 @@ def noNeutralParticles():
     return 0
 
 def referenceParticle():
+    import bdsim
 
     tracker_l = bdsim.BDSLinkTrackerInterface.GetInstance("./trackerInterface.gmad")
     rpd = tracker_l.GetReferenceParticleDefinition() # (r)eference (p)article (d)efinition
@@ -279,6 +284,7 @@ def pdgAccessors() :
     return 0
 
 def test_constructor(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+
 
     code = make_bdsim_test_code(constructor, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     result = run_bdsim_test_code_as_subprocess(code)
