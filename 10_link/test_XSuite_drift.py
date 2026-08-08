@@ -4,15 +4,17 @@ import numpy as np
 import xtrack as xt
 # import bdsim
 
+pytestmark = pytest.mark.xfail(reason="requires bdsim")
 
 def drift() :
 
+    import bdsim
     d = xt.Drift(length=1)
 
     e = bdsim.Element()
     e.name = "d1"
     e.type = bdsim.elementtype.ElementType.DRIFT
-    e.l = 1.0
+    e['l'] = 1.0
     # xt_bdsimelement = bdsim.xsuite.BDSIMElement(e)
 
     line = xt.Line(elements=[d])
@@ -26,7 +28,6 @@ def drift() :
 
     d.track(particles)
 
-@pytest.mark.skip(reason="Not implemented yet")
 def test_drift(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code = make_bdsim_test_code(drift)
     result = run_bdsim_test_code_as_subprocess(code)

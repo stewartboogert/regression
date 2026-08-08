@@ -1,6 +1,8 @@
 import os
 import pytest
 
+pytestmark = pytest.mark.xfail(reason="requires bdsim")
+
 def bdsimParserSetup_fromFile() :
     import bdsim
 
@@ -757,121 +759,97 @@ def bdsimParserTunnel() :
 
     return 0
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsim_import():
     import bdsim
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetup_fromFile(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserSetup_fromFile, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetup_fromEmpty(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserSetup_fromEmpty, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimParserAccessors(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserAccessors, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimParserAperture(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserAperture, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimParserAtom(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserAtom, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimParserBeam(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserBeam, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimParserBeamline(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserBeamline, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimParserBLMPlacement(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserBLMPlacement, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimParserCavityModel(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserCavityModel, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimParserCoolingChannel(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserCoolingChannel, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetupElement(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserElement, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetupField(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserField, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetupMaterial(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserMaterial, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetupModulator(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserModulator, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetupNewColour(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserNewColour, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetupOption(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserOption, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetupPhysicsBiasing(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserPhysicsBiasing, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetupPlacement(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserPlacement, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetupQuery(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserQuery, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetupRegion(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserRegion, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetupScorer(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserScorer, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetupScorerMesh(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserScorerMesh, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
 
-@pytest.mark.skip(reason="bdsim import error")
 def test_bdsimSetupTunnel(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     code_to_run = make_bdsim_test_code(bdsimParserTunnel, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)

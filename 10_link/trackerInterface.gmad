@@ -1,0 +1,2 @@
+beam, particle="proton", momentum=7.0*TeV;
+option, physicsList = "em qgsp_bert";
