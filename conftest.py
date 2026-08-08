@@ -62,7 +62,7 @@ class testdata_store :
 
     def write(self):
 
-        with open("testdata_store.dat","w") as f:
+        with open("regression_data.dat","w") as f:
             json.dump({"testname":self.testname,
                        "testfile":self.testfile,
                        "testfilepath":self.testfilepath,
