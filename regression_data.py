@@ -25,9 +25,12 @@ def copy_regression_data(filename = "/regression_data.dat",
         filepath = Path("./"+testdir+"/"+testfile)
         destpath = Path(destination+"/"+testdir+"/")
         destfilepath = destpath / Path(testfile)
+
+        # create output directory if does not exist
         if not destpath.exists() :
             destpath.mkdir()
 
+        # copy file
         shutil.copy2(filepath, destfilepath)
 
         icopied += 1
