@@ -38,11 +38,11 @@ jobs:
           source /root/.bashrc
           source /bdsim/root/bin/thisroot.sh
           source /bdsim/venv-bdsim/bin/activate
-          # update pybdsim for development
+          # update pybdsim for development (dev for testing and pytest)
           /bdsim/venv-bdsim/bin/pip uninstall pybdsim -y
-          /bdsim/venv-bdsim/bin/pip install git+https://github.com/bdsim-collaboration/pybdsim.git@develop
+          /bdsim/venv-bdsim/bin/pip install "pybdsim[dev] git+https://github.com/bdsim-collaboration/pybdsim.git@develop"
           # install dependencies
-          /bdsim/venv-bdsim/bin/pip install pytest
+          /bdsim/venv-bdsim/bin/pip install pytest 
           /bdsim/venv-bdsim/bin/pip install xsuite
           /bdsim/venv-bdsim/bin/pip install ocelot-desy
           /bdsim/venv-bdsim/bin/pip install rf-track
