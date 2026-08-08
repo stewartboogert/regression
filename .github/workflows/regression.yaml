@@ -32,6 +32,7 @@ jobs:
         id: checkout
 
       - name: Run regression tests
+        shell: bash
         run: |
           #yum install which -y 
           source /root/.bashrc
