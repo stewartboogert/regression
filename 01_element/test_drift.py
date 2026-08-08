@@ -35,5 +35,5 @@ def test() :
                 [0,0,0,0,1,0],
                 [0,0,0,0,0,1]]
 
-    # assert pybdsim.Testing.compare_matrix(rmat,ref_rmat)
+    assert pybdsim.Testing.compare_matrix(rmat,ref_rmat)
     
