@@ -2,13 +2,13 @@ import pytest
 
 import numpy as np
 import xtrack as xt
-# import bdsim
 
 pytestmark = pytest.mark.xfail(reason="requires bdsim")
 
 def drift() :
 
     import bdsim
+
     d = xt.Drift(length=1)
 
     e = bdsim.Element()
