@@ -14,7 +14,7 @@ def drift() :
     e = bdsim.Element()
     e.name = "d1"
     e.type = bdsim.elementtype.ElementType.DRIFT
-    e.l = 1.0
+    e['l'] = 1.0
     # xt_bdsimelement = bdsim.xsuite.BDSIMElement(e)
 
     line = xt.Line(elements=[d])
