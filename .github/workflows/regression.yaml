@@ -62,4 +62,4 @@ jobs:
           
           # alma10
           export GLIBC_TUNABLES=glibc.rtld.optional_static_tls=2097152
-          pytest -v -runxfail -n ${{ steps.cpu-cores.outputs.count }}
+          pytest -v -runxfail -n 0
