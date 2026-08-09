@@ -24,6 +24,10 @@ def get_testpath(testpath) :
     p = Path(testpath)
     return str(p.parent)
 
+def get_testfile_size(filepath) :
+    p = Path(filepath)
+    return p.stat().st_size  /(1024 ** 2)
+
 class test_nprimary :
     def __init__(self):
         self.nprimary = {"01_element/test_drift":{"short":1000,"medium":100,"long":100},
@@ -50,25 +54,31 @@ class testdata_store :
         self.testfile = []
         self.testfilepath = []
         self.testfiletype = []
+        self.testfilesize = []
         self.testobject = []
         self.testnprimary = []
 
     def add_test_output(self, testpath, filename, type, nprimary):
         testname = get_testname(testpath)
+        testfilesize = get_testfile_size(str(Path(testpath).parent)+"/"+filename)
         path = get_testpath(testpath)
+
         self.testname.append(testname)
         self.testfile.append(filename)
         self.testfilepath.append(path)
         self.testfiletype.append(type)
+        self.testfilesize.append(testfilesize)
         self.testobject.append(None)
         self.testnprimary.append(nprimary)
 
     def add_test_object(self, testpath, object, type, nprimary):
         testname = get_testname(testpath)
+
         self.testname.append(testname)
         self.testfile.append(None)
         self.testfilepath.append(None)
         self.testfiletype.append(type)
+        self.testfilesize.append(0)
         self.testobject.append(object)
         self.testnprimary.append(nprimary)
 
@@ -79,6 +89,7 @@ class testdata_store :
                        "testfile":self.testfile,
                        "testfilepath":self.testfilepath,
                        "testfiletype":self.testfiletype,
+                       "testfilesize":self.testfilesize,
                        "testobject":self.testobject,
                        "testnprimary":self.testnprimary}, f)
 

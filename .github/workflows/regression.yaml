@@ -31,6 +31,10 @@ jobs:
         uses: actions/checkout@v4
         id: checkout
 
+      - name: Echo number of cores
+        shell: bash
+        run: echo "Number of cores ${{ steps.cpu-cores.outputs.count }}"
+
       - name: Run regression tests
         shell: bash
         run: |
@@ -49,6 +53,8 @@ jobs:
           /bdsim/venv-bdsim/bin/pip install ocelot-desy
           /bdsim/venv-bdsim/bin/pip install rf-track
           /bdsim/venv-bdsim/bin/pip install rpyc
+          /bdsim/venv-bdsim/bin/pip install pytest-xdist
+          /bdsim/venv-bdsim/bin/pip install dominate
           export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python/
           
           # alma9 (but does not work)
@@ -56,4 +62,4 @@ jobs:
           
           # alma10
           export GLIBC_TUNABLES=glibc.rtld.optional_static_tls=2097152
-          pytest -v -runxfail
+          pytest -v -runxfail -n ${{ steps.cpu-cores.outputs.count }}

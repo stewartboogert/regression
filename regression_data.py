@@ -2,6 +2,10 @@ import json
 import pandas as pd
 from pathlib import Path
 import shutil
+import os
+import dominate
+from datetime import datetime
+
 
 def load_regression_store(filename = "./regression_data.dat"):
     '''Load output from pytest and return as pandas dataframe'''
@@ -41,5 +45,43 @@ def copy_regression_data(filename = "./regression_data.dat",
 
     print(f"Copied : {icopied} to {destination}")
 
-def compare_regression_data(path1, path2):
-    pass
+def compare_regression_data(path1 = "./", path2 = None, html_path="./html"):
+    from dominate.tags import table, tr, th, td, title, h1, link, script
+
+    df = load_regression_store(path1+"/regression_data.dat")
+
+
+    Path(html_path).mkdir(parents=True, exist_ok=True)
+
+    doc = dominate.document(title='Regression tests')
+
+    columns_display = ['testname', 'testfile', 'testfiletype',
+                       'testfilesize', 'testobject','testnprimary']
+
+    with doc:
+        with doc.head:
+            link(rel="stylesheet", href="styles.css")
+            script(src="script.js")
+
+        # page title
+        now = datetime.now()
+        h1("Regression tests (" + now.strftime("%Y-%m-%d %H:%M:%S") +")" )
+
+        # loop over regression data frame
+        with table(border="1"):
+            with tr():
+                for h in columns_display:
+                    th(h)
+            for index, row in df.iterrows():
+                # if optics file make pdf
+
+                # if rebdsim file make pdf
+
+                # make table row
+                with tr():
+                    for column, cell in zip(df.columns,row):
+                        if column in columns_display:
+                            td(str(cell))
+
+    with open(html_path+"/regression_data.html", "w") as f:
+        f.write(str(doc))
