@@ -1,4 +1,5 @@
 import pytest
+import pybdsim
 
 def test(test_length, testlength_primaries, testdata_store) :
     
