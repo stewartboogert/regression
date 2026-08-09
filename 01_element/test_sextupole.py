@@ -45,5 +45,5 @@ def test(test_length, testlength_primaries, testdata_store) :
     #print('maximum matrix difference',pybdsim.Testing.max_matrix_diff(rmat,ref_rmat))
     #assert pybdsim.Testing.compare_matrix(rmat,ref_rmat)
     
-    testdata_store.addtestoutput(__file__,root_name,"root", nprimary)
-    testdata_store.addtestoutput(__file__,optics_name,"optics", nprimary)
+    testdata_store.add_test_output(__file__,root_name,"root", nprimary)
+    testdata_store.add_test_output(__file__,optics_name,"optics", nprimary)

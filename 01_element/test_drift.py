@@ -39,5 +39,6 @@ def test(test_length, testlength_primaries, testdata_store) :
 
     assert pybdsim.Testing.compare_matrix(rmat,ref_rmat)
 
-    testdata_store.addtestoutput(__file__,root_name,"root", nprimary)
-    testdata_store.addtestoutput(__file__,optics_name,"optics", nprimary)
+    testdata_store.add_test_output(__file__,root_name,"root", nprimary)
+    testdata_store.add_test_output(__file__,optics_name,"optics", nprimary)
+    testdata_store.add_test_object(__file__,rmat.tolist(), "rmat", nprimary)

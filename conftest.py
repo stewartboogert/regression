@@ -26,11 +26,12 @@ def get_testpath(testpath) :
 
 class test_nprimary :
     def __init__(self):
-        self.nprimary = {"01_element/test_drift":{"short":2500,"medium":10000,"long":50000},
-                         "01_element/test_quadrupole":{"short":2500,"medium":10000,"long":50000},
-                         "01_element/test_rbend":{"short":2500,"medium":10000,"long":50000},
-                         "01_element/test_sbend":{"short":2500,"medium":10000,"long":50000},
-                         "01_element/test_sextupole":{"short":2500,"medium":10000,"long":50000}}
+        self.nprimary = {"01_element/test_drift":{"short":1000,"medium":100,"long":100},
+                         "01_element/test_quadrupole":{"short":1000,"medium":100,"long":1000},
+                         "01_element/test_rbend":{"short":1000,"medium":1000,"long":1000},
+                         "01_element/test_sbend":{"short":1000,"medium":1000,"long":1000},
+                         "01_element/test_sextupole":{"short":1000,"medium":1000,"long":1000},
+                         "08_processes/test_laserwire_compton_cumulative":{"short":10000,"medium":10000,"long":10000}}
 
     def get_nprimary(self,testpath, length) :
         testname = get_testname(testpath)
@@ -49,15 +50,26 @@ class testdata_store :
         self.testfile = []
         self.testfilepath = []
         self.testfiletype = []
+        self.testobject = []
         self.testnprimary = []
 
-    def addtestoutput(self, testpath, filename, type, nprimary):
+    def add_test_output(self, testpath, filename, type, nprimary):
         testname = get_testname(testpath)
         path = get_testpath(testpath)
         self.testname.append(testname)
         self.testfile.append(filename)
         self.testfilepath.append(path)
         self.testfiletype.append(type)
+        self.testobject.append(None)
+        self.testnprimary.append(nprimary)
+
+    def add_test_object(self, testpath, object, type, nprimary):
+        testname = get_testname(testpath)
+        self.testname.append(testname)
+        self.testfile.append(None)
+        self.testfilepath.append(None)
+        self.testfiletype.append(type)
+        self.testobject.append(object)
         self.testnprimary.append(nprimary)
 
     def write(self):
@@ -66,7 +78,8 @@ class testdata_store :
             json.dump({"testname":self.testname,
                        "testfile":self.testfile,
                        "testfilepath":self.testfilepath,
-                       "testtfiletype":self.testfiletype,
+                       "testfiletype":self.testfiletype,
+                       "testobject":self.testobject,
                        "testnprimary":self.testnprimary}, f)
 
 # Store that is persistent
