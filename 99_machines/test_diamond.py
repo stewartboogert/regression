@@ -2,6 +2,9 @@ import pytest
 import pybdsim
 
 def test(test_length, testlength_primaries, testdata_store):
+
+    os.chdir(os.path.dirname(__file__))
+
     base_name = "diamond"
     gmad_name = "./02_diamond/dia-nlsige.gmad"
     root_name = base_name + ".root"

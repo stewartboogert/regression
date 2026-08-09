@@ -2,6 +2,9 @@ import pytest
 import pybdsim
 
 def test(test_length, testlength_primaries, testdata_store):
+
+    os.chdir(os.path.dirname(__file__))
+
     base_name = "lhc"
     gmad_name = "./03_lhc/lhc2017.gmad"
     root_name = base_name + ".root"
