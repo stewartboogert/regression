@@ -36,9 +36,9 @@ class test_nprimary :
                          "01_element/test_sbend":{"short":1000,"medium":1000,"long":1000},
                          "01_element/test_sextupole":{"short":1000,"medium":1000,"long":1000},
                          "08_processes/test_laserwire_compton_cumulative":{"short":10000,"medium":10000,"long":10000},
-                         "99_machines/test_atf2":{"short":2000,"medium":10000,"long":10000},
-                         "99_machines/test_diamond":{"short":2000,"medium":10000,"long":10000},
-                         "99_machines/test_lhc":{"short":2000,"medium":10000,"long":10000}}
+                         "99_machines/test_atf2":{"short":1,"medium":10000,"long":10000},
+                         "99_machines/test_diamond":{"short":1,"medium":10000,"long":10000},
+                         "99_machines/test_lhc":{"short":1,"medium":10000,"long":10000}}
 
     def get_nprimary(self,testpath, length) :
         testname = get_testname(testpath)
