@@ -2,7 +2,7 @@ import pytest
 import pybdsim
 import os
 
-def test() :
+def test(test_length, testlength_primaries, testdata_store) :
 
     os.chdir(os.path.dirname(__file__))
     
@@ -16,8 +16,10 @@ def test() :
         'BEAM_ENERGY' : '1.3'
     }
 
+    nprimary = testlength_primaries.get_nprimary(__file__,test_length)
+
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,data)
-    pybdsim.Run.Bdsim(gmad_name,base_name,10000,1)
+    pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1)
 
     d = pybdsim.Data.Load(root_name)
     samplerData = pybdsim.Data.SamplerData(d,'laser1') 
@@ -32,6 +34,7 @@ def test() :
 
     Npho=sum(wpho)
     ref_Npho=0.626774271968543
-    
+
+    testdata_store.add_test_object(__file__,Npho,"npho", nprimary)
 
     assert (Npho==pytest.approx(ref_Npho,abs=1e-3))

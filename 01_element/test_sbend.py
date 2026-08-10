@@ -4,7 +4,7 @@ from numpy import sin
 from numpy import cos
 import os
 
-def test() :
+def test(test_length, testlength_primaries, testdata_store) :
 
     os.path.dirname(__file__)
     
@@ -23,6 +23,8 @@ def test() :
         'BEAM_ENERGY' : '1'
     }
 
+    nprimary = testlength_primaries.get_nprimary(__file__,test_length)
+
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,data)
     pybdsim.Run.Bdsim(gmad_name,base_name,3000,1)
     pybdsim.Run.RebdsimOptics(root_name,optics_name)
@@ -39,3 +41,6 @@ def test() :
     print(pybdsim.Testing.max_matrix_diff(rmat,ref_rmat))
     
     assert pybdsim.Testing.compare_matrix(rmat,ref_rmat)
+
+    testdata_store.add_test_output(__file__,root_name,"root", nprimary)
+    testdata_store.add_test_output(__file__,optics_name,"optics", nprimary)
