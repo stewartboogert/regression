@@ -22,27 +22,27 @@ ddose: scorer, type="depositeddose";
 denergy: scorer, type="depositedenergy";
 cellpopulation: scorer, type="population";
 
-mesh0: scorermesh, nx=25, ny=25, nz=25,
+mesh0: scorermesh, nx=25, ny=25, nz=50,
        scoreQuantity="cellcharge cellflux cellfluxscaled cellfluxscaledperparticle ddose denergy cellpopulation ",
-       xsize=100*cm, ysize=100*cm, zsize=100*cm, referenceElement="waterBlock";
+       xsize=25*cm, ysize=25*cm, zsize=100*cm, referenceElement="waterBlock";
 
 !!!!!!!!!!!!!!!!!!!!!!!
 ! Options on scorer
 !!!!!!!!!!!!!!!!!!!!!!!
 ddose_g4name: scorer, type="depositeddose", particleName="e-";
-ddose_pdgid: scorer, type="depositeddose", particlePDGID=11;
-ddose_emin: scorer, type="depositeddose", minimumKineticEnergy = 0.04;
-ddose_emax: scorer, type="depositeddose", maximumKineticEnergy = 0.04;
-ddose_tmin: scorer, type="depositeddose", minimumTime=0;
-ddose_tmax: scorer, type="depositeddose", maximumTime=0;
+ddose_pdgid: scorer, type="depositeddose", particlePDGID=-11;
+ddose_emin: scorer, type="depositeddose", minimumKineticEnergy = 1*GeV;
+ddose_emax: scorer, type="depositeddose", maximumKineticEnergy = 1*GeV;
+ddose_tmin: scorer, type="depositeddose", minimumTime=-100*s;
+ddose_tmax: scorer, type="depositeddose", maximumTime=-100*s;
 ddose_materialinc: scorer, type="depositeddose", materialToInclude="water";
 ddose_materialexc: scorer, type="depositeddose", materialToExclude="water";
 ddose_world: scorer, type="depositeddose", scoreWorldVolumeOnly=1;
 ddose_primary: scorer, type="depositeddose", scorePrimariesOnly=1;
 
-mesh1: scorermesh, nx=25, ny=25, nz=25,
-      scoreQuantity="ddose_g4name ddose_pdgid ddose_emin ddose_emax ddose_tmin ddose_materialinc ddose_materialexc ddose_world ddose_primary",
-      xsize=100*cm, ysize=100*cm, zsize=100*cm, referenceElement="waterBlock";
+mesh1: scorermesh, nx=25, ny=25, nz=50,
+      scoreQuantity="ddose_g4name ddose_pdgid ddose_emin ddose_emax ddose_tmin ddose_tmax ddose_materialinc ddose_materialexc ddose_world ddose_primary",
+      xsize=25*cm, ysize=25*cm, zsize=100*cm, referenceElement="waterBlock";
 
 !!!!!!!!!!!!!!!!!!!!!!!
 ! Options on mesh
