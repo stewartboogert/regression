@@ -6,7 +6,28 @@ import subprocess
 import inspect
 import json
 from pathlib import Path
+import shutil
 
+###############################################################
+# BDSIM and Geant4 options
+###############################################################
+bash_path = shutil.which("bash") # find the right shell as typically bdsim is setup in the shell setup
+_bdsim_version = subprocess.run("bdsim --version", shell=True, executable=bash_path, stdout=subprocess.PIPE).stdout.decode("utf-8").strip()
+_geant4_version = subprocess.run("geant4-config --version", shell=True, executable=bash_path, stdout=subprocess.PIPE).stdout.decode("utf-8").strip()
+print(f"BDSIM version {_bdsim_version}")
+print(f"Geant4 version {_geant4_version}")
+
+@pytest.fixture
+def bdsim_version():
+    return _bdsim_version
+
+@pytest.fixture
+def geant4_version():
+    return _geant4_version
+
+###############################################################
+# Input options
+###############################################################
 def pytest_addoption(parser):
     parser.addoption("--length", action="store", default="short")
 
@@ -14,6 +35,9 @@ def pytest_addoption(parser):
 def test_length(request):
     return request.config.getoption("--length")
 
+###############################################################
+# Utility functions for test names and paths
+###############################################################
 def get_testname(testpath) :
     p = Path(testpath)
     stem = str(p.stem)
@@ -28,6 +52,9 @@ def get_testfile_size(filepath) :
     p = Path(filepath)
     return p.stat().st_size  /(1024 ** 2)
 
+###############################################################
+# ngenerate for each test
+###############################################################
 class test_nprimary :
     def __init__(self):
         self.nprimary = {"01_element/test_drift":{"short":1000,"medium":100,"long":100},
@@ -50,6 +77,9 @@ _test_nprimary = test_nprimary()
 def testlength_primaries():
     return _test_nprimary
 
+###############################################################
+# test output store
+###############################################################
 class testdata_store :
     '''Class to store pytest output files for regression testing'''
     def __init__(self):
@@ -107,7 +137,9 @@ def pytest_sessionfinish(session, exitstatus):
     '''Write testdata_store to file'''
     _testdata_store.write()
 
-
+###############################################################
+# base code for rpc bdsim call
+###############################################################
 @pytest.fixture
 def make_bdsim_test_code() :
     return make_bdsim_test_code_func
