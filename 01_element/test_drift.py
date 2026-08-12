@@ -3,7 +3,7 @@ import pybdsim
 import pytest
 import os
 
-def test(test_length, testlength_primaries, testdata_store) :
+def test(geant4_version, bdsim_version, test_length, testlength_primaries, testdata_store) :
 
     os.chdir(os.path.dirname(__file__))
     
