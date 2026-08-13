@@ -12,10 +12,15 @@ import shutil
 # BDSIM and Geant4 options
 ###############################################################
 bash_path = shutil.which("bash") # find the right shell as typically bdsim is setup in the shell setup
+_uname = subprocess.run("uname -a", shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8")
 _bdsim_version = subprocess.run("bdsim --version", shell=True, executable=bash_path, stdout=subprocess.PIPE).stdout.decode("utf-8").strip()
 _geant4_version = subprocess.run("geant4-config --version", shell=True, executable=bash_path, stdout=subprocess.PIPE).stdout.decode("utf-8").strip()
 print(f"BDSIM version {_bdsim_version}")
 print(f"Geant4 version {_geant4_version}")
+
+@pytest.fixture
+def uname() :
+    return _uname
 
 @pytest.fixture
 def bdsim_version():
