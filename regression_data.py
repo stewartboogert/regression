@@ -163,3 +163,13 @@ class test_output_file:
 
     def __repr__(self):
         return f"test_output_file(file_path={self.file_path}, file_type={self.file_type})"
+
+def copy_regression_data(file_name = "./regression_data.dat",
+                         destination = "../regression_data/data/"):
+    tes = test_entry_store()
+    tes.read_json(file_name)
+
+def compare_regression_data(path1  = "./regression_data.dat",
+                            path2 = None,
+                            output_path = None):
+    pass
