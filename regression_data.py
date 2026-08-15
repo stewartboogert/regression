@@ -7,7 +7,7 @@ class test_entry_store:
     def append(self, entry):
         self.entries.append(entry)
 
-    def __len___(self):
+    def __len__(self):
         return len(self.entries)
 
     def __getitem__(self, index):
