@@ -10,6 +10,12 @@ class test_entry_store:
     def __len___(self):
         return len(self.entries)
 
+    def __getitem__(self, index):
+        return self.entries[index]
+
+    def __setitem__(self, index, value):
+        self.entries[index] = value
+
     def write_json(self, file_name):
         with open(file_name, "w") as f:
             f.write("[")
