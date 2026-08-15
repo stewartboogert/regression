@@ -1,6 +1,9 @@
 import json as _json
 
 class test_input_parameter:
+    '''
+    Class to store test input parameters
+    '''
     def __init__(self, parameter_name : str, parameter_value):
         self.parameter_name = parameter_name
         self.parameter_value = parameter_value
@@ -16,6 +19,10 @@ class test_input_parameter:
         return f"test_input_parameter(name={self.parameter_name}, value={self.parameter_value})"
 
 class test_output_parameter:
+    '''
+    Class to store test output parameters
+    '''
+
     def __init__(self, parameter_name : str, parameter_value):
         self.parameter_name = parameter_name
         self.parameter_value = parameter_value
@@ -31,6 +38,10 @@ class test_output_parameter:
         return f"test_output_parameter(name={self.parameter_name}, value={self.parameter_value})"
 
 class test_output_file:
+    '''
+    Class to store test output files
+    '''
+
     def __init__(self, file_path : str =None, file_type : str =None):
         self.file_path = file_path
         self.file_type = file_type
@@ -46,6 +57,9 @@ class test_output_file:
         return f"test_output_file(file_path={self.file_path}, file_type={self.file_type})"
 
 class test_entry:
+    '''
+    Class to store input and output of a single pytest test file
+    '''
     def __init__(self,
                  test_name      : str = None,
                  test_file_path : str = None,
@@ -59,7 +73,7 @@ class test_entry:
         self.output_parameters = []
         self.output_files = []
 
-    def add_input_parameter(self, parameter_name, parameter_value) -> None:
+    def add_input_parameter(self, parameter_name : str, parameter_value) -> None:
         self.input_parameters.append(test_input_parameter(parameter_name, parameter_value))
 
     def add_input_parameter_dict(self, pdict) -> None:
@@ -73,7 +87,7 @@ class test_entry:
         for k in pdict:
             self.add_output_parameter(k, pdict[k])
 
-    def add_output_file(self, file_path, file_type) -> None:
+    def add_output_file(self, file_path : str , file_type : str) -> None:
         self.output_files.append(test_output_file(file_path, file_type))
 
     def add_output_file_dict(self, fdict) -> None:
@@ -120,6 +134,9 @@ class test_entry:
         return s
 
 class test_entry_store:
+    '''
+    Class to store many test_entries (similar API to list)
+    '''
     def __init__(self):
         self.entries = []
 
