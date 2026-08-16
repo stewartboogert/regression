@@ -2,7 +2,8 @@ import pytest
 import pybdsim
 import os
 
-def test(test_length, testlength_primaries, testdata_store) :
+def test(geant4_version, bdsim_version,
+         test_length, testlength_primaries, testdata_store) :
 
     os.chdir(os.path.dirname(__file__))
     
@@ -35,6 +36,7 @@ def test(test_length, testlength_primaries, testdata_store) :
     Npho=sum(wpho)
     ref_Npho=0.626774271968543
 
-    testdata_store.add_test_object(__file__,Npho,"npho", nprimary)
+    te = testdata_store.new_test_entry(__file__,__file__,nprimary,0)
+    te.add_output_parameter("npho", Npho)
 
     assert (Npho==pytest.approx(ref_Npho,abs=1e-3))

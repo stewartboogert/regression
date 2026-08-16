@@ -3,7 +3,9 @@ import pybdsim
 import os
 import numpy as np
 
-def test(test_length, testlength_primaries, testdata_store) :
+def test(geant4_version, bdsim_version,
+         test_length, testlength_primaries, testdata_store) :
+
     np.set_printoptions(linewidth=200)
 
     os.chdir(os.path.dirname(__file__))
@@ -44,6 +46,7 @@ def test(test_length, testlength_primaries, testdata_store) :
 
     #print('maximum matrix difference',pybdsim.Testing.max_matrix_diff(rmat,ref_rmat))
     #assert pybdsim.Testing.compare_matrix(rmat,ref_rmat)
-    
-    testdata_store.add_test_output(__file__,root_name,"root", nprimary)
-    testdata_store.add_test_output(__file__,optics_name,"optics", nprimary)
+
+    te = testdata_store.new_test_entry(__file__, __file__, nprimary, 0)
+    te.add_output_file(os.path.dirname(__file__)+"/"+root_name, "root")
+    te.add_output_file(os.path.dirname(__file__)+"/"+optics_name, "optics")

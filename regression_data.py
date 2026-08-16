@@ -1,4 +1,7 @@
 import json as _json
+import shutil as _shutil
+from pathlib import Path as _Path
+
 
 class test_input_parameter:
     '''
@@ -64,7 +67,7 @@ class test_entry:
                  test_name      : str = None,
                  test_file_path : str = None,
                  nprimary       : int = 0,
-                 runtime        : int =0):
+                 runtime        : float = 0):
         self.name = test_name
         self.file_path = test_file_path
         self.nprimary = nprimary
@@ -80,7 +83,7 @@ class test_entry:
         for k in pdict:
             self.add_input_parameter(k, pdict[k])
 
-    def add_output_parameter(self, parameter_name, parameter_value) -> None:
+    def add_output_parameter(self, parameter_name : str, parameter_value) -> None:
         self.output_parameters.append(test_output_parameter(parameter_name, parameter_value))
 
     def add_output_parameter_dict(self, pdict) -> None:
@@ -140,6 +143,15 @@ class test_entry_store:
     def __init__(self):
         self.entries = []
 
+    def new_test_entry(self,
+                       test_name : str,
+                       test_file_path : str,
+                       nprimary : int,
+                       runtime : float) -> test_entry:
+        te =  test_entry(test_name, test_file_path, nprimary, runtime)
+        self.append(te)
+        return te
+
     def append(self, entry : test_entry) -> None:
         self.entries.append(entry)
 
@@ -152,7 +164,7 @@ class test_entry_store:
     def __setitem__(self, index : int, value) -> None:
         self.entries[index] = value
 
-    def write_json(self, file_name : str) -> None:
+    def write_json(self, file_name : str = "regression_data.dat") -> None:
         with open(file_name, "w") as f:
             f.write("[")
             for i, entry in enumerate(self.entries):
@@ -186,13 +198,24 @@ class test_entry_store:
         return s
 
 def copy_regression_data(file_name   : str   = "./regression_data.dat",
-                         destination : str = "../regression_data/data/") -> None :
+                         destination : str = "../regression_data/data/os-g4v/") -> None :
+    '''
+    Copy files documented in file_name to destination
+    '''
+
     tes = test_entry_store()
     tes.read_json(file_name)
+
+    # copy regressiondata.dat over to target
+    _shutil.copy2(file_name, destination)
 
 def compare_regression_data(path1       : str  = "./regression_data.dat",
                             path2       : str  = None,
                             output_path : str = None) -> None :
+    '''
+    Compare two regression data files at path1 and path2
+    '''
+
     pass
 
 def html_regression_data(path1 : str = "./regression_data.dat") -> None :
