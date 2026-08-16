@@ -141,6 +141,13 @@ class test_entry_store:
     '''
     Class to store many test_entries (similar API to list)
     '''
+
+    @classmethod
+    def new_from_json(cls, file_name):
+        s = test_entry_store()
+        s.read_json(file_name)
+        return s
+
     def __init__(self):
         self.entries = []
 
