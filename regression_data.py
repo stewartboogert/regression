@@ -181,6 +181,9 @@ class test_entry_store:
             d = _json.load(f)
             self.from_dict(d)
 
+    def to_dataframe(self):
+        pass
+
     def from_dict(self, d : dict) -> None:
         # loop over entries
 
