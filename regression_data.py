@@ -2,62 +2,61 @@ import json as _json
 import shutil as _shutil
 from pathlib import Path as _Path
 
-
 class test_input_parameter:
     '''
     Class to store test input parameters
     '''
-    def __init__(self, parameter_name : str, parameter_value):
-        self.parameter_name = parameter_name
-        self.parameter_value = parameter_value
+    def __init__(self, name : str, value):
+        self.name = name
+        self.value = value
 
     def to_dict(self) -> dict:
-        return {"parameter_name": self.parameter_name, "parameter_value": self.parameter_value}
+        return {"name": self.name, "value": self.value}
 
     def from_dict(self, d : dict ) -> None:
-        self.parameter_name = d["parameter_name"]
-        self.parameter_value = d["parameter_value"]
+        self.name = d["name"]
+        self.value = d["value"]
 
     def __repr__(self) -> str:
-        return f"test_input_parameter(name={self.parameter_name}, value={self.parameter_value})"
+        return f"test_input_parameter(name={self.name}, value={self.value})"
 
 class test_output_parameter:
     '''
     Class to store test output parameters
     '''
 
-    def __init__(self, parameter_name : str, parameter_value):
-        self.parameter_name = parameter_name
-        self.parameter_value = parameter_value
+    def __init__(self, name : str, value):
+        self.name = name
+        self.value = value
 
     def from_dict(self, d : dict) -> None:
-        self.parameter_name = d["parameter_name"]
-        self.parameter_value = d["parameter_value"]
+        self.name = d["name"]
+        self.value = d["value"]
 
     def to_dict(self) -> dict:
-        return {"parameter_name": self.parameter_name, "parameter_value": self.parameter_value}
+        return {"name": self.name, "value": self.value}
 
     def __repr__(self) -> str:
-        return f"test_output_parameter(name={self.parameter_name}, value={self.parameter_value})"
+        return f"test_output_parameter(name={self.name}, value={self.value})"
 
 class test_output_file:
     '''
     Class to store test output files
     '''
 
-    def __init__(self, file_path : str =None, file_type : str =None):
-        self.file_path = file_path
-        self.file_type = file_type
+    def __init__(self, path : str =None, type : str =None):
+        self.path = path
+        self.type = type
 
     def to_dict(self) -> dict:
-        return {"file_path": self.file_path, "file_type": self.file_type}
+        return {"path": self.path, "type": self.type}
 
     def from_dict(self, d : dict) -> None:
-        self.file_path = d["file_path"]
-        self.file_type = d["file_type"]
+        self.path = d["path"]
+        self.type = d["type"]
 
     def __repr__(self):
-        return f"test_output_file(file_path={self.file_path}, file_type={self.file_type})"
+        return f"test_output_file(path={self.path}, type={self.type})"
 
 class test_entry:
     '''
@@ -76,22 +75,22 @@ class test_entry:
         self.output_parameters = []
         self.output_files = []
 
-    def add_input_parameter(self, parameter_name : str, parameter_value) -> None:
-        self.input_parameters.append(test_input_parameter(parameter_name, parameter_value))
+    def add_input_parameter(self, name : str, value) -> None:
+        self.input_parameters.append(test_input_parameter(name, value))
 
     def add_input_parameter_dict(self, pdict) -> None:
         for k in pdict:
             self.add_input_parameter(k, pdict[k])
 
-    def add_output_parameter(self, parameter_name : str, parameter_value) -> None:
-        self.output_parameters.append(test_output_parameter(parameter_name, parameter_value))
+    def add_output_parameter(self, name : str, value) -> None:
+        self.output_parameters.append(test_output_parameter(name, value))
 
     def add_output_parameter_dict(self, pdict) -> None:
         for k in pdict:
             self.add_output_parameter(k, pdict[k])
 
-    def add_output_file(self, file_path : str , file_type : str) -> None:
-        self.output_files.append(test_output_file(file_path, file_type))
+    def add_output_file(self, path : str , type : str) -> None:
+        self.output_files.append(test_output_file(path, type))
 
     def add_output_file_dict(self, fdict) -> None:
         for k in fdict:
@@ -206,14 +205,15 @@ def copy_regression_data(file_name   : str   = "./regression_data.dat",
     tes = test_entry_store()
     tes.read_json(file_name)
 
+    # check target path exists
+
     # copy regressiondata.dat over to target
     _shutil.copy2(file_name, destination)
 
-def compare_regression_data(path1       : str  = "./regression_data.dat",
-                            path2       : str  = None,
+def compare_regression_data(paths : dict,
                             output_path : str = None) -> None :
     '''
-    Compare two regression data files at path1 and path2
+    Compare many regression data files
     '''
 
     pass
