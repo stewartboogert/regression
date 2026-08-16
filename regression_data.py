@@ -25,19 +25,21 @@ class test_output_parameter:
     Class to store test output parameters
     '''
 
-    def __init__(self, name : str, value):
+    def __init__(self, name : str, value, rel_tol = 1e-3):
         self.name = name
         self.value = value
+        self.rel_tol = rel_tol
 
     def from_dict(self, d : dict) -> None:
         self.name = d["name"]
         self.value = d["value"]
+        self.rel_tol = d["rel_tol"]
 
     def to_dict(self) -> dict:
-        return {"name": self.name, "value": self.value}
+        return {"name": self.name, "value": self.value, "rel_tol": self.rel_tol}
 
     def __repr__(self) -> str:
-        return f"test_output_parameter(name={self.name}, value={self.value})"
+        return f"test_output_parameter(name={self.name}, value={self.value}, rel_tol={self.rel_tol})"
 
 class test_output_file:
     '''
