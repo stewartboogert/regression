@@ -48,13 +48,19 @@ def pybdsim_pandas_transfer_check(root_object, pandas_object) :
         except :
             print("Not found", att_key)
 
-def test_import_pybdsim() :
+def test_import_pybdsim(testdata_store) :
     import pybdsim
 
-def test_import_pandas() :
+    # log test run
+    te = testdata_store.new_test_entry("00_output/import_pybdsim", __file__, 0, 0)
+
+def test_import_pandas(testdata_store) :
     import pandas
 
-def test_output_pandas_file_not_found() :
+    # log test run
+    te = testdata_store.new_test_entry("00_output/import_pandas", __file__, 0, 0)
+
+def test_output_pandas_file_not_found(testdata_store) :
     import pybdsim
 
     try :
@@ -62,7 +68,10 @@ def test_output_pandas_file_not_found() :
     except FileNotFoundError:
         pass
 
-def test_output_pandas_basic() :
+    # log test run
+    te = testdata_store.new_test_entry("00_output/import_pandas_file_not_found", __file__, 0, 0)
+
+def test_output_pandas_basic(testdata_store) :
     os.chdir(os.path.dirname(__file__))
 
     import pybdsim
@@ -79,7 +88,9 @@ def test_output_pandas_basic() :
 
     # pybdsim_pandas_transfer_check(root_beam, pandas_beam)
 
-def test_output_pandas_header() :
+    te = testdata_store.new_test_entry("00_output/output_pandas_basic", __file__,10, 0)
+
+def test_output_pandas_header(testdata_store) :
     os.chdir(os.path.dirname(__file__))
 
     import pybdsim
@@ -87,6 +98,9 @@ def test_output_pandas_header() :
     pd = pybdsim.DataPandas.BDSIMOutput("output-basic-1.root")
 
     b = pd.get_header()
+
+    te = testdata_store.new_test_entry("00_output/output_pandas_header", __file__,0, 0)
+
 
 def test_output_pandas_run() :
     os.chdir(os.path.dirname(__file__))
