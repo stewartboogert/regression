@@ -30,7 +30,7 @@ def test(geant4_version, bdsim_version,
         if partid[i]==22:
             Npho+=1
 
-    te = testdata_store.new_test_entry(__file__,__file__,nprimary,0)
+    te = testdata_store.new_test_entry("08_processes/laserwire_compton_multiStep",__file__,nprimary,0)
     te.add_output_parameter("npho", Npho)
     ref_Npho=637
 
