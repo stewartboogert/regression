@@ -14,6 +14,7 @@ def test() :
     # mass [GeV], charge [e+], resulting x-offset [m]
     assertions = [[0.1,1,-7.55956],[1,0.5,-3.46201],[5,0.1,-0.536]]
 
+    # TODO parametrise
     for assertion in assertions:
 
         mass,charge,xoffset = assertion

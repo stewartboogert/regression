@@ -2,7 +2,7 @@ import pytest
 import pybdsim
 import os
 
-def test() :
+def test(testdata_store) :
 
     os.chdir(os.path.dirname(__file__))
     
@@ -16,8 +16,11 @@ def test() :
         'BEAM_ENERGY' : '0.942022+0.003'
     }
 
+    # TODO fixture nprimary
+    nprimary = 10000
+
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,data)
-    pybdsim.Run.Bdsim(gmad_name,base_name,10000,1)
+    pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1)
 
     d = pybdsim.Data.Load(root_name)
     samplerData = pybdsim.Data.SamplerData(d,'laser1') 
@@ -30,6 +33,8 @@ def test() :
             we.append(weights[i])
     Ne=sum(we)
     ref_Ne=5.843840659450507
-    
 
     assert (Ne==ref_Ne)
+
+    te = testdata_store.new_test_entry("08_processes/laserwire_photodetachment_cumulative",__file__,nprimary,0)
+    te.add_output_parameter("ne", Ne)
