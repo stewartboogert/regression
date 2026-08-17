@@ -4,7 +4,8 @@ from numpy import sin
 from numpy import cos
 import os
 
-def test(test_length, testlength_primaries, testdata_store) :
+def test(geant4_version, bdsim_version,
+         test_length, testlength_primaries, testdata_store) :
 
     os.path.dirname(__file__)
     
@@ -42,5 +43,7 @@ def test(test_length, testlength_primaries, testdata_store) :
     
     assert pybdsim.Testing.compare_matrix(rmat,ref_rmat)
 
-    testdata_store.add_test_output(__file__,root_name,"root", nprimary)
-    testdata_store.add_test_output(__file__,optics_name,"optics", nprimary)
+    te = testdata_store.new_test_entry("02_element/sbend", __file__, nprimary, 0)
+    te.add_output_file(os.path.dirname(__file__)+"/"+root_name, "root")
+    te.add_output_file(os.path.dirname(__file__)+"/"+optics_name, "optics")
+    te.add_output_parameter("rmat",rmat.tolist(),)

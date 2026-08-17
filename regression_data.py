@@ -1,87 +1,250 @@
-import json
-import pandas as pd
-from pathlib import Path
-import shutil
-import os
-import dominate
-from datetime import datetime
+import json as _json
+import shutil as _shutil
+from pathlib import Path as _Path
 
+class test_input_parameter:
+    '''
+    Class to store test input parameters
+    '''
+    def __init__(self, name : str, value):
+        self.name = name
+        self.value = value
 
-def load_regression_store(filename = "./regression_data.dat"):
-    '''Load output from pytest and return as pandas dataframe'''
-    with open(filename, "r") as f:
-        data = json.load(f)
+    def to_dict(self) -> dict:
+        return {"name": self.name, "value": self.value}
 
-    return pd.DataFrame(data)
+    def from_dict(self, d : dict ) -> None:
+        self.name = d["name"]
+        self.value = d["value"]
 
-def copy_regression_data(filename = "./regression_data.dat",
-                         destination = "../regression_data/data/"):
-    '''Loop over output from pytest and copy files to destination (usually repository for regression output'''
-    df = load_regression_store()
+    def __repr__(self) -> str:
+        return f"test_input_parameter(name={self.name}, value={self.value})"
 
-    # copy over configuration file
-    shutil.copy2(filename, destination)
+class test_output_parameter:
+    '''
+    Class to store test output parameters
+    '''
 
-    # copy over all requested output files
-    icopied = 0
-    for index, row in df.iterrows():
-        testname = row['testname']
-        testfile = row['testfile']
-        testfiletype = row['testtfiletype']
+    def __init__(self, name : str, value, rel_tol = 1e-3):
+        self.name = name
+        self.value = value
+        self.rel_tol = rel_tol
 
-        testdir = testname.split("/")[0]
-        filepath = Path("./"+testdir+"/"+testfile)
-        destpath = Path(destination+"/"+testdir+"/")
-        destfilepath = destpath / Path(testfile)
+    def from_dict(self, d : dict) -> None:
+        self.name = d["name"]
+        self.value = d["value"]
+        self.rel_tol = d["rel_tol"]
 
-        # create output directory if does not exist
-        if not destpath.exists() :
-            destpath.mkdir()
+    def to_dict(self) -> dict:
+        return {"name": self.name, "value": self.value, "rel_tol": self.rel_tol}
 
-        # copy file
-        shutil.copy2(filepath, destfilepath)
+    def __repr__(self) -> str:
+        return f"test_output_parameter(name={self.name}, value={self.value}, rel_tol={self.rel_tol})"
 
-        icopied += 1
+class test_output_file:
+    '''
+    Class to store test output files
+    '''
 
-    print(f"Copied : {icopied} to {destination}")
+    def __init__(self, path : str =None, type : str =None):
+        self.path = path
+        self.type = type
 
-def compare_regression_data(path1 = "./", path2 = None, html_path="./html"):
-    from dominate.tags import table, tr, th, td, title, h1, link, script
+    def to_dict(self) -> dict:
+        return {"path": self.path, "type": self.type}
 
-    df = load_regression_store(path1+"/regression_data.dat")
+    def from_dict(self, d : dict) -> None:
+        self.path = d["path"]
+        self.type = d["type"]
 
+    def __repr__(self):
+        return f"test_output_file(path={self.path}, type={self.type})"
 
-    Path(html_path).mkdir(parents=True, exist_ok=True)
+class test_entry:
+    '''
+    Class to store input and output of a single pytest test file
+    '''
+    def __init__(self,
+                 test_name      : str = None,
+                 test_file_path : str = None,
+                 nprimary       : int = 0,
+                 runtime        : float = 0):
+        self.name = test_name
+        self.file_path = test_file_path
+        self.nprimary = nprimary
+        self.runtime = runtime
+        self.input_parameters = []
+        self.output_parameters = []
+        self.output_files = []
 
-    doc = dominate.document(title='Regression tests')
+    def add_input_parameter(self, name : str, value) -> None:
+        self.input_parameters.append(test_input_parameter(name, value))
 
-    columns_display = ['testname', 'testfile', 'testfiletype',
-                       'testfilesize', 'testobject','testnprimary']
+    def add_input_parameter_dict(self, pdict) -> None:
+        for k in pdict:
+            self.add_input_parameter(k, pdict[k])
 
-    with doc:
-        with doc.head:
-            link(rel="stylesheet", href="styles.css")
-            script(src="script.js")
+    def add_output_parameter(self, name : str, value) -> None:
+        self.output_parameters.append(test_output_parameter(name, value))
 
-        # page title
-        now = datetime.now()
-        h1("Regression tests (" + now.strftime("%Y-%m-%d %H:%M:%S") +")" )
+    def add_output_parameter_dict(self, pdict) -> None:
+        for k in pdict:
+            self.add_output_parameter(k, pdict[k])
 
-        # loop over regression data frame
-        with table(border="1"):
-            with tr():
-                for h in columns_display:
-                    th(h)
-            for index, row in df.iterrows():
-                # if optics file make pdf
+    def add_output_file(self, path : str , type : str) -> None:
+        self.output_files.append(test_output_file(path, type))
 
-                # if rebdsim file make pdf
+    def add_output_file_dict(self, fdict) -> None:
+        for k in fdict:
+            self.add_output_file(k, fdict[k])
+            
+    def from_dict(self, d) -> None:
+        self.name = d["name"]
+        self.file_path = d["file_path"]
+        self.nprimary = d["nprimary"]
+        self.runtime = d["runtime"]
+        for v in d["input_parameters"]:
+            p = test_input_parameter(None, None)
+            p.from_dict(v)
+            self.input_parameters.append(p)
 
-                # make table row
-                with tr():
-                    for column, cell in zip(df.columns,row):
-                        if column in columns_display:
-                            td(str(cell))
+        for v in d["output_parameters"]:
+            o = test_output_parameter(None, None)
+            o.from_dict(v)
+            self.output_parameters.append(o)
 
-    with open(html_path+"/regression_data.html", "w") as f:
-        f.write(str(doc))
+        for v in d["output_files"]:
+            f = test_output_file(None, None)
+            f.from_dict(v)
+            self.output_files.append(f)
+
+    def to_dict(self):
+        d = {
+            "name": self.name,
+            "file_path": self.file_path,
+            "nprimary": self.nprimary,
+            "runtime": self.runtime,
+            "input_parameters": [p.to_dict() for p in self.input_parameters],
+            "output_parameters": [o.to_dict() for o in self.output_parameters],
+            "output_files": [o.to_dict() for o in self.output_files]
+        }
+        return d
+
+    def __repr__(self) -> str:
+        s =  f"test_entry(name={self.name}, file_path={self.file_path}, nprimary={self.nprimary}\n"
+        s += f"input_parameters={repr(self.input_parameters)}\n"
+        s += f"output_parameters={repr(self.output_parameters)}\n"
+        s += f"output_files={repr(self.output_files)})"
+        return s
+
+class test_entry_store:
+    '''
+    Class to store many test_entries (similar API to list)
+    '''
+
+    @classmethod
+    def new_from_json(cls, file_name):
+        s = test_entry_store()
+        s.read_json(file_name)
+        return s
+
+    def __init__(self):
+        self.entries = []
+
+    def new_test_entry(self,
+                       test_name : str,
+                       test_file_path : str,
+                       nprimary : int,
+                       runtime : float) -> test_entry:
+        te =  test_entry(test_name, test_file_path, nprimary, runtime)
+        self.append(te)
+        return te
+
+    def append(self, entry : test_entry) -> None:
+        self.entries.append(entry)
+
+    def __len__(self) -> int:
+        return len(self.entries)
+
+    def __getitem__(self, index : int) -> test_entry:
+        return self.entries[index]
+
+    def __setitem__(self, index : int, value) -> None:
+        self.entries[index] = value
+
+    def write_json(self, file_name : str = "regression_data.dat") -> None:
+        with open(file_name, "w") as f:
+            f.write("[")
+            for i, entry in enumerate(self.entries):
+                _json.dump(entry.to_dict(), f)
+                if i != len(self.entries)-1 :
+                    f.write(",\n")
+                else :
+                    f.write("\n")
+            f.write("]")
+
+    def read_json(self, file_name : str) -> None:
+        with open(file_name, "r") as f:
+            d = _json.load(f)
+            self.from_dict(d)
+
+    def to_dataframe(self):
+        pass
+
+    def from_dict(self, d : dict) -> None:
+        # loop over entries
+
+        self.entries = []
+        for e in d :
+            et = test_entry()
+            et.from_dict(e)
+            self.append(et)
+
+    def __repr__(self) -> str:
+        s = "["
+        for e in self.entries :
+            s += repr(e) + ","
+
+        s += "]"
+        return s
+
+def copy_regression_data(file_name   : str   = "./regression_data.dat",
+                         destination : str = "../regression_data/data/os-g4v/") -> None :
+    '''
+    Copy files documented in file_name to destination
+    '''
+
+    tes = test_entry_store()
+    tes.read_json(file_name)
+
+    # check target path exists
+
+    # copy regressiondata.dat over to target
+    _shutil.copy2(file_name, destination)
+
+def compare_regression_data(paths : dict,
+                            output_path : str = None) -> None :
+    '''
+    Compare many regression data files
+    '''
+
+    # load regression data
+    rd_array = [test_entry_store.new_from_json(paths[k]) for k in paths.keys()]
+
+    # verify test_entry_store lengths
+    rd_lengths = [len(rd) for rd in rd_array]
+
+    print(rd_lengths)
+
+    # verify same tests are in the store
+    for i in range(0, len(rd_array[0])) :
+        name0 = rd_array[0][i].name
+        for j in range(1, len(rd_array)) :
+            if name0 != rd_array[j][i].name :
+                print(f"Test {name0} not present in all regression data")
+
+    pass
+
+def html_regression_data(path1 : str = "./regression_data.dat") -> None :
+    pass
+

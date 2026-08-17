@@ -16,4 +16,5 @@ def test(test_length, testlength_primaries, testdata_store):
     pybdsim.Run.Bdsim(gmad_name, base_name, nprimary, nprimary, options = "--circular")
     pybdsim.Run.RebdsimOptics(root_name, optics_name)
 
-    testdata_store.add_test_output(__file__, optics_name, "optics", nprimary)
+    te = testdata_store.new_test_entry("99_machines/diamond",__file__,nprimary,0)
+    te.add_output_file(os.path.dirname(__file__)+"/"+optics_name, "optics")
