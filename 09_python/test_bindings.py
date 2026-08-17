@@ -11,6 +11,7 @@ def bdsimParserSetup_fromFile() :
     o['batch'] = True
     o['outputFormat'] = 'none'
 
+
     b = bdsim.BDSIM(p)
     b.BeamOn(10)
 
@@ -182,6 +183,7 @@ def bdsimParserBeamline() :
     o = p.GetOptions()
     o['batch'] = True
     o['outputFormat'] = 'rootevent'
+    o['outputFileName'] = "bdsimParserBeamline.root"
 
     e = p.GetGlobal_Parameters()
 
@@ -224,7 +226,6 @@ def bdsimParserBeamline() :
     except Exception as e  :
         print("BDSIM failed")
         print(e)
-
 
     if "PYTEST_CURRENT_TEST" in os.environ:
         return 0
@@ -366,14 +367,6 @@ def bdsimParserField() :
     for k in a.keys():
         ag[k] = a[k]
 
-    # set some variables
-    #a['mirrorCoils'] = True # bool
-    #a['nCells'] = 5 # int
-    #a['cellLengthZ'] = 10.0 # double
-    #a['name'] = "test_name" # string
-    #a['rfWindowThickness'] = [1,2,3,4] # numberical array
-    #a['absorberType'] = ['a','b','c','d'] # string array
-
     # copy from local to global
     ag.copy_from(a)
 
@@ -399,14 +392,6 @@ def bdsimParserMaterial() :
     # check ability to get and set via dict
     for k in a.keys():
         ag[k] = a[k]
-
-    # set some variables
-    #a['mirrorCoils'] = True # bool
-    #a['nCells'] = 5 # int
-    #a['cellLengthZ'] = 10.0 # double
-    #a['name'] = "test_name" # string
-    #a['rfWindowThickness'] = [1,2,3,4] # numberical array
-    #a['absorberType'] = ['a','b','c','d'] # string array
 
     # copy from local to global
     ag.copy_from(a)
@@ -434,14 +419,6 @@ def bdsimParserModulator() :
     for k in a.keys():
         ag[k] = a[k]
 
-    # set some variables
-    #a['mirrorCoils'] = True # bool
-    #a['nCells'] = 5 # int
-    #a['cellLengthZ'] = 10.0 # double
-    #a['name'] = "test_name" # string
-    #a['rfWindowThickness'] = [1,2,3,4] # numberical array
-    #a['absorberType'] = ['a','b','c','d'] # string array
-
     # copy from local to global
     ag.copy_from(a)
 
@@ -467,14 +444,6 @@ def bdsimParserNewColour() :
     # check ability to get and set via dict
     for k in a.keys():
         ag[k] = a[k]
-
-    # set some variables
-    #a['mirrorCoils'] = True # bool
-    #a['nCells'] = 5 # int
-    #a['cellLengthZ'] = 10.0 # double
-    #a['name'] = "test_name" # string
-    #a['rfWindowThickness'] = [1,2,3,4] # numberical array
-    #a['absorberType'] = ['a','b','c','d'] # string array
 
     # copy from local to global
     ag.copy_from(a)
@@ -502,14 +471,6 @@ def bdsimParserOption() :
     for k in a.keys():
         ag[k] = a[k]
 
-    # set some variables
-    #a['mirrorCoils'] = True # bool
-    #a['nCells'] = 5 # int
-    #a['cellLengthZ'] = 10.0 # double
-    #a['name'] = "test_name" # string
-    #a['rfWindowThickness'] = [1,2,3,4] # numberical array
-    #a['absorberType'] = ['a','b','c','d'] # string array
-
     # copy from local to global
     ag.copy_from(a)
 
@@ -533,14 +494,6 @@ def bdsimParserPhysicsBiasing() :
     # check ability to get and set via dict
     for k in a.keys():
         ag[k] = a[k]
-
-    # set some variables
-    #a['mirrorCoils'] = True # bool
-    #a['nCells'] = 5 # int
-    #a['cellLengthZ'] = 10.0 # double
-    #a['name'] = "test_name" # string
-    #a['rfWindowThickness'] = [1,2,3,4] # numberical array
-    #a['absorberType'] = ['a','b','c','d'] # string array
 
     # copy from local to global
     ag.copy_from(a)
@@ -568,14 +521,6 @@ def bdsimParserPlacement() :
     for k in a.keys():
         ag[k] = a[k]
 
-    # set some variables
-    #a['mirrorCoils'] = True # bool
-    #a['nCells'] = 5 # int
-    #a['cellLengthZ'] = 10.0 # double
-    #a['name'] = "test_name" # string
-    #a['rfWindowThickness'] = [1,2,3,4] # numberical array
-    #a['absorberType'] = ['a','b','c','d'] # string array
-
     # copy from local to global
     ag.copy_from(a)
 
@@ -601,14 +546,6 @@ def bdsimParserQuery() :
     # check ability to get and set via dict
     for k in a.keys():
         ag[k] = a[k]
-
-    # set some variables
-    #a['mirrorCoils'] = True # bool
-    #a['nCells'] = 5 # int
-    #a['cellLengthZ'] = 10.0 # double
-    #a['name'] = "test_name" # string
-    #a['rfWindowThickness'] = [1,2,3,4] # numberical array
-    #a['absorberType'] = ['a','b','c','d'] # string array
 
     # copy from local to global
     ag.copy_from(a)
@@ -636,14 +573,6 @@ def bdsimParserRegion() :
     for k in a.keys():
         ag[k] = a[k]
 
-    # set some variables
-    #a['mirrorCoils'] = True # bool
-    #a['nCells'] = 5 # int
-    #a['cellLengthZ'] = 10.0 # double
-    #a['name'] = "test_name" # string
-    #a['rfWindowThickness'] = [1,2,3,4] # numberical array
-    #a['absorberType'] = ['a','b','c','d'] # string array
-
     # copy from local to global
     ag.copy_from(a)
 
@@ -669,14 +598,6 @@ def bdsimParserScorer() :
     # check ability to get and set via dict
     for k in a.keys():
         ag[k] = a[k]
-
-    # set some variables
-    #a['mirrorCoils'] = True # bool
-    #a['nCells'] = 5 # int
-    #a['cellLengthZ'] = 10.0 # double
-    #a['name'] = "test_name" # string
-    #a['rfWindowThickness'] = [1,2,3,4] # numberical array
-    #a['absorberType'] = ['a','b','c','d'] # string array
 
     # copy from local to global
     ag.copy_from(a)
@@ -704,14 +625,6 @@ def bdsimParserScorerMesh() :
     for k in a.keys():
         ag[k] = a[k]
 
-    # set some variables
-    #a['mirrorCoils'] = True # bool
-    #a['nCells'] = 5 # int
-    #a['cellLengthZ'] = 10.0 # double
-    #a['name'] = "test_name" # string
-    #a['rfWindowThickness'] = [1,2,3,4] # numberical array
-    #a['absorberType'] = ['a','b','c','d'] # string array
-
     # copy from local to global
     ag.copy_from(a)
 
@@ -737,14 +650,6 @@ def bdsimParserTunnel() :
     # check ability to get and set via dict
     for k in a.keys():
         ag[k] = a[k]
-
-    # set some variables
-    #a['mirrorCoils'] = True # bool
-    #a['nCells'] = 5 # int
-    #a['cellLengthZ'] = 10.0 # double
-    #a['name'] = "test_name" # string
-    #a['rfWindowThickness'] = [1,2,3,4] # numberical array
-    #a['absorberType'] = ['a','b','c','d'] # string array
 
     # copy from local to global
     ag.copy_from(a)
