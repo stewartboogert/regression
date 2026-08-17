@@ -2,7 +2,7 @@ import pytest
 import pybdsim
 import os
 
-def test() :
+def test(testdata_store) :
 
     os.chdir(os.path.dirname(__file__))
     
