@@ -1,0 +1,19 @@
+b0bl: rbend, angle=0.000576478912453, e1=0.0, e2=0.0, l=59.97786480398666;
+
+l1: line = (b0bl);
+use,period=l1;
+
+sample, all;
+
+option, physicsList="em synch_rad em_extra",
+    geant4PhysicsMacroFileName="emextraphysics.mac",
+    beamPipeIsInfiniteAbsorber=1,
+    storeTrajectory=1,
+    storeTrajectoryParticleID="22",
+    storeTrajectoryMomentumVector=1,
+    storeTrajectoryLocal=1,
+    storeTrajectoryStepPoints=1;
+
+beam, particle = "e+",
+      energy = 45.6*GeV,
+      distrType = "reference";
