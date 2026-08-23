@@ -38,10 +38,11 @@ jobs:
       - name: Run regression tests
         shell: bash
         run: |
+          # install which
           yum install which -y 
-          source /root/.bashrc
-          source /bdsim/root/bin/thisroot.sh
-          source /bdsim/venv-bdsim/bin/activate
+          
+          # configure BDSIM stack
+          source /bdsim/setup.sh
           
           # update pybdsim for development (dev for testing and pytest)
           /bdsim/venv-bdsim/bin/pip uninstall pybdsim -y
@@ -55,7 +56,6 @@ jobs:
           /bdsim/venv-bdsim/bin/pip install rpyc
           /bdsim/venv-bdsim/bin/pip install pytest-xdist
           /bdsim/venv-bdsim/bin/pip install dominate
-          export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python/
           
           # alma9 (but does not work)
           # export LD_PRELOAD="libG4processes.so:libstdc++.so.6:libG4geometry.so"
