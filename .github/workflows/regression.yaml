@@ -71,7 +71,7 @@ jobs:
           
           # gatherup regression output 
           /bdsim/venv-bdsim/bin/python regression_data.py copy --file=./regression_data.dat --destination=${{ matrix.dockerimage }}
-          tar zxf ./${{ matrix.dockerimage }}.tgz ${{ matrix.dockerimage }}
+          tar zcf ./${{ matrix.dockerimage }}.tgz ${{ matrix.dockerimage }}
 
       - name: Create regression release
         if : github.event_name == 'release'
