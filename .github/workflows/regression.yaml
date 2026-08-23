@@ -36,7 +36,7 @@ jobs:
         run: echo "Number of cores ${{ steps.cpu-cores.outputs.count }}"
 
       - name: Upload regression output
-        if : github.event_name == 'release' | github.event_name == 'workflow_dispatch'
+        if : github.event_name == 'release' || github.event_name == 'workflow_dispatch'
         shell: bash
         run: |
           pwd
