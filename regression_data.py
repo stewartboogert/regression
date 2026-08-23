@@ -1,6 +1,8 @@
 import json as _json
 import shutil as _shutil
 from pathlib import Path as _Path
+import argparse as _argparse
+
 
 class test_input_parameter:
     '''
@@ -172,6 +174,9 @@ class test_entry_store:
     def __setitem__(self, index : int, value) -> None:
         self.entries[index] = value
 
+    def __iter__(self):
+        return self.entries.__iter__()
+
     def write_json(self, file_name : str = "regression_data.dat") -> None:
         with open(file_name, "w") as f:
             f.write("[")
@@ -208,8 +213,8 @@ class test_entry_store:
         s += "]"
         return s
 
-def copy_regression_data(file_name   : str   = "./regression_data.dat",
-                         destination : str = "../regression_data/data/os-g4v/") -> None :
+def copy_regression_data(file_name : str = "./regression_data.dat",
+                         dest_name : str = "./regression_data_store/") -> None :
     '''
     Copy files documented in file_name to destination
     '''
@@ -218,9 +223,26 @@ def copy_regression_data(file_name   : str   = "./regression_data.dat",
     tes.read_json(file_name)
 
     # check target path exists
+    dest_path = _Path(dest_name)
+    if not dest_path.exists():
+        dest_path.mkdir(parents=True)
 
     # copy regressiondata.dat over to target
-    _shutil.copy2(file_name, destination)
+    _shutil.copy2(file_name, dest_path)
+
+    # loop over files
+    tes = test_entry_store.new_from_json(file_name)
+
+    for te in tes :
+        test_class = te.name.split('/')[0]
+        class_path = _Path(dest_name+'/'+test_class+'/')
+        if not class_path.exists():
+            class_path.mkdir(parents=True)
+
+        for output in te.output_files :
+            output_dest = str(class_path)+'/'+_Path(output.path).parts[-1]
+            _shutil.copy2(output.path, output_dest)
+
 
 def compare_regression_data(paths : dict,
                             output_path : str = None) -> None :
@@ -248,3 +270,44 @@ def compare_regression_data(paths : dict,
 def html_regression_data(path1 : str = "./regression_data.dat") -> None :
     pass
 
+def _build_cli_parser() -> _argparse.ArgumentParser:
+    parser = _argparse.ArgumentParser(description="Utilities for managing BDSIM regression data")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    # copy subcommand
+    copy_parser = subparsers.add_parser(
+        "copy",
+        help="Copy regression data files to a destination directory"
+    )
+    copy_parser.add_argument(
+        "--file",
+        default="./regression_data.dat",
+        metavar="FILE",
+        help="Path to regression data JSON file (default: ./regression_data.dat)"
+    )
+    copy_parser.add_argument(
+        "--destination",
+        default="../regression_data/data/os-g4v/",
+        metavar="DEST",
+        help="Destination directory (default: ../regression_data/data/os-g4v/)"
+    )
+
+    return parser
+
+def _parse_key_value(items):
+    '''Parse a list of KEY=VALUE strings into a dict'''
+    result = {}
+    for item in items:
+        if "=" not in item:
+            raise _argparse.ArgumentTypeError(
+                f"Expected KEY=FILE format, got: {item!r}"
+            )
+        key, _, value = item.partition("=")
+        result[key] = value
+    return result
+
+if __name__ == "__main__":
+    parser = _build_cli_parser()
+    args = parser.parse_args()
+    if args.command == "copy":
+        copy_regression_data(file_name=args.file, dest_name=args.destination)
