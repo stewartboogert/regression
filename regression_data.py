@@ -172,6 +172,9 @@ class test_entry_store:
     def __setitem__(self, index : int, value) -> None:
         self.entries[index] = value
 
+    def __iter__(self):
+        return self.entries.__iter__()
+
     def write_json(self, file_name : str = "regression_data.dat") -> None:
         with open(file_name, "w") as f:
             f.write("[")
@@ -208,8 +211,8 @@ class test_entry_store:
         s += "]"
         return s
 
-def copy_regression_data(file_name   : str   = "./regression_data.dat",
-                         destination : str = "../regression_data/data/os-g4v/") -> None :
+def copy_regression_data(file_name : str = "./regression_data.dat",
+                         dest_name : str = "./regression_data_store/") -> None :
     '''
     Copy files documented in file_name to destination
     '''
@@ -218,9 +221,26 @@ def copy_regression_data(file_name   : str   = "./regression_data.dat",
     tes.read_json(file_name)
 
     # check target path exists
+    dest_path = _Path(dest_name)
+    if not dest_path.exists():
+        dest_path.mkdir(parents=True)
 
     # copy regressiondata.dat over to target
-    _shutil.copy2(file_name, destination)
+    _shutil.copy2(file_name, dest_path)
+
+    # loop over files
+    tes = test_entry_store.new_from_json(file_name)
+
+    for te in tes :
+        test_class = te.name.split('/')[0]
+        class_path = _Path(dest_name+'/'+test_class+'/')
+        if not class_path.exists():
+            class_path.mkdir(parents=True)
+
+        for output in te.output_files :
+            output_dest = str(class_path)+'/'+_Path(output.path).parts[-1]
+            _shutil.copy2(output.path, output_dest)
+
 
 def compare_regression_data(paths : dict,
                             output_path : str = None) -> None :
