@@ -68,6 +68,10 @@ jobs:
           # alma10
           export GLIBC_TUNABLES=glibc.rtld.optional_static_tls=2097152
           pytest -v -runxfail -n 0
+          
+          # gatherup regression output 
+          # debug 
+          ls 
 
       - name: Create regression release
         if : github.event_name == 'published'
