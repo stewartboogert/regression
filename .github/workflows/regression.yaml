@@ -70,11 +70,11 @@ jobs:
           pytest -v -runxfail -n 0
           
           # gatherup regression output 
-          # debug 
-          ls 
+          /bdsim/venv-bdsim/bin/python regression_data.py copy --file=./regression_data.dat --destination=${{ matrix.dockerimage }}
+          tar zxf ./${{ matrix.dockerimage }}.tgz ${{ matrix.dockerimage }}
 
       - name: Create regression release
-        if : github.event_name == 'published'
+        if : github.event_name == 'release'
         id: create_release
         uses: ncipollo/release-action@v1
         with:
@@ -85,7 +85,7 @@ jobs:
           allowUpdates: true
 
       - name: Upload regression output
-        if: github.event_name == 'published'
+        if: github.event_name == 'release'
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
