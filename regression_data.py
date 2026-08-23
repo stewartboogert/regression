@@ -1,6 +1,8 @@
 import json as _json
 import shutil as _shutil
 from pathlib import Path as _Path
+import argparse as _argparse
+
 
 class test_input_parameter:
     '''
@@ -268,3 +270,44 @@ def compare_regression_data(paths : dict,
 def html_regression_data(path1 : str = "./regression_data.dat") -> None :
     pass
 
+def _build_cli_parser() -> _argparse.ArgumentParser:
+    parser = _argparse.ArgumentParser(description="Utilities for managing BDSIM regression data")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    # copy subcommand
+    copy_parser = subparsers.add_parser(
+        "copy",
+        help="Copy regression data files to a destination directory"
+    )
+    copy_parser.add_argument(
+        "--file",
+        default="./regression_data.dat",
+        metavar="FILE",
+        help="Path to regression data JSON file (default: ./regression_data.dat)"
+    )
+    copy_parser.add_argument(
+        "--destination",
+        default="../regression_data/data/os-g4v/",
+        metavar="DEST",
+        help="Destination directory (default: ../regression_data/data/os-g4v/)"
+    )
+
+    return parser
+
+def _parse_key_value(items):
+    '''Parse a list of KEY=VALUE strings into a dict'''
+    result = {}
+    for item in items:
+        if "=" not in item:
+            raise _argparse.ArgumentTypeError(
+                f"Expected KEY=FILE format, got: {item!r}"
+            )
+        key, _, value = item.partition("=")
+        result[key] = value
+    return result
+
+if __name__ == "__main__":
+    parser = _build_cli_parser()
+    args = parser.parse_args()
+    if args.command == "copy":
+        copy_regression_data(file_name=args.file, dest_name=args.destination)
