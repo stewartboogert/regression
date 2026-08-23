@@ -35,16 +35,13 @@ jobs:
         shell: bash
         run: echo "Number of cores ${{ steps.cpu-cores.outputs.count }}"
 
-      - name: Upload regression output
-        if : github.event_name == 'release'
-        shell: bash
-        run: |
-          pwd
-          ls -trl 
-
       - name: Run regression tests
         shell: bash
         run: |
+          # debug
+          ls -trl 
+          pwd
+          
           # install which
           yum install which -y 
           
@@ -71,3 +68,26 @@ jobs:
           # alma10
           export GLIBC_TUNABLES=glibc.rtld.optional_static_tls=2097152
           pytest -v -runxfail -n 0
+
+      - name: Create regression release
+        if : github.event_name == 'published'
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          name: Release ${{ github.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+          prerelease: false
+          allowUpdates: true
+
+      - name: Upload regression output
+        if: github.event_name == 'published'
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ matrix.dockerimage }}.tgz
+          asset_name: ${{ matrix.dockerimage }}.tgz
+          asset_content_type: application/gzip
