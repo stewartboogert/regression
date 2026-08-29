@@ -23,9 +23,6 @@ jobs:
         dockerimage: [ alma10-g4.10.7-bdsim, alma10-g4.11.0-bdsim,
                        alma10-g4.11.1-bdsim, alma10-g4.11.2-bdsim,
                        alma10-g4.11.3-bdsim, alma10-g4.11.4-bdsim]
-        #dockerimage: [ ubuntu24-g4.10.7-bdsim, ubuntu24-g4.11.0-bdsim,
-        #               ubuntu24-g4.11.1-bdsim, ubuntu24-g4.11.2-bdsim,
-        #               ubuntu24-g4.11.3-bdsim, ubuntu24-g4.11.4-bdsim]
 
     steps:
       - name: Checkout regression
@@ -62,9 +59,6 @@ jobs:
           /bdsim/venv-bdsim/bin/pip install pytest-xdist
           /bdsim/venv-bdsim/bin/pip install dominate
           export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python/
-
-          # alma9 (but does not work)
-          # export LD_PRELOAD="libG4processes.so:libstdc++.so.6:libG4geometry.so"
           
           # alma10
           export GLIBC_TUNABLES=glibc.rtld.optional_static_tls=2097152

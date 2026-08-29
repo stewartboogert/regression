@@ -13,9 +13,17 @@ import regression_data as rd
 # BDSIM and Geant4 options
 ###############################################################
 bash_path = shutil.which("bash") # find the right shell as typically bdsim is setup in the shell setup
-_uname = subprocess.run("uname -a", shell=True, stdout=subprocess.PIPE).stdout.decode("utf-8")
-_bdsim_version = subprocess.run("bdsim --version", shell=True, executable=bash_path, stdout=subprocess.PIPE).stdout.decode("utf-8").strip()
-_geant4_version = subprocess.run("geant4-config --version", shell=True, executable=bash_path, stdout=subprocess.PIPE).stdout.decode("utf-8").strip()
+_uname = subprocess.run("uname -a",
+                        shell=True,
+                        stdout=subprocess.PIPE).stdout.decode("utf-8")
+_bdsim_version = subprocess.run("bdsim --version",
+                                shell=True,
+                                executable=bash_path,
+                                stdout=subprocess.PIPE).stdout.decode("utf-8").strip()
+_geant4_version = subprocess.run("geant4-config --version",
+                                 shell=True,
+                                 executable=bash_path,
+                                 stdout=subprocess.PIPE).stdout.decode("utf-8").strip()
 print(f"BDSIM version {_bdsim_version}")
 print(f"Geant4 version {_geant4_version}")
 
@@ -70,6 +78,7 @@ class test_nprimary :
                          "01_element/test_sextupole":{"short":1000,"medium":1000,"long":1000},
                          "08_processes/test_laserwire_compton_cumulative":{"short":10000,"medium":10000,"long":10000},
                          "08_processes/test_laserwire_compton_multiStep": {"short": 10000, "medium": 10000,"long": 10000},
+                         "08_processes/test_synch_rad": {"short": 200000, "medium": 10000,"long": 100000},
                          "99_machines/test_atf2":{"short":1,"medium":10000,"long":10000},
                          "99_machines/test_diamond":{"short":1,"medium":10000,"long":10000},
                          "99_machines/test_lhc":{"short":1,"medium":10000,"long":10000}}
