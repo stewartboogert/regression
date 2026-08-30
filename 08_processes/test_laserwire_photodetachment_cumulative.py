@@ -13,26 +13,26 @@ def test(testdata_store) :
 
     data = {
         'LASER_ENERGY': '67.4',
-        'BEAM_ENERGY' : '0.942022+0.003'
+        'BEAM_ENERGY': '0.942022+0.003'
     }
 
     # TODO fixture nprimary
     nprimary = 10000
 
-    pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,data)
-    pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1)
+    pybdsim.Run.RenderGmadJinjaTemplate(template_name, gmad_name, data)
+    pybdsim.Run.Bdsim(gmad_name, base_name, nprimary, 1)
 
-    d = pybdsim.Data.Load(root_name)
-    samplerData = pybdsim.Data.SamplerData(d,'laser1') 
-    weights=samplerData.data.get("weight")
-    partid=samplerData.data.get("partID")
+    data = pybdsim.DataPandas.BDSIMOutput(root_name)
+    sampler_data = data.get_sampler('laser1.')
+    weights = sampler_data['weight']
+    partID = sampler_data['partID']
 
-    we=[]
+    we = []
     for i in range(len(weights)):
-        if partid[i]==11:
+        if partID[i] == 11:
             we.append(weights[i])
-    Ne=sum(we)
-    ref_Ne=5.843840659450507
+    Ne = sum(we)
+    ref_Ne = 5.843840659450507
 
     assert (Ne==ref_Ne)
 

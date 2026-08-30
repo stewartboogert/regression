@@ -22,13 +22,14 @@ def test(geant4_version, bdsim_version,
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,data)
     pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1)
 
-    d = pybdsim.Data.Load(root_name)
-    samplerData = pybdsim.Data.SamplerData(d,'laser1') 
-    partid=samplerData.data.get('partID')
-    Npho=0
-    for i in range(len(partid)):
-        if partid[i]==22:
-            Npho+=1
+    data = pybdsim.DataPandas.BDSIMOutput(root_name)
+    sampler_data = data.get_sampler('laser1.')
+    partID = sampler_data['partID']
+    Npho = 0
+
+    for i in range(len(partID)):
+        if partID[i] == 22:
+            Npho += 1
 
     te = testdata_store.new_test_entry("08_processes/laserwire_compton_multiStep",__file__,nprimary,0)
     te.add_output_parameter("npho", Npho)

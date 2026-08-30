@@ -22,15 +22,16 @@ def test(testdata_store) :
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,data)
     pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1)
 
-    d = pybdsim.Data.Load(root_name)
-    samplerData = pybdsim.Data.SamplerData(d,'laser1') 
-    partid=samplerData.data.get('partID')
-    Ne=0
-    for i in range(len(partid)):
-        if partid[i]==11:
-            Ne+=1
+    data = pybdsim.DataPandas.BDSIMOutput(root_name)
+    sampler_data = data.get_sampler('laser1.')
+    partID = sampler_data['partID']
+    Ne = 0
 
-    ref_Ne=6852
+    for i in range(len(partID)):
+        if partID[i] == 11:
+            Ne += 1
+
+    ref_Ne = 6852
 
     assert (Ne==ref_Ne)
 
