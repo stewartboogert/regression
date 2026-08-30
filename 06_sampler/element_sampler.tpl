@@ -29,10 +29,3 @@ beam, particle="e-",
       sigmaT=1e-11;
 
 option, physicsList = "em";
-
-s1: samplerplacement, referenceElement="t1",
-                      referenceElementNumber=0,
-		              samplerType="cylinder",
-                      x=0*cm, y=0*cm, s=0*cm,
-                      axisAngle=0, axisY=0, angle=0,
-                      aper1={{ LENGTH }}/2*m, aper2={{ LENGTH }}/2*m;
