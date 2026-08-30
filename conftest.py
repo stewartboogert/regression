@@ -80,6 +80,8 @@ class test_nprimary :
                          "02_beam/test_gaussmatrix": {"short": 1000, "medium": 1000, "long": 1000},
                          "02_beam/test_gausstwiss": {"short": 1000, "medium": 1000, "long": 1000},
                          "06_scorer/test_scorer3d":{"short":5000,"medium":10000,"long":50000},
+                         "05_eloss/test_eloss_collimator":{"short":1000,"medium":10000,"long":10000},
+                         "05_eloss/test_eloss_collimator_storeElossLinks": {"short": 1000, "medium": 10000, "long": 10000},
                          "08_processes/test_laserwire_compton_cumulative":{"short":10000,"medium":10000,"long":10000},
                          "08_processes/test_laserwire_compton_multiStep": {"short": 10000, "medium": 10000,"long": 10000},
                          "08_processes/test_synch_rad": {"short": 200000, "medium": 10000,"long": 100000},
