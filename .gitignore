@@ -8,3 +8,4 @@ __pycache__
 *checkpoint*
 *html
 regression_data.dat
+*.json

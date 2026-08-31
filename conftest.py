@@ -71,20 +71,20 @@ def get_testfile_size(filepath) :
 ###############################################################
 class test_nprimary :
     def __init__(self):
-        self.nprimary = {"01_element/test_drift":{"short":1000,"medium":100,"long":100},
-                         "01_element/test_quadrupole":{"short":1000,"medium":100,"long":1000},
-                         "01_element/test_rbend":{"short":1000,"medium":1000,"long":1000},
-                         "01_element/test_sbend":{"short":1000,"medium":1000,"long":1000},
-                         "01_element/test_sextupole":{"short":1000,"medium":1000,"long":1000},
-                         "02_beam/test_reference":{"short":1000,"medium":1000,"long":1000},
-                         "02_beam/test_gaussmatrix": {"short": 1000, "medium": 1000, "long": 1000},
-                         "02_beam/test_gausstwiss": {"short": 1000, "medium": 1000, "long": 1000},
-                         "06_scorer/test_scorer3d":{"short":5000,"medium":10000,"long":50000},
-                         "05_eloss/test_eloss_collimator":{"short":1000,"medium":10000,"long":10000},
-                         "05_eloss/test_eloss_collimator_storeElossLinks": {"short": 1000, "medium": 10000, "long": 10000},
-                         "08_processes/test_laserwire_compton_cumulative":{"short":10000,"medium":10000,"long":10000},
-                         "08_processes/test_laserwire_compton_multiStep": {"short": 10000, "medium": 10000,"long": 10000},
-                         "08_processes/test_synch_rad": {"short": 200000, "medium": 10000,"long": 100000},
+        self.nprimary = {"02_elements/test_drift":{"short":1000,"medium":100,"long":100},
+                         "02_elements/test_quadrupole":{"short":1000,"medium":100,"long":1000},
+                         "02_elements/test_rbend":{"short":1000,"medium":1000,"long":1000},
+                         "02_elements/test_sbend":{"short":1000,"medium":1000,"long":1000},
+                         "02_elements/test_sextupole":{"short":1000,"medium":1000,"long":1000},
+                         "10_beam/test_reference":{"short":1000,"medium":1000,"long":1000},
+                         "10_beam/test_gaussmatrix": {"short": 1000, "medium": 1000, "long": 1000},
+                         "10_beam/test_gausstwiss": {"short": 1000, "medium": 1000, "long": 1000},
+                         "16_eloss/test_eloss_collimator":{"short":1000,"medium":10000,"long":10000},
+                         "16_eloss/test_eloss_collimator_storeElossLinks": {"short": 1000, "medium": 10000, "long": 10000},
+                         "20_scorer/test_scorer3d": {"short": 5000, "medium": 10000, "long": 50000},
+                         "22_processes/test_laserwire_compton_cumulative":{"short":10000,"medium":10000,"long":10000},
+                         "22_processes/test_laserwire_compton_multiStep": {"short": 10000, "medium": 10000,"long": 10000},
+                         "22_processes/test_synch_rad": {"short": 200000, "medium": 10000,"long": 100000},
                          "99_machines/test_atf2":{"short":1,"medium":10000,"long":10000},
                          "99_machines/test_diamond":{"short":1,"medium":10000,"long":10000},
                          "99_machines/test_lhc":{"short":1,"medium":10000,"long":10000}}
@@ -136,6 +136,7 @@ def make_bdsim_test_code_func(func, args = "", dir="", functions=[]) :
     code_to_run += "ret ="+func_name+"("+args+")\n"
     code_to_run += "sys.exit(ret)"
 
+    print(code_to_run)
     return code_to_run
 
 @pytest.fixture

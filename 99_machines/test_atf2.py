@@ -1,10 +1,11 @@
 import os
 import pytest
 import pybdsim
+from pathlib import Path
 
 def test(test_length, testlength_primaries, testdata_store) :
 
-    os.chdir(os.path.dirname(__file__))
+    os.chdir(Path(__file__).resolve().parent)
 
     base_name     = "atf2"
     gmad_name     = "./01_atf2/linsige.gmad"
