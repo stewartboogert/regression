@@ -37,5 +37,5 @@ def test(testdata_store) :
 
     assert (Ne==ref_Ne)
 
-    te = testdata_store.new_test_entry("08_processes/laserwire_photodetachment_multiStep",__file__,nprimary,0)
+    te = testdata_store.new_test_entry("22_processes/laserwire_photodetachment_multiStep",__file__,nprimary,0)
     te.add_output_parameter("ne", Ne)

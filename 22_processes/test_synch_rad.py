@@ -21,5 +21,5 @@ def test(geant4_version, bdsim_version,
     ac = synch_rad_analysis.analysis(root_name)
     ac.write_persistent_data("synch_rad.json")
 
-    te = testdata_store.new_test_entry("08_processes/synch_rad", __file__, nprimary, 0)
+    te = testdata_store.new_test_entry("22_processes/synch_rad", __file__, nprimary, 0)
     te.add_output_file(os.path.dirname(__file__)+"/"+json_name, "json")

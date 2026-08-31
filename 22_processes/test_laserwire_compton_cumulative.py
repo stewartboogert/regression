@@ -37,7 +37,7 @@ def test(geant4_version, bdsim_version,
     Npho=sum(wpho)
     ref_Npho=0.626774271968543
 
-    te = testdata_store.new_test_entry("08_processes/laserwire_compton_cumulative",__file__,nprimary,0)
+    te = testdata_store.new_test_entry("22_processes/laserwire_compton_cumulative",__file__,nprimary,0)
     te.add_output_parameter("npho", Npho)
 
     assert (Npho==pytest.approx(ref_Npho,abs=1e-3))
