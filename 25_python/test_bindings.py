@@ -192,8 +192,6 @@ def bdsimParserBeamline() :
     e.name = "d1"
     e.type = bdsim.elementtype.ElementType.DRIFT
     e['l'] = 1.0
-    p.AddVariable("d1")
-    p.AddVariable("l")
     p.write_table("d1",bdsim.elementtype.ElementType.DRIFT,False)
     p.ClearParams()
 
@@ -201,8 +199,6 @@ def bdsimParserBeamline() :
     e.name = "d2"
     e.type = bdsim.elementtype.ElementType.DRIFT
     e['l'] = 2.0
-    p.AddVariable("d2")
-    p.AddVariable("l")
     p.write_table("d2",bdsim.elementtype.ElementType.DRIFT,False)
     p.ClearParams()
 
@@ -219,7 +215,7 @@ def bdsimParserBeamline() :
     p.expand_sequences();
 
 
-    p.add_sampler("", -2, None, "plane", [])
+    #p.add_sampler("", -2, None, "plane", [])
 
     # print out beamlines
     print("Elements")
