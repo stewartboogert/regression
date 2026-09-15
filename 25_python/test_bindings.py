@@ -214,8 +214,7 @@ def bdsimParserBeamline() :
     p.expand_line("l0", "", "")
     p.expand_sequences();
 
-
-    #p.add_sampler("", -2, None, "plane", [])
+    p.add_sampler("", -2, bdsim.ElementType.DRIFT, "plane")
 
     # print out beamlines
     print("Elements")
