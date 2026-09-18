@@ -15,6 +15,8 @@ def build_topdown_tree(t) :
 
     daughter_index = [[] for _ in range(ntraj)]
     daughter_step = [[] for _ in range(ntraj)]
+    daughter_energy = [[] for _ in range(ntraj)]
+    daughter_z = [[] for _ in range(ntraj)]
 
     # loop over all trajectories
     for itraj in range(ntraj) :
@@ -26,18 +28,26 @@ def build_topdown_tree(t) :
         parent_step  = t.parentStepIndex[itraj]
         daughter_index[parent_index].append(itraj)
         daughter_step[parent_index].append(parent_step)
+        daughter_energy[parent_index].append(t.kineticEnergy[itraj][0])
+        daughter_z[parent_index].append(t.kineticEnergy[itraj][1])
 
     # loop over all trajectories and sort on daughter_step
     for itraj in range(ntraj) :
-        sorted_pairs = sorted(zip(daughter_step[itraj], daughter_index[itraj]))
+        sorted_pairs = sorted(zip(daughter_step[itraj], daughter_index[itraj], daughter_energy[itraj], daughter_z[itraj]), key=lambda x: (x[0], x[2], x[3]))
         if len(sorted_pairs) == 0 :
             continue
-        daughter_step_sorted, daughter_index_sorted = zip(*sorted_pairs)
+
+        (daughter_step_sorted,
+         daughter_index_sorted,
+         daughter_energy_sorted,
+         daughter_z_sorted) = zip(*sorted_pairs)
 
         daughter_index[itraj] = list(daughter_index_sorted)
         daughter_step[itraj] = list(daughter_step_sorted)
+        daughter_energy[itraj] = list(daughter_energy_sorted)
+        daughter_z[itraj] = list(daughter_z_sorted)
 
-    return daughter_index, daughter_step
+    return daughter_index, daughter_step, daughter_energy
 
 def hash_trajectory(t,
                     itraj,
@@ -68,18 +78,15 @@ def hash_trajectory(t,
     S = t.S[itraj]
 
     hash = _hashlib.sha256(str(nstep).encode('utf-8')).digest()
-    # hash += _hashlib.sha256(str(depth).encode('utf-8')).digest()
-    # hash += _hashlib.sha256(str(parentID).encode('utf-8')).digest()
-    # hash += _hashlib.sha256(str(parentIndex).encode('utf-8')).digest()
-    # hash += _hashlib.sha256(str(parentStepIndex).encode('utf-8')).digest()
-    # hash += _hashlib.sha256(str(partID).encode('utf-8')).digest()
+    hash += _hashlib.sha256(str(depth).encode('utf-8')).digest()
+    hash += _hashlib.sha256(str(parentID).encode('utf-8')).digest()
+    hash += _hashlib.sha256(str(parentStepIndex).encode('utf-8')).digest()
+    hash += _hashlib.sha256(str(partID).encode('utf-8')).digest()
 
     if debugFile is not None  :
-        print(t.trackID[itraj], nstep, hash.hex())
         debugFile.write(str(t.trackID[itraj])+" "+str(nstep)+" "+str(hash.hex())+"\n")
 
     for istep in range(nstep) :
-        continue
         hash += _hashlib.sha256(str(charge[istep]).encode('utf-8')).digest()
         hash += _hashlib.sha256(str(energyDeposit[istep]).encode('utf-8')).digest()
         hash += _hashlib.sha256(str(ionA[istep]).encode('utf-8')).digest()
@@ -108,41 +115,39 @@ def hash_trajectory(t,
 def visit_trajectories(t,
                        itraj,
                        daugher_index,
-                       daughter_step, itraj_start,
+                       daughter_step,
+                       debugFile = None,
                        traj_hash_func = None,
-                       debugFile = None) :
+                       ) :
     visited = [itraj]
-
-    print(debugFile)
 
     hash = hash_trajectory(t,itraj, debugFile)
 
     for dtraj in daugher_index[itraj]:
-        dvisited, dhash = visit_trajectories(t, dtraj, daugher_index, daughter_step, traj_hash_func, debugFile)
+        dvisited, dhash = visit_trajectories(t, dtraj, daugher_index, daughter_step, debugFile, traj_hash_func)
         visited.extend(dvisited)
         hash = _hashlib.sha256(hash + dhash).digest()
         if debugFile is not None :
-            print(hash.hex())
             debugFile.write(str(hash.hex())+"\n")
 
     return visited, hash
 
 def traverse_trajectories(t,
-                          traj_hash_func = None,
-                          debugFile = None) :
+                          debugFile = None,
+                          traj_hash_func = None) :
 
     f = None
-    if debugFile :
+    if debugFile is not None:
         f = open(debugFile, 'w')
 
     # build top down trajectory
-    daughter_index, daughter_step = build_topdown_tree(t)
+    daughter_index, daughter_step, daughter_energy = build_topdown_tree(t)
 
     # find primary
     iprimary = find_primary_index(t)
 
     # recurse down tree
-    visted, hash = visit_trajectories(t, iprimary, daughter_index, daughter_step, traj_hash_func, f)
+    visted, hash = visit_trajectories(t, iprimary, daughter_index, daughter_step, f, traj_hash_func)
 
     assert len(visted) == len(set(visted))
 
@@ -150,3 +155,5 @@ def traverse_trajectories(t,
         f.close()
 
     return visted, hash
+
+# 229387eae54b5c62c5f6a323b86f90048fc18b0399d9101b98ffc676136af8f9      4043
