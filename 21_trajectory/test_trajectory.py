@@ -62,12 +62,24 @@ def test(geant4_version, bdsim_version,
     debug_file_name = "temp_"+pname+".dat"
     v,h = pybdsim.Analysis.Trajectory.traverse_trajectories(e.Trajectory, None)
 
-    if pname == "samplenone" :
-        assert(h.hex() == "eb99b05bbd61e978982a5d6e92524a564a0f4d30869cc57b3da10f8429f67faf")
-    elif pname == "sampleall" :
-        assert(h.hex() == "d2bef3e58a40be42e99fa0105245437c289e7ff47199d8062d7105649977fe01")
-    elif pname == "physicsList_em" :
-        assert(h.hex() == "3abba719eb35b4f71dd067e9f502def078cbf0fbc2e195f9d6f1cbc44f82039d")
+    if pname == "samplenone":
+        assert (h.hex() == "eb99b05bbd61e978982a5d6e92524a564a0f4d30869cc57b3da10f8429f67faf")
+    elif pname == "sampleall":
+        assert (h.hex() == "d2bef3e58a40be42e99fa0105245437c289e7ff47199d8062d7105649977fe01")
+
+    if pname == "physicsList_em" :
+        if geant4_version == '11.4.2' :
+            assert(h.hex() == "174bab89f013c6080003187e1240a29a5489a1a1a6c61eb02b3a9f9b9851ad65")
+        elif geant4_version == '11.3.2' :
+            assert(h.hex() == "a0b5ab9e21cb085d91cb7fb5f7a780219448b180dc69ceabed5442d2144d5fc1")
+        elif geant4_version == '11.2.2' :
+            assert(h.hex() == "f82167e60c03c0a96d6e9a56dcb1de9290913415b8513fd7c38bc1beb08ac6ff")
+        elif geant4_version == '11.1.3' :
+            assert(h.hex() == "ea08287c5bcc7157bf56a259874c396d79e4988cf5e30be58834d6dd08aa5e13")
+        elif geant4_version == '11.0.4' :
+            assert(h.hex() == "b8cd47157fe14e8cc981d67dcce0739efc8e33ac5c8fc4fed3b4cadd2a7f742d")
+        elif geant4_version == '10.7.4' :
+            assert(h.hex() == "6ee466468653fc1c267c16bfeabf7b8017a186a269869e6d57204b4e022971f7")
 
     # store output parameters for regression testing
     te = testdata_store.new_test_entry("21_trajectory/trajectory"+"_"+pname, __file__, ngenerate, 0)
