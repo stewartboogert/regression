@@ -22,4 +22,5 @@ option, {{ PHYSICS_LISTS }}
         storeTrajectoryDepth=-1,
         storeTrajectoryAllVariables=1,
         storeEloss=1,
+        storeElossGlobal=1,
         storeElossLinks=1;
