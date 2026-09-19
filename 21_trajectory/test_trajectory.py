@@ -63,7 +63,7 @@ def test(geant4_version, bdsim_version,
     v,h = pybdsim.Analysis.Trajectory.traverse_trajectories(e.Trajectory, None)
 
     if pname == "samplenone":
-        if geant4_version == '11.0.2' or geant4_version == '10.7.4 ':
+        if geant4_version == '11.0.4' or geant4_version == '10.7.4':
             assert(h.hex() == "ceb52bc2651e899f0ee1e3288afe01a20a22af65989b81236fb8883cc8750a64")
         else :
             assert (h.hex() == "eb99b05bbd61e978982a5d6e92524a564a0f4d30869cc57b3da10f8429f67faf")
