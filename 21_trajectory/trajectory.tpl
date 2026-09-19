@@ -20,4 +20,6 @@ option, {{ PHYSICS_LISTS }}
         seed=1,
         storeTrajectory=1,
         storeTrajectoryDepth=-1,
-        storeTrajectoryAllVariables=1;
+        storeTrajectoryAllVariables=1,
+        storeEloss=1,
+        storeElossLinks=1;

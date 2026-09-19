@@ -23,7 +23,7 @@ def test(geant4_version, bdsim_version,
 
     ngenerate = 1
 
-    params = {'SAMPLER_SETTING':'sample, all',
+    params = {'SAMPLER_SETTING':'sample, all;',
               'PHYSICS_LISTS':''}
 
     # set parametrised value
@@ -52,8 +52,8 @@ def test(geant4_version, bdsim_version,
         assert(len(t) == 20)
     elif pname == "physicsList_em" :
         if geant4_version == '11.4.2' :
-            assert(ntraj == 4044)
-            assert(len(t) == 72)
+            assert(ntraj == 8899)
+            assert(len(t) == 38)
         # TOOD other geant4 versions
 
     data = pybdsim.Data.Load(root_name)
