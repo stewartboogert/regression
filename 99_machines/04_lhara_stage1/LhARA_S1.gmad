@@ -1,0 +1,155 @@
+!Version 4.6 of the CCAP LhARA beamline.
+!Stage 1 in-vitro line only.
+
+!++++++++++++++             Beam Definition             ++++++++++++++
+include LhARA_S1_Beam.gmad;
+
+!++++++++++++++             Beam Transport Components           ++++++++++++++
+!all lengths in m
+!all elements must follow the naming convention outlined in the 1272-pa1-ctrl-rpt-0001-v0.3-lhara-device-naming
+!document. The name format is: FFF-DDDDD-TTTTT-CCCCC-NN
+!where FFF = Facility name (LHA), DDDDD = Domain (or major sub-section of the facility), TTTTT = Technical area,
+!CCCCC = Component name, NN = Numeric identifier
+
+!++++++++    Gabor Lenses    ++++++++
+! Gabor Lenses represented by solenoids, field in T for 15 MeV protons.
+! Config: 3cm (2 sigma width) - 7.5mm (1 sigma rad)
+GL1B = 1.400;
+GL2B = 0.579;
+GL3B = 0.817;
+GL4B = 0.7223;
+GL5B = 0.9105;
+GL6B = 0.4396;
+GL7B = 0.8634;
+
+!++++++++    nozzle, capture, energy selection and matching sections   ++++++++
+! ++++ target room (TR) ++++
+LHA_TR_VAC_DRI_00: drift, l=0.05;
+LHA_TR_DIA_COL_01: ecol, l=0.05, xsize=0.002, ysize=0.002, xsizeOut=0.00287, ysizeOut=0.00287, material="Fe";
+LHA_TR_VAC_DRI_01: drift, l=0.15;
+LHA_TR_MAG_SOL_01: gaborlens, B=GL1B, l=0.857, aper1=0.1, anodeRadius=95*mm, anodeLength=0.444,
+    anodeThickness=1.6*mm, electrodeRadius=53.35*mm, electrodeLength=34*mm, electrodeThickness=1.6*mm;
+LHA_TR_VAC_DRI_02: drift, l=0.15;
+LHA_TR_VAC_DRI_03: drift, l=0.15;
+LHA_TR_MAG_SOL_02: gaborlens, B=GL2B, l=0.857, aper1=0.1, anodeRadius=95*mm, anodeLength=0.444,
+    anodeThickness=1.6*mm, electrodeRadius=53.35*mm, electrodeLength=34*mm, electrodeThickness=1.6*mm;
+LHA_TR_VAC_DRI_04: drift, l=0.15;
+LHA_TR_VAC_DRI_05: drift, l=1.0185;
+
+! ++++  low energy line (LEL) ++++
+LHA_LEL_HRF_CAV_01: drift, l=0.26;
+
+LHA_LEL_VAC_DRI_00: drift, l=0.127+0.24;
+LHA_LEL_VAC_DRI_01: drift, l=0.15;
+LHA_LEL_MAG_SOL_01: gaborlens, B=GL3B, l=0.857, aper1=0.1, anodeRadius=95*mm, anodeLength=0.444,
+    anodeThickness=1.6*mm, electrodeRadius=53.35*mm, electrodeLength=34*mm, electrodeThickness=1.6*mm;
+LHA_LEL_VAC_DRI_02: drift, l=0.15;
+
+! stage 1 energy collimator placed at the focus after 3rd Gabor lens
+LHA_LEL_VAC_DRI_03: drift, l=1.771;
+LHA_LEL_DIA_COL_01: drift, l=1*cm;
+LHA_LEL_VAC_DRI_04: drift, l=0.06461;
+
+! stage 2 energy collimator placed 0.2m downstream of s1 collimator
+LHA_LEL_VAC_DRI_05: drift, l=0.13539;
+LHA_LEL_DIA_COL_02: drift, l=1*cm;
+
+LHA_LEL_HRF_CAV_02: drift, l=0.5, E=0*MV, frequency=125*MHz, phase=-1.7*rad, horizontalWidth=0.3*m;
+
+LHA_LEL_VAC_DRI_06: drift, l=0.0546;
+LHA_LEL_VAC_DRI_07: drift, l=0.15;
+LHA_LEL_MAG_SOL_02: gaborlens, B=GL4B, l=0.857, aper1=0.1, anodeRadius=95*mm, anodeLength=0.444,
+    anodeThickness=1.6*mm, electrodeRadius=53.35*mm, electrodeLength=34*mm, electrodeThickness=1.6*mm;
+LHA_LEL_VAC_DRI_08: drift, l=0.15;
+LHA_LEL_VAC_DRI_09: drift, l=0.5;
+LHA_LEL_VAC_DRI_10: drift, l=0.15;
+LHA_LEL_MAG_SOL_03: gaborlens, B=GL5B, l=0.857, aper1=0.1, anodeRadius=95*mm, anodeLength=0.444,
+    anodeThickness=1.6*mm, electrodeRadius=53.35*mm, electrodeLength=34*mm, electrodeThickness=1.6*mm;
+LHA_LEL_VAC_DRI_11: drift, l=0.15;
+LHA_LEL_VAC_DRI_12: drift, l=2.9;
+LHA_LEL_VAC_DRI_13: drift, l=0.15;
+LHA_LEL_MAG_SOL_04: gaborlens, B=GL6B, l=0.857, aper1=0.1, anodeRadius=95*mm, anodeLength=0.444,
+    anodeThickness=1.6*mm, electrodeRadius=53.35*mm, electrodeLength=34*mm, electrodeThickness=1.6*mm;
+LHA_LEL_VAC_DRI_14: drift, l=0.15;
+LHA_LEL_VAC_DRI_15: drift, l=0.5;
+LHA_LEL_VAC_DRI_16: drift, l=0.15;
+LHA_LEL_MAG_SOL_05: gaborlens, B=GL7B, l=0.857, aper1=0.1, anodeRadius=95*mm, anodeLength=0.444,
+    anodeThickness=1.6*mm, electrodeRadius=53.35*mm, electrodeLength=34*mm, electrodeThickness=1.6*mm;
+LHA_LEL_VAC_DRI_17: drift, l=0.15;
+
+LHA_LEL_VAC_DRI_17a: drift, l=0.45;
+LHA_LEL_MAG_OCT_01: octupole, l=0.1*m, k3=0;
+LHA_LEL_VAC_DRI_18: drift, l=0.15;
+LHA_LEL_MAG_DIP_01_dr: drift, l=0.84;
+LHA_LEL_VAC_DRI_19: drift, l=0.15;
+LHA_LEL_DIA_COL_03_APER=23*mm;
+LHA_LEL_DIA_COL_03: drift, l=0.05, xsize=LHA_LEL_DIA_COL_03_APER, ysize=LHA_LEL_DIA_COL_03_APER, material="Fe";
+LHA_LEL_VAC_DRI_19a: drift, l=0.18;
+
+! start of vertical arc
+LHA_LEL_VAC_DRI_20: drift, l=0.2;
+LHA_LEL_MAG_DIP_01: sbend, l=0.8, angle=pi/4, tilt=-pi/2;
+LHA_LEL_VAC_DRI_21: drift, l=0.2;
+LHA_LEL_MAG_QUAD_01: quadrupole, l=0.1, k1=-22.544, tilt=-pi/2, aper1=0.05*m;
+LHA_LEL_VAC_DRI_22: drift, l=0.4;
+LHA_LEL_MAG_QUAD_02: quadrupole, l=0.1, k1=31.3768, tilt=-pi/2, aper1=0.05*m;
+LHA_LEL_VAC_DRI_23: drift, l=0.2;
+LHA_LEL_MAG_QUAD_03: quadrupole, l=0.1, k1=-31.5123, tilt=-pi/2, aper1=0.05*m;
+LHA_LEL_VAC_DRI_24: drift, l=0.2-0.005;
+! collimator for momentum cleaning at the middle of the arc
+LHA_LEL_DIA_COL_04: drift, l=1*cm, xsize=19*mm, ysize=6.9*mm, material="Fe";
+LHA_LEL_VAC_DRI_25: drift, l=0.2-0.005;
+LHA_LEL_MAG_QUAD_04: quadrupole, l=0.1, k1=-31.5123, tilt=-pi/2, aper1=0.05*m;
+LHA_LEL_VAC_DRI_26: drift, l=0.2;
+LHA_LEL_MAG_QUAD_05: quadrupole, l=0.1, k1=31.3768, tilt=-pi/2, aper1=0.05*m;
+LHA_LEL_VAC_DRI_27: drift, l=0.4;
+LHA_LEL_MAG_QUAD_06: quadrupole, l=0.1, k1=-22.544, tilt=-pi/2, aper1=0.05*m;
+LHA_LEL_VAC_DRI_28: drift, l=0.2;
+LHA_LEL_MAG_DIP_02: sbend, l=0.8, angle=pi/4, tilt=-pi/2;
+LHA_LEL_VAC_DRI_29: drift, l=0.2;
+
+LHA_LEL_VAC_DRI_30: drift, l=2.0;  ! drift to end station
+
+!++++++++++++++             Lattices             ++++++++++++++
+! nozzle at the start of the beam line
+NOZZLE: line=(LHA_TR_VAC_DRI_00, LHA_TR_DIA_COL_01);
+! energy collimator after the 3rd Gabor lens (stage 1 & stage 2)
+ENERGY_COL_S1: line=(LHA_LEL_VAC_DRI_03, LHA_LEL_DIA_COL_01, LHA_LEL_VAC_DRI_04);
+ENERGY_COL_S2: line=(LHA_LEL_VAC_DRI_05, LHA_LEL_DIA_COL_02);
+! transverse cleaning collimator downstream of the octupole
+TRANS_CLEAN: line=(LHA_LEL_DIA_COL_03);
+! momentum cleaning collimator in the vertical arc
+MOM_CLEAN: line=(LHA_LEL_DIA_COL_04);
+
+CAPTURE: line=(NOZZLE, LHA_TR_VAC_DRI_01, LHA_TR_MAG_SOL_01, LHA_TR_VAC_DRI_02, LHA_TR_VAC_DRI_03,
+    LHA_TR_MAG_SOL_02, LHA_TR_VAC_DRI_04, LHA_TR_VAC_DRI_05);
+ENESELECT: line=(LHA_LEL_HRF_CAV_01, LHA_LEL_VAC_DRI_00, LHA_LEL_VAC_DRI_01, LHA_LEL_MAG_SOL_01, LHA_LEL_VAC_DRI_02,
+    ENERGY_COL_S1, ENERGY_COL_S2, LHA_LEL_HRF_CAV_02);
+MATCHING: line=(LHA_LEL_VAC_DRI_06, LHA_LEL_VAC_DRI_07, LHA_LEL_MAG_SOL_02, LHA_LEL_VAC_DRI_08, LHA_LEL_VAC_DRI_09,
+    LHA_LEL_VAC_DRI_10, LHA_LEL_MAG_SOL_03, LHA_LEL_VAC_DRI_11, LHA_LEL_VAC_DRI_12, LHA_LEL_VAC_DRI_13,
+    LHA_LEL_MAG_SOL_04, LHA_LEL_VAC_DRI_14, LHA_LEL_VAC_DRI_15, LHA_LEL_VAC_DRI_16, LHA_LEL_MAG_SOL_05,
+    LHA_LEL_VAC_DRI_17, LHA_LEL_VAC_DRI_17a, LHA_LEL_VAC_DRI_18, LHA_LEL_MAG_OCT_01);
+S1SDCOL: line=(LHA_LEL_MAG_DIP_01_dr, LHA_LEL_VAC_DRI_19, TRANS_CLEAN, LHA_LEL_VAC_DRI_19a);  ! switching dipole drift & collimation
+MATCHFULL: line=(MATCHING, S1SDCOL);
+S1INVITRO:  line=(LHA_LEL_VAC_DRI_20, LHA_LEL_MAG_DIP_01, LHA_LEL_VAC_DRI_21, LHA_LEL_MAG_QUAD_01, LHA_LEL_VAC_DRI_22,
+    LHA_LEL_MAG_QUAD_02, LHA_LEL_VAC_DRI_23, LHA_LEL_MAG_QUAD_03, LHA_LEL_VAC_DRI_24, MOM_CLEAN,
+    LHA_LEL_VAC_DRI_25, LHA_LEL_MAG_QUAD_04, LHA_LEL_VAC_DRI_26, LHA_LEL_MAG_QUAD_05, LHA_LEL_VAC_DRI_27,
+    LHA_LEL_MAG_QUAD_06, LHA_LEL_VAC_DRI_28, LHA_LEL_MAG_DIP_02, LHA_LEL_VAC_DRI_29);
+S1POSTARCEMPTY: line=(LHA_LEL_VAC_DRI_30);
+
+STAGE1INVITRO: line=(CAPTURE, ENESELECT, MATCHFULL, S1INVITRO, S1POSTARCEMPTY); !stage 1 in-vitro line
+
+use, period=STAGE1INVITRO;
+
+!++++++++++++++              Sampling             ++++++++++++++
+
+sample, all;
+
+!++++++++++++++             Options              ++++++++++++++
+
+! Baseline
+option, beampipeRadius=3.65*cm, beampipeThickness=5*mm,
+    integratorSet="geant4",
+    includeFringeFields=1,
+    samplerDiameter=0.073*m,
+    seed=1999;

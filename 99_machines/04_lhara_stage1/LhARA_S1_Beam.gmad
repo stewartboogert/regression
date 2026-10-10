@@ -1,0 +1,7 @@
+beam, particle="proton",
+      kineticEnergy=15*MeV,
+      distrType = "userfile",
+      distrFile = "LhARA_S1_Beam.dat",
+      distrFileFormat = "x[m]:y[m]:S[m]:xp[rad]:yp[rad]:E[MeV]";
+
+!option, ngenerate=10000;

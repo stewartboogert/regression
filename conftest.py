@@ -90,7 +90,8 @@ class test_nprimary :
                          "22_processes/test_synch_rad": {"short": 200000, "medium": 10000,"long": 100000},
                          "99_machines/test_atf2":{"short":1,"medium":10000,"long":10000},
                          "99_machines/test_diamond":{"short":1,"medium":10000,"long":10000},
-                         "99_machines/test_lhc":{"short":1,"medium":10000,"long":10000}}
+                         "99_machines/test_lhc":{"short":1,"medium":10000,"long":10000},
+                         "99_machines/test_lhara_stage1":{"short":10000,"medium":10000,"long":10000}}
 
     def get_nprimary(self,testpath, length) :
         testname = get_testname(testpath)
