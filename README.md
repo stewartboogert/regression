@@ -1,6 +1,6 @@
 # BDSIM regression testing
 
-Physics verification of [BDSIM](https://bdsim-collaboration.github.io/web/). Requires
+Physics verification of [BDSIM](https://bdsim-collaboration.github.io/web/).  
 
 * [BDSIM](https://bdsim-collaboration.github.io/web/)
 * [pybdsim](https://github.com/bdsim-collaboration/pybdsim)
