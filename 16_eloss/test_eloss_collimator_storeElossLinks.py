@@ -24,6 +24,6 @@ def test(geant4_version, bdsim_version,
     nprimary = testlength_primaries.get_nprimary(__file__,test_length)
 
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,data)
-    pybdsim.Run.Bdsim(gmad_name,base_name,500,1)
+    sproc, timing = pybdsim.Run.Bdsim(gmad_name,base_name,500,1, returnTiming=True)
 
-    te = testdata_store.new_test_entry("16_eloss/eloss_collimator_storeElossLinks", __file__, nprimary, 0)
+    te = testdata_store.new_test_entry("16_eloss/eloss_collimator_storeElossLinks", __file__, nprimary, timing)

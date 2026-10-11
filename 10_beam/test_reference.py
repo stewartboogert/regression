@@ -39,7 +39,7 @@ def test(geant4_version, bdsim_version,
     nprimary = testlength_primaries.get_nprimary(__file__,test_length)
 
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,params)
-    pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1)
+    sproc, timing = pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1, returnTiming=True)
 
     data = pybdsim.DataPandas.BDSIMOutput(root_name)
     primary_data = data.get_primary()
@@ -99,7 +99,7 @@ def test(geant4_version, bdsim_version,
     assert(0 == pytest.approx(sigma_yp_sampler,abs=1e-3))
 
     # store output parameters for regression testing
-    te = testdata_store.new_test_entry("10_beam/reference"+"_"+pname, __file__, nprimary, 0)
+    te = testdata_store.new_test_entry("10_beam/reference"+"_"+pname, __file__, nprimary, timing)
     te.add_input_parameter_dict(params)
     te.add_output_parameter("x_sigma_generated",sigma_x_generated)
     te.add_output_parameter("y_sigma_generated",sigma_y_generated)

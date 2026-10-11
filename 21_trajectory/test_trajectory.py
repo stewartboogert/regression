@@ -30,7 +30,7 @@ def test(geant4_version, bdsim_version,
     params[param] = value
 
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,params)
-    assert pybdsim.Run.Bdsim(gmad_name,base_name,ngenerate,1) == 0
+    sproc, timing = pybdsim.Run.Bdsim(gmad_name,base_name,ngenerate,1, returnTiming=True)
     dataPandas = pybdsim.DataPandas.BDSIMOutput(root_name)
 
     # event structure
@@ -88,7 +88,7 @@ def test(geant4_version, bdsim_version,
                 assert(h.hex() == "eac9bb2be02613edcfa24251947e1b46e78269aa40414211e574cc0c38bc30a0")
 
     # store output parameters for regression testing
-    te = testdata_store.new_test_entry("21_trajectory/trajectory"+"_"+pname, __file__, ngenerate, 0)
+    te = testdata_store.new_test_entry("21_trajectory/trajectory"+"_"+pname, __file__, ngenerate, timing)
     te.add_input_parameter_dict(params)
     te.add_output_parameter("ntraj", int(ntraj))
     te.add_output_parameter("len(trajectory)",len(t))

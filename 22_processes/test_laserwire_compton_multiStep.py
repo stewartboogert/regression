@@ -22,7 +22,7 @@ def test(geant4_version, bdsim_version,
 
     nprimary = testlength_primaries.get_nprimary(__file__,test_length)
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,data)
-    pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1)
+    sproc, timing = pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1, returnTiming=True)
 
     data = pybdsim.DataPandas.BDSIMOutput(root_name)
     sampler_data = data.get_sampler('laser1.')

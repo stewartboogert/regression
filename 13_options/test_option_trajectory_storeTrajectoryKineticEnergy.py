@@ -3,7 +3,6 @@ import pybdsim
 import os
 from pathlib import Path
 
-
 def test() :
 
     os.chdir(Path(__file__).resolve().parent)

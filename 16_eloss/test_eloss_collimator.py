@@ -3,7 +3,6 @@ import pybdsim
 import os
 from pathlib import Path
 
-
 import eloss_analysis
 
 def test(geant4_version, bdsim_version,
@@ -28,11 +27,11 @@ def test(geant4_version, bdsim_version,
     nprimary = testlength_primaries.get_nprimary(__file__,test_length)
 
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,data)
-    pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1)
+    sproc, timing = pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1, returnTiming=True)
     pybdsim.Run.Rebdsim(rebdsimIn_name, root_name, rebdsimOut_name),
 
     ac = eloss_analysis.analysis(root_name)
     ac.write_persistent_data(analsisJson_name)
 
-    te = testdata_store.new_test_entry("16_eloss/eloss_collimator", __file__, nprimary, 0)
+    te = testdata_store.new_test_entry("16_eloss/eloss_collimator", __file__, nprimary, timing)
     te.add_output_file(os.path.dirname(__file__)+"/"+rebdsimOut_name, "rebdsim")

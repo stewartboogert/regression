@@ -666,117 +666,141 @@ def bdsimParserTunnel() :
 
     return 0
 
-def test_bdsimSetup_fromFile(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetup_fromFile(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserSetup_fromFile, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetup_fromFile", __file__, -1, -1)
 
-def test_bdsimSetup_fromEmpty(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetup_fromEmpty(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserSetup_fromEmpty, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetup_fromEmpty", __file__, -1, -1)
 
-def test_bdsimParserAccessors(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+
+def test_bdsimParserAccessors(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserAccessors, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimParserAccessors", __file__, -1, -1)
 
-def test_bdsimParserAperture(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimParserAperture(testdata_store,make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserAperture, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimParserAperture", __file__, -1, -1)
 
-def test_bdsimParserAtom(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimParserAtom(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserAtom, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimParserAtom", __file__, -1, -1)
 
-def test_bdsimParserBeam(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimParserBeam(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserBeam, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimParserBeam", __file__, -1, -1)
 
-def test_bdsimParserBeamline(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimParserBeamline(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserBeamline, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimParserBeamline", __file__, -1, -1)
 
-def test_bdsimParserBLMPlacement(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimParserBLMPlacement(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserBLMPlacement, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimParserBLMPlacement", __file__, -1, -1)
 
-def test_bdsimParserCavityModel(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimParserCavityModel(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserCavityModel, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimParserCavityModel", __file__, -1, -1)
 
-def test_bdsimParserCoolingChannel(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimParserCoolingChannel(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserCoolingChannel, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimParserCoolingChannel", __file__, -1, -1)
 
-def test_bdsimSetupElement(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetupElement(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserElement, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetupElement", __file__, -1, -1)
 
-def test_bdsimSetupField(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetupField(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserField, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetupField", __file__, -1, -1)
 
-def test_bdsimSetupMaterial(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetupMaterial(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserMaterial, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetupMaterial", __file__, -1, -1)
 
-def test_bdsimSetupModulator(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetupModulator(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserModulator, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetupModulator", __file__, -1, -1)
 
-def test_bdsimSetupNewColour(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetupNewColour(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserNewColour, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetupNewColour", __file__, -1, -1)
 
-def test_bdsimSetupOption(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetupOption(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserOption, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetupOption", __file__, -1, -1)
 
-def test_bdsimSetupPhysicsBiasing(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetupPhysicsBiasing(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserPhysicsBiasing, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetupPhysicsBiasing", __file__, -1, -1)
 
-def test_bdsimSetupPlacement(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetupPlacement(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserPlacement, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetupPlacement", __file__, -1, -1)
 
-def test_bdsimSetupQuery(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetupQuery(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserQuery, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetupQuery", __file__, -1, -1)
 
-def test_bdsimSetupRegion(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetupRegion(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserRegion, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetupRegion", __file__, -1, -1)
 
-def test_bdsimSetupScorer(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetupScorer(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserScorer, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetupScorer", __file__, -1, -1)
 
-def test_bdsimSetupScorerMesh(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetupScorerMesh(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserScorerMesh, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetupScorerMesh", __file__, -1, -1)
 
-def test_bdsimSetupTunnel(make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
+def test_bdsimSetupTunnel(testdata_store, make_bdsim_test_code, run_bdsim_test_code_as_subprocess) :
     os.chdir(Path(__file__).resolve().parent)
     code_to_run = make_bdsim_test_code(bdsimParserTunnel, args="", dir=os.path.dirname(os.path.abspath(__file__)))
     output = run_bdsim_test_code_as_subprocess(code_to_run)
+    te = testdata_store.new_test_entry("25_python/bdsimSetupTunnel", __file__, -1, -1)

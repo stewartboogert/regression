@@ -23,7 +23,7 @@ class AnalysisClass(pybdsim.RootEventAnalysis.RootEventAnalyser) :
     def terminate(self):
         self.photon_energy = numpy.array(self.photon_energy)
         self.photon_angle = numpy.array(self.photon_angle)/1e-3
-        self.plot()
+        # self.plot()
 
     def plot(self):
         xbins = numpy.logspace(numpy.log10(self.photon_energy.min()),numpy.log10(self.photon_energy.max()), 50)

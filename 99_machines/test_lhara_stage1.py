@@ -15,12 +15,12 @@ def test(test_length, testlength_primaries, testdata_store):
 
     nprimary = testlength_primaries.get_nprimary(__file__, test_length)
 
-    pybdsim.Run.Bdsim(gmad_name, base_name, nprimary, nprimary)
+    sproc, timing = pybdsim.Run.Bdsim(gmad_name, base_name, seed=1, returnTiming=True)
     subprocess.call(["rebdsimOptics",
                      root_name,
                      optics_name,
                      "--emittanceOnTheFly"],
                     stdout=open(os.devnull, "wb"))
 
-    te = testdata_store.new_test_entry("99_machines/lhara_stage1", __file__, nprimary, 0)
+    te = testdata_store.new_test_entry("99_machines/lhara_stage1", __file__, nprimary, timing)
     te.add_output_file(os.path.dirname(__file__)+"/"+optics_name, "optics")

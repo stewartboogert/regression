@@ -28,7 +28,7 @@ def test():
     }
 
     pybdsim.Run.RenderGmadJinjaTemplate(template_name, gmad_name_1, params_1)
-    pybdsim.Run.Bdsim(gmad_name_1, base_name_1, 10000, 1)
+    sproc, timing = pybdsim.Run.Bdsim(gmad_name_1, base_name_1, 10000, 1, returnTiming=True)
 
     # TODO need to merge laser PR in BDSIM for rest of test to work
     #pybdsim.Run.RenderGmadJinjaTemplate(template_name, gmad_name_2, params_2)

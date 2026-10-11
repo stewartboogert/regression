@@ -4,7 +4,6 @@ import numpy as np
 import os
 from pathlib import Path
 
-
 @pytest.mark.parametrize("param, value, pname", [
     ('X0', "0.1*cm","p1"),
     ('Y0', "0.1*cm","p2"),
@@ -48,7 +47,7 @@ def test(geant4_version, bdsim_version,
     nprimary = testlength_primaries.get_nprimary(__file__,test_length)
 
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,params)
-    pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1)
+    sproc, timing = pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1, returnTiming=True)
 
     data = pybdsim.DataPandas.BDSIMOutput(root_name)
     primary_data = data.get_primary()
@@ -83,7 +82,7 @@ def test(geant4_version, bdsim_version,
     assert(sigma_t_input == pytest.approx(sigma_t_generated,abs=1e-1))
     assert(sigma_energy_input == pytest.approx(sigma_energy_generated,abs=1e-3))
 
-    te = testdata_store.new_test_entry("10_beam/guassmatrix"+"_"+pname, __file__, nprimary, 0)
+    te = testdata_store.new_test_entry("10_beam/guassmatrix"+"_"+pname, __file__, nprimary, timing)
     te.add_input_parameter_dict(params)
 
 

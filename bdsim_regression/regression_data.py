@@ -111,6 +111,24 @@ class test_entry:
         for k in fdict:
             self.add_output_temp_file(k, fdict[k])
 
+    def find_input_parameter(self, name: str) -> test_input_parameter | None:
+        for parameter in self.input_parameters:
+            if parameter.name == name:
+                return parameter
+        return None
+
+    def find_output_parameter(self, name: str) -> test_output_parameter | None:
+        for parameter in self.output_parameters:
+            if parameter.name == name:
+                return parameter
+        return None
+
+    def find_output_file(self, name: str) -> test_output_file | None:
+        for output_file in self.output_files:
+            if output_file.path == name:
+                return output_file
+        return None
+
     def from_dict(self, d) -> None:
         self.name = d["name"]
         self.file_path = d["file_path"]
@@ -195,6 +213,12 @@ class test_entry_store:
     def __iter__(self):
         return self.entries.__iter__()
 
+    def find_entry(self, name: str) -> test_entry | None:
+        for entry in self.entries:
+            if entry.name == name:
+                return entry
+        return None
+
     def write_json(self, file_name : str = "regression_data.dat") -> None:
         with open(file_name, "w") as f:
             f.write("[")
@@ -261,26 +285,6 @@ def copy_regression_data(file_name : str = "./regression_data.dat",
             output_dest = str(class_path)+'/'+_Path(output.path).parts[-1]
             _shutil.copy2(output.path, output_dest)
 
-def find_entry_in_store(store, name) :
-    for e in store :
-        if e.name == name :
-            return e
-
-def find_input_parameter_in_list(input_parmeters, name) :
-    for p in input_parmeters :
-        if p.name == name :
-            return p
-
-def find_output_parameter_in_list(output_parameters, name) :
-    for o in output_parameters :
-        if o.name == name :
-            return o
-
-def find_output_file_in_list(output_files, name) :
-    for o in output_files :
-        if o.path == name :
-            return o
-
 def compare_input_parameter(input1, input2) :
     pass
 
@@ -318,13 +322,13 @@ def compare_regression_data(path1 : str,
 
     # loop over entries
     for i, entry1 in enumerate(store1) :
-        entry2 = find_entry_in_store(store2, entry1.name)
+        entry2 = store2.find_entry(entry1.name)
         if not entry2 :
             continue
 
         # check if input parameters match
         for j, input1 in enumerate(entry1.input_parameters):
-            input2 = find_input_parameter_in_list(entry1.input_parameters, input1.name)
+            input2 = entry2.find_input_parameter(input1.name)
             if not input2 :
                 continue
 
@@ -332,14 +336,14 @@ def compare_regression_data(path1 : str,
 
         # check if output parameters match
         for j, output1 in enumerate(entry1.output_parameters):
-            output2 = find_output_parameter_in_list(entry1.output_parameters, output1.name)
+            output2 = entry2.find_output_parameter(output1.name)
             if not output2 :
                 continue
             compare_output_parameter(output1, output2)
 
         # compare output files
         for j, output_file1, in enumerate(entry1.output_files):
-            output_file2 = find_output_file_in_list(entry1.output_files, output_file1.path)
+            output_file2 = entry2.find_output_file(output_file1.path)
             if not output_file2 :
                 continue
             compare_output_file(output_file1, output_file2)
@@ -417,7 +421,7 @@ def html_regression_data(path1 : str = "./regression_data.dat",
                         else:
                             td(test_file)
                         td("" if entry.nprimary is None else str(entry.nprimary))
-                        td("" if entry.runtime is None else str(entry.runtime))
+                        td("" if entry.runtime is None else f"{entry.runtime:.3f}")
 
                         with td():
                             with details():
@@ -491,6 +495,13 @@ def _build_cli_parser() -> _argparse.ArgumentParser:
         help="Output HTML file (default: regression_data.html beside the input file)"
     )
 
+    compare_parser = subparsers.add_parser(
+        "compare",
+        help="Compare two regression-data JSON files"
+    )
+    compare_parser.add_argument("file1", metavar="FILE1", help="First regression-data JSON file")
+    compare_parser.add_argument("file2", metavar="FILE2", help="Second regression-data JSON file")
+
     # delete subcommand
     delete_parser = subparsers.add_parser(
         "delete",
@@ -541,6 +552,8 @@ def main() -> None:
     elif args.command == "html":
         output_path = html_regression_data(path1=args.file, output_path=args.output)
         print(f"Wrote {output_path}")
+    elif args.command == "compare":
+        compare_regression_data(path1=args.file1, path2=args.file2)
 
 
 if __name__ == "__main__":

@@ -22,7 +22,7 @@ def test(testdata_store) :
     nprimary = 10000
 
     pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,data)
-    pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1)
+    sproc, timing = pybdsim.Run.Bdsim(gmad_name,base_name,nprimary,1, returnTiming=True)
 
     data = pybdsim.DataPandas.BDSIMOutput(root_name)
     sampler_data = data.get_sampler('laser1.')
@@ -37,5 +37,5 @@ def test(testdata_store) :
 
     assert (Ne==ref_Ne)
 
-    te = testdata_store.new_test_entry("22_processes/laserwire_photodetachment_multiStep",__file__,nprimary,0)
+    te = testdata_store.new_test_entry("22_processes/laserwire_photodetachment_multiStep",__file__,nprimary, timing)
     te.add_output_parameter("ne", Ne)
