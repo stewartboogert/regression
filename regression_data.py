@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import json as _json
 import shutil as _shutil
 from pathlib import Path as _Path
@@ -78,6 +79,7 @@ class test_entry:
         self.input_parameters = []
         self.output_parameters = []
         self.output_files = []
+        self.output_temp_files = []
 
     def add_input_parameter(self, name : str, value) -> None:
         self.input_parameters.append(test_input_parameter(name, value))
@@ -99,6 +101,13 @@ class test_entry:
     def add_output_file_dict(self, fdict) -> None:
         for k in fdict:
             self.add_output_file(k, fdict[k])
+
+    def add_output_temp_file(self, path : str, type : str) -> None:
+        self.output_temp_files.append(test_output_file(path, type))
+
+    def add_output_temp_file_dict(self, fdict) -> None:
+        for k in fdict:
+            self.add_output_temp_file(k, fdict[k])
             
     def from_dict(self, d) -> None:
         self.name = d["name"]
@@ -120,6 +129,11 @@ class test_entry:
             f.from_dict(v)
             self.output_files.append(f)
 
+        for v in d["output_temp_files"]:
+            f = test_output_file(None, None)
+            f.from_dict(v)
+            self.output_temp_files.append(f)
+
     def to_dict(self):
         d = {
             "name": self.name,
@@ -128,7 +142,8 @@ class test_entry:
             "runtime": self.runtime,
             "input_parameters": [p.to_dict() for p in self.input_parameters],
             "output_parameters": [o.to_dict() for o in self.output_parameters],
-            "output_files": [o.to_dict() for o in self.output_files]
+            "output_files": [o.to_dict() for o in self.output_files],
+            "output_temp_files": [o.to_dict() for o in self.output_temp_files]
         }
         return d
 
@@ -136,7 +151,8 @@ class test_entry:
         s =  f"test_entry(name={self.name}, file_path={self.file_path}, nprimary={self.nprimary}\n"
         s += f"input_parameters={repr(self.input_parameters)}\n"
         s += f"output_parameters={repr(self.output_parameters)}\n"
-        s += f"output_files={repr(self.output_files)})"
+        s += f"output_files={repr(self.output_files)}\n"
+        s += f"output_temp_files={repr(self.output_temp_files)})"
         return s
 
 class test_entry_store:
@@ -244,6 +260,22 @@ def copy_regression_data(file_name : str = "./regression_data.dat",
             _shutil.copy2(output.path, output_dest)
 
 
+def delete_output_files(file_name : str = "./regression_data.dat") -> None:
+    '''Delete the files listed in each entry's output_files field.'''
+    entries = test_entry_store.new_from_json(file_name)
+    for entry in entries:
+        for output_file in entry.output_files:
+            _Path(output_file.path).unlink(missing_ok=True)
+
+
+def delete_root_files(path : str) -> None:
+    '''Recursively delete all files with a .root suffix under path.'''
+    root_path = _Path(path)
+    for root_file in root_path.rglob("*.root"):
+        if root_file.is_file():
+            root_file.unlink()
+
+
 def compare_regression_data(paths : dict,
                             output_path : str = None) -> None :
     '''
@@ -292,6 +324,29 @@ def _build_cli_parser() -> _argparse.ArgumentParser:
         help="Destination directory (default: ../regression_data/data/os-g4v/)"
     )
 
+    # delete subcommand
+    delete_parser = subparsers.add_parser(
+        "delete",
+        help="Delete output files listed in a regression data JSON file"
+    )
+    delete_parser.add_argument(
+        "--file",
+        default="./regression_data.dat",
+        metavar="FILE",
+        help="Path to regression data JSON file (default: ./regression_data.dat)"
+    )
+
+    # delete-root subcommand
+    delete_root_parser = subparsers.add_parser(
+        "delete-root",
+        help="Recursively delete .root files under a directory"
+    )
+    delete_root_parser.add_argument(
+        "path",
+        metavar="PATH",
+        help="Directory to search recursively for .root files"
+    )
+
     return parser
 
 def _parse_key_value(items):
@@ -311,3 +366,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.command == "copy":
         copy_regression_data(file_name=args.file, dest_name=args.destination)
+    elif args.command == "delete":
+        delete_output_files(file_name=args.file)
+    elif args.command == "delete-root":
+        delete_root_files(path=args.path)
