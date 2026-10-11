@@ -3,6 +3,8 @@ import json as _json
 import shutil as _shutil
 from pathlib import Path as _Path
 import argparse as _argparse
+import os as _os
+from urllib.parse import quote as _urlquote
 
 
 class test_input_parameter:
@@ -108,7 +110,7 @@ class test_entry:
     def add_output_temp_file_dict(self, fdict) -> None:
         for k in fdict:
             self.add_output_temp_file(k, fdict[k])
-            
+
     def from_dict(self, d) -> None:
         self.name = d["name"]
         self.file_path = d["file_path"]
@@ -259,6 +261,34 @@ def copy_regression_data(file_name : str = "./regression_data.dat",
             output_dest = str(class_path)+'/'+_Path(output.path).parts[-1]
             _shutil.copy2(output.path, output_dest)
 
+def find_entry_in_store(store, name) :
+    for e in store :
+        if e.name == name :
+            return e
+
+def find_input_parameter_in_list(input_parmeters, name) :
+    for p in input_parmeters :
+        if p.name == name :
+            return p
+
+def find_output_parameter_in_list(output_parameters, name) :
+    for o in output_parameters :
+        if o.name == name :
+            return o
+
+def find_output_file_in_list(output_files, name) :
+    for o in output_files :
+        if o.path == name :
+            return o
+
+def compare_input_parameter(input1, input2) :
+    pass
+
+def compare_output_parameter(output1, output2) :
+    pass
+
+def compare_output_file(files1, files2) :
+    pass
 
 def delete_output_files(file_name : str = "./regression_data.dat") -> None:
     '''Delete the files listed in each entry's output_files field.'''
@@ -276,31 +306,151 @@ def delete_root_files(path : str) -> None:
             root_file.unlink()
 
 
-def compare_regression_data(paths : dict,
-                            output_path : str = None) -> None :
+def compare_regression_data(path1 : str,
+                            path2 : str = None) -> None :
     '''
     Compare many regression data files
     '''
 
-    # load regression data
-    rd_array = [test_entry_store.new_from_json(paths[k]) for k in paths.keys()]
+    # load test_entry_stores
+    store1 = test_entry_store.new_from_json(path1)
+    store2 = test_entry_store.new_from_json(path2)
 
-    # verify test_entry_store lengths
-    rd_lengths = [len(rd) for rd in rd_array]
+    # loop over entries
+    for i, entry1 in enumerate(store1) :
+        entry2 = find_entry_in_store(store2, entry1.name)
+        if not entry2 :
+            continue
 
-    print(rd_lengths)
+        # check if input parameters match
+        for j, input1 in enumerate(entry1.input_parameters):
+            input2 = find_input_parameter_in_list(entry1.input_parameters, input1.name)
+            if not input2 :
+                continue
 
-    # verify same tests are in the store
-    for i in range(0, len(rd_array[0])) :
-        name0 = rd_array[0][i].name
-        for j in range(1, len(rd_array)) :
-            if name0 != rd_array[j][i].name :
-                print(f"Test {name0} not present in all regression data")
+            compare_input_parameter(input1,input2)
 
-    pass
+        # check if output parameters match
+        for j, output1 in enumerate(entry1.output_parameters):
+            output2 = find_output_parameter_in_list(entry1.output_parameters, output1.name)
+            if not output2 :
+                continue
+            compare_output_parameter(output1, output2)
 
-def html_regression_data(path1 : str = "./regression_data.dat") -> None :
-    pass
+        # compare output files
+        for j, output_file1, in enumerate(entry1.output_files):
+            output_file2 = find_output_file_in_list(entry1.output_files, output_file1.path)
+            if not output_file2 :
+                continue
+            compare_output_file(output_file1, output_file2)
+
+
+def html_regression_data(path1 : str = "./regression_data.dat",
+                        output_path : str = None) -> _Path :
+    '''Render a regression-data JSON file as a standalone HTML page.
+
+    Requires the third-party ``dominate`` package.  The generated page is
+    written to ``regression_data.html`` alongside the JSON file.
+    '''
+    import dominate
+    from dominate.tags import (
+        a, details, h1, li, meta, summary, table, tbody, td, th, thead, tr, ul,
+    )
+
+    source = _Path(path1)
+    output_path = (
+        _Path(output_path)
+        if output_path is not None
+        else source.with_name("regression_data.html")
+    )
+    store = test_entry_store.new_from_json(source)
+    document = dominate.document(title="Regression tests")
+
+    with document:
+        with document.head:
+            meta(charset="utf-8")
+            meta(name="viewport", content="width=device-width, initial-scale=1")
+            # Compact styling keeps the output useful as a standalone file.
+            dominate.tags.style(
+                dominate.util.raw(
+                    "body{font:15px system-ui,sans-serif;margin:2rem;color:#222}"
+                    "table{border-collapse:collapse;width:100%}"
+                    "th,td{border:1px solid #ccc;padding:.4rem .6rem;"
+                    "text-align:left;vertical-align:top}"
+                    "th{background:#f2f4f7}"
+                    "details{min-width:12rem}"
+                    "summary{cursor:pointer;color:#245b8a}"
+                    "ul{margin:.4rem 0;padding-left:1.4rem}"
+                    "li{margin:.2rem 0;overflow-wrap:anywhere}"
+                )
+            )
+
+        h1("Regression tests")
+        with table():
+            with thead():
+                with tr():
+                    for heading in (
+                        "Test", "Test file", "Primary particles", "Runtime (s)",
+                        "Input parameters", "Output parameters", "Output files",
+                    ):
+                        th(heading)
+            with tbody():
+                for entry in store:
+                    with tr():
+                        td(entry.name or "Unnamed test")
+                        test_file_path = _Path(entry.file_path) if entry.file_path else None
+                        test_file = (
+                            "/".join(test_file_path.parts[-2:])
+                            if test_file_path else ""
+                        )
+                        if test_file_path:
+                            test_file_target = (
+                                test_file_path
+                                if test_file_path.is_absolute()
+                                else source.parent / test_file_path
+                            )
+                            relative_target = _os.path.relpath(
+                                test_file_target,
+                                start=output_path.parent,
+                            )
+                            td(a(test_file, href=_urlquote(relative_target, safe="/")))
+                        else:
+                            td(test_file)
+                        td("" if entry.nprimary is None else str(entry.nprimary))
+                        td("" if entry.runtime is None else str(entry.runtime))
+
+                        with td():
+                            with details():
+                                summary(f"{len(entry.input_parameters)} input parameters")
+                                with ul():
+                                    for parameter in entry.input_parameters:
+                                        li(f"{parameter.name}: {parameter.value}")
+
+                        with td():
+                            with details():
+                                summary(f"{len(entry.output_parameters)} output parameters")
+                                with ul():
+                                    for parameter in entry.output_parameters:
+                                        li(
+                                            f"{parameter.name}: {parameter.value} "
+                                            f"(rel_tol={parameter.rel_tol})"
+                                        )
+
+                        with td():
+                            with details():
+                                summary(f"{len(entry.output_files)} output files")
+                                with ul():
+                                    for output in entry.output_files:
+                                        if output.path:
+                                            output_name = _Path(output.path).name
+                                            test_class = (entry.name or "").split("/")[0]
+                                            relative_path = _Path(test_class) / output_name
+                                            li(a(output_name, href=relative_path.as_posix()))
+                                        else:
+                                            li("Unnamed file")
+
+    output_path.write_text(str(document), encoding="utf-8")
+    return output_path
 
 def _build_cli_parser() -> _argparse.ArgumentParser:
     parser = _argparse.ArgumentParser(description="Utilities for managing BDSIM regression data")
@@ -319,9 +469,26 @@ def _build_cli_parser() -> _argparse.ArgumentParser:
     )
     copy_parser.add_argument(
         "--destination",
-        default="../regression_data/data/os-g4v/",
+        default="../regression_data/data/html/",
         metavar="DEST",
-        help="Destination directory (default: ../regression_data/data/os-g4v/)"
+        help="Destination directory (default: ../regression_data/data/html/)"
+    )
+
+    html_parser = subparsers.add_parser(
+        "html",
+        help="Render a regression-data JSON file as an HTML page"
+    )
+    html_parser.add_argument(
+        "--file",
+        default="./regression_data.dat",
+        metavar="FILE",
+        help="Input regression-data JSON file (default: ./regression_data.dat)"
+    )
+    html_parser.add_argument(
+        "--output",
+        default=None,
+        metavar="HTML",
+        help="Output HTML file (default: regression_data.html beside the input file)"
     )
 
     # delete subcommand
@@ -370,3 +537,6 @@ if __name__ == "__main__":
         delete_output_files(file_name=args.file)
     elif args.command == "delete-root":
         delete_root_files(path=args.path)
+    elif args.command == "html":
+        output_path = html_regression_data(path1=args.file, output_path=args.output)
+        print(f"Wrote {output_path}")
