@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bdsim-regression"
+version = "0.1.0"
+description = "Physics regression suite and regression-data tools for BDSIM"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = ["pytest>=7",
+                "dominate>=2.8"]
+
+[project.scripts]
+bdsim-regression-data = "bdsim_regression.regression_data:main"
+
+[tool.setuptools]
+packages = ["bdsim_regression"]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "01_output",
+    "02_elements",
+    "10_beam",
+    "13_options",
+    "14_field",
+    "15_modulator",
+    "16_eloss",
+    "19_sampler",
+    "20_scorer",
+    "21_trajectory",
+    "22_processes",
+    "23_biasing",
+    "25_python",
+    "26_link",
+    "99_machines",
+]
+python_files = ["test_*.py"]
+pythonpath = ["."]

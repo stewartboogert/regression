@@ -7,7 +7,7 @@ import inspect
 import json
 from pathlib import Path
 import shutil
-import regression_data as rd
+from bdsim_regression import regression_data as rd
 
 ###############################################################
 # BDSIM and Geant4 options
