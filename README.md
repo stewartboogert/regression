@@ -31,7 +31,3 @@ installation. For example, `bdsim-regression-data html --file
 regression_data.dat` writes an HTML report beside the data file. The historical
 `python regression_data.py ...` command remains available from the checkout.
 
-To clean up files after run
-
-* ```cd regression```
-* ```make clean```
