@@ -4,6 +4,7 @@ import shutil as _shutil
 from pathlib import Path as _Path
 import argparse as _argparse
 import os as _os
+from datetime import datetime as _datetime
 from urllib.parse import quote as _urlquote
 
 
@@ -129,6 +130,18 @@ class test_entry:
                 return output_file
         return None
 
+    def change_paths(self, new_path: str) -> None:
+        """Move this entry's test and output paths under ``new_path``."""
+        def relocated(path: str) -> str:
+            original = _Path(path)
+            return str(_Path(new_path) / original.parent.name / original.name)
+
+        if self.file_path:
+            self.file_path = relocated(self.file_path)
+        for output_file in self.output_files:
+            if output_file.path:
+                output_file.path = relocated(output_file.path)
+
     def from_dict(self, d) -> None:
         self.name = d["name"]
         self.file_path = d["file_path"]
@@ -175,6 +188,7 @@ class test_entry:
         s += f"output_temp_files={repr(self.output_temp_files)})"
         return s
 
+
 class test_entry_store:
     '''
     Class to store many test_entries (similar API to list)
@@ -200,6 +214,11 @@ class test_entry_store:
 
     def append(self, entry : test_entry) -> None:
         self.entries.append(entry)
+
+    def change_paths(self, new_path: str) -> None:
+        """Change paths for every test entry in the store."""
+        for entry in self.entries:
+            entry.change_paths(new_path)
 
     def __len__(self) -> int:
         return len(self.entries)
@@ -256,7 +275,8 @@ class test_entry_store:
         return s
 
 def copy_regression_data(file_name : str = "./regression_data.dat",
-                         dest_name : str = "./regression_data_store/") -> None :
+                         dest_name : str = "./regression_data_store/",
+                         export_html : bool = False) -> None :
     '''
     Copy files documented in file_name to destination
     '''
@@ -269,22 +289,30 @@ def copy_regression_data(file_name : str = "./regression_data.dat",
     if not dest_path.exists():
         dest_path.mkdir(parents=True)
 
-    # copy regressiondata.dat over to target
-    _shutil.copy2(file_name, dest_path)
-
     # loop over files
-    tes = test_entry_store.new_from_json(file_name)
-
     for te in tes :
         test_class = te.name.split('/')[0]
         class_path = _Path(dest_name+'/'+test_class+'/')
         if not class_path.exists():
             class_path.mkdir(parents=True)
 
+        test_file_dest = class_path / _Path(te.file_path).name
+        _shutil.copy2(te.file_path, test_file_dest)
+
         for output in te.output_files :
             output_dest = str(class_path)+'/'+_Path(output.path).parts[-1]
             _shutil.copy2(output.path, output_dest)
 
+    # change the paths
+    tes.change_paths("./")
+
+    # Write the regression data store into the destination, preserving the
+    # input file's name.
+    tes.write_json(str(dest_path / _Path(file_name).name))
+
+    if export_html:
+        html_regression_data(path1=tes,
+                             output_path=dest_name+"/"+_Path(file_name).stem+".html")
 def compare_input_parameter(input1, input2) :
     pass
 
@@ -349,26 +377,36 @@ def compare_regression_data(path1 : str,
             compare_output_file(output_file1, output_file2)
 
 
-def html_regression_data(path1 : str = "./regression_data.dat",
+def html_regression_data(path1 : str | test_entry_store = "./regression_data.dat",
                         output_path : str = None) -> _Path :
-    '''Render a regression-data JSON file as a standalone HTML page.
+    '''Render regression data as a standalone HTML page.
 
     Requires the third-party ``dominate`` package.  The generated page is
-    written to ``regression_data.html`` alongside the JSON file.
+    written to ``regression_data.html`` alongside the JSON file, or in the
+    current directory when a store is provided directly.
     '''
     import dominate
     from dominate.tags import (
-        a, details, h1, li, meta, summary, table, tbody, td, th, thead, tr, ul,
+        a, details, h1, li, meta, p, summary, table, tbody, td, th, thead, tr, ul,
     )
 
-    source = _Path(path1)
+    source = None if isinstance(path1, test_entry_store) else _Path(path1)
     output_path = (
         _Path(output_path)
         if output_path is not None
-        else source.with_name("regression_data.html")
+        else (source.with_name("regression_data.html") if source else _Path("regression_data.html"))
     )
-    store = test_entry_store.new_from_json(source)
-    document = dominate.document(title="Regression tests")
+    store = path1 if source is None else test_entry_store.new_from_json(source)
+    # Paths in an in-memory store are relative to the directory where its
+    # accompanying HTML will be written (for example, after copy_regression_data
+    # relocates entries into the export directory).
+    source_parent = source.parent if source else output_path.parent
+    source_name = source.name if source else "Regression data store"
+    generated_at = _datetime.now().astimezone().strftime(
+        "%A, %d %B %Y at %I:%M:%S %p %Z"
+    )
+    document_title = f"{source_name} - {generated_at}"
+    document = dominate.document(title=document_title)
 
     with document:
         with document.head:
@@ -390,36 +428,40 @@ def html_regression_data(path1 : str = "./regression_data.dat",
             )
 
         h1("Regression tests")
-        with table():
+        p(f"Generated: {generated_at}", id="generated-at")
+        p(f"Input file: {source.resolve() if source else source_name}", id="input-file")
+        dominate.tags.label("Search tests: ", for_="test-search")
+        dominate.tags.input_(id="test-search", type="search", placeholder="Filter by test name")
+        with table(id="regression-tests"):
             with thead():
                 with tr():
                     for heading in (
-                        "Test", "Test file", "Primary particles", "Runtime (s)",
+                        "Index", "Test", "Primary particles", "Runtime (s)",
                         "Input parameters", "Output parameters", "Output files",
                     ):
-                        th(heading)
+                        if heading == "Test":
+                            th(heading, id="test-heading", role="button", tabindex="0",
+                               title="Sort by test name")
+                        else:
+                            th(heading)
             with tbody():
-                for entry in store:
+                for index, entry in enumerate(store, start=1):
                     with tr():
-                        td(entry.name or "Unnamed test")
+                        td(str(index))
                         test_file_path = _Path(entry.file_path) if entry.file_path else None
-                        test_file = (
-                            "/".join(test_file_path.parts[-2:])
-                            if test_file_path else ""
-                        )
                         if test_file_path:
                             test_file_target = (
                                 test_file_path
                                 if test_file_path.is_absolute()
-                                else source.parent / test_file_path
+                                else source_parent / test_file_path
                             )
                             relative_target = _os.path.relpath(
                                 test_file_target,
                                 start=output_path.parent,
                             )
-                            td(a(test_file, href=_urlquote(relative_target, safe="/")))
+                            td(a(entry.name or "Unnamed test", href=_urlquote(relative_target, safe="/")))
                         else:
-                            td(test_file)
+                            td(entry.name or "Unnamed test")
                         td("" if entry.nprimary is None else str(entry.nprimary))
                         td("" if entry.runtime is None else f"{entry.runtime:.3f}")
 
@@ -453,6 +495,32 @@ def html_regression_data(path1 : str = "./regression_data.dat",
                                         else:
                                             li("Unnamed file")
 
+        dominate.tags.script(
+            dominate.util.raw(
+                "const testSearch=document.getElementById('test-search');"
+                "const testTable=document.getElementById('regression-tests');"
+                "const testBody=testTable.tBodies[0];"
+                "testSearch.addEventListener('input',()=>{"
+                "const query=testSearch.value.trim().toLocaleLowerCase();"
+                "for(const row of testBody.rows){"
+                "row.hidden=!row.cells[1].textContent.toLocaleLowerCase().includes(query);"
+                "}});"
+                "const testHeading=document.getElementById('test-heading');"
+                "let ascending=true;"
+                "function sortTests(){"
+                "const rows=Array.from(testBody.rows);"
+                "rows.sort((left,right)=>{"
+                "const comparison=left.cells[1].textContent.localeCompare(right.cells[1].textContent,undefined,{numeric:true,sensitivity:'base'});"
+                "return ascending?comparison:-comparison;});"
+                "ascending=!ascending;"
+                "for(const row of rows)testBody.appendChild(row);"
+                "}"
+                "testHeading.addEventListener('click',sortTests);"
+                "testHeading.addEventListener('keydown',event=>{"
+                "if(event.key==='Enter'||event.key===' '){event.preventDefault();sortTests();}});"
+            )
+        )
+
     output_path.write_text(str(document), encoding="utf-8")
     return output_path
 
@@ -477,7 +545,11 @@ def _build_cli_parser() -> _argparse.ArgumentParser:
         metavar="DEST",
         help="Destination directory (default: ../regression_data/data/html/)"
     )
-
+    copy_parser.add_argument(
+        "--html",
+        action="store_true",
+        help="Also write regression_data.html beside the input JSON file"
+    )
     html_parser = subparsers.add_parser(
         "html",
         help="Render a regression-data JSON file as an HTML page"
@@ -544,7 +616,11 @@ def main() -> None:
     parser = _build_cli_parser()
     args = parser.parse_args()
     if args.command == "copy":
-        copy_regression_data(file_name=args.file, dest_name=args.destination)
+        copy_regression_data(
+            file_name=args.file,
+            dest_name=args.destination,
+            export_html=args.html,
+        )
     elif args.command == "delete":
         delete_output_files(file_name=args.file)
     elif args.command == "delete-root":
