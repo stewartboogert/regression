@@ -5,14 +5,14 @@ from pathlib import Path
 import biasing_vacuum_electron_analysis
 
 @pytest.mark.parametrize("process, bias, nprimary, pname", [
-    ('eBrem', "1e08", "1e3", "p1"),
-    ('eBrem', "1e09", "1e3", "p2"),
-    ('eBrem', "1e10", "1e3", "p3"),
-    ('eBrem', "1e11", "1e3", "p4"),
-    ('eBrem', "1e12", "1e3", "p5"),
-    ('eBrem', "1e13", "1e3", "p6"),
-    ('eBrem', "1e14", "1e3", "p7"),
-    ('eBrem', "1e15", "1e3", "p8"),
+    ('eBrem', "1e08", "1e3", "eBrem_p1"),
+    ('eBrem', "1e09", "1e3", "eBrem_p2"),
+    ('eBrem', "1e10", "1e3", "eBrem_p3"),
+    ('eBrem', "1e11", "1e3", "eBrem_p4"),
+    ('eBrem', "1e12", "1e3", "eBrem_p5"),
+    ('eBrem', "1e13", "1e3", "eBrem_p6"),
+    ('eBrem', "1e14", "1e3", "eBrem_p7"),
+    ('eBrem', "1e15", "1e3", "eBrem_p8"),
 
 ])
 def test(geant4_version, bdsim_version,
@@ -48,7 +48,7 @@ def test(geant4_version, bdsim_version,
     ac.write_persistent_data(python_analysis_name)
 
     # store test output
-    te = testdata_store.new_test_entry("23_biasing/biasing_vacuum_electron" + pname, __file__, nprimary, timing)
+    te = testdata_store.new_test_entry("23_biasing/biasing_vacuum_electron_" + pname, __file__, nprimary, timing)
     te.add_input_parameter_dict(params)
     te.add_output_parameter_dict(ac.get_persistent_data())
 
