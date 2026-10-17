@@ -274,6 +274,78 @@ class test_entry_store:
         s += "]"
         return s
 
+
+class test_entry_store_comparison :
+
+    '''
+    root file -> same as rebdsim file
+    bdsim -> plots but need an analysis script11
+    rebdsim -> plot of 1d histogram comparisions, likelihood functions for 2d, 3d, histograms
+    rebdsimOptics -> plot of optics comparisions
+    '''
+
+    def __init__(self, store1, store2, outpput_path="./comparision/") :
+
+        # location to store output
+        self.output_path = outpput_path
+
+        if type(store1) is str:
+            store1 = test_entry_store.new_from_json(store1)
+        if type(store2) is str :
+            store2 = test_entry_store.new_from_json(store2)
+
+        self.store1 = store1
+        self.store2 = store2
+        self.dstore = test_entry_store()
+
+    def compare(self) :
+
+        def compare_input_parameter(input1, input2):
+            pass
+
+        def compare_output_parameter(output1, output2):
+            pass
+
+        def compare_output_file(files1, files2):
+            pass
+
+        # loop over entries
+        for i, entry1 in enumerate(self.store1):
+
+            # Flags for if something in this entry has changed
+            code_changed               = False
+            timing_changed             = False
+            input_param_changed        = False
+            output_param_changed       = False
+            output_file_changed        = False
+
+            entry2 = self.store2.find_entry(entry1.name)
+            if not entry2:
+                continue
+
+            # check if input parameters match
+            for j, input1 in enumerate(entry1.input_parameters):
+                input2 = entry2.find_input_parameter(input1.name)
+                if not input2:
+                    continue
+
+                compare_input_parameter(input1, input2)
+
+            # check if output parameters match
+            for j, output1 in enumerate(entry1.output_parameters):
+                output2 = entry2.find_output_parameter(output1.name)
+                if not output2:
+                    continue
+                compare_output_parameter(output1, output2)
+
+            # compare output files
+            for j, output_file1, in enumerate(entry1.output_files):
+                output_file2 = entry2.find_output_file(output_file1.path)
+                if not output_file2:
+                    continue
+                compare_output_file(output_file1, output_file2)
+
+
 def copy_regression_data(file_name : str = "./regression_data.dat",
                          dest_name : str = "./regression_data_store/",
                          export_html : bool = False) -> None :
@@ -313,14 +385,6 @@ def copy_regression_data(file_name : str = "./regression_data.dat",
     if export_html:
         html_regression_data(path1=tes,
                              output_path=dest_name+"/"+_Path(file_name).stem+".html")
-def compare_input_parameter(input1, input2) :
-    pass
-
-def compare_output_parameter(output1, output2) :
-    pass
-
-def compare_output_file(files1, files2) :
-    pass
 
 def delete_output_files(file_name : str = "./regression_data.dat") -> None:
     '''Delete the files listed in each entry's output_files field.'''
@@ -336,46 +400,6 @@ def delete_root_files(path : str) -> None:
     for root_file in root_path.rglob("*.root"):
         if root_file.is_file():
             root_file.unlink()
-
-
-def compare_regression_data(path1 : str,
-                            path2 : str = None) -> None :
-    '''
-    Compare many regression data files
-    '''
-
-    # load test_entry_stores
-    store1 = test_entry_store.new_from_json(path1)
-    store2 = test_entry_store.new_from_json(path2)
-
-    # loop over entries
-    for i, entry1 in enumerate(store1) :
-        entry2 = store2.find_entry(entry1.name)
-        if not entry2 :
-            continue
-
-        # check if input parameters match
-        for j, input1 in enumerate(entry1.input_parameters):
-            input2 = entry2.find_input_parameter(input1.name)
-            if not input2 :
-                continue
-
-            compare_input_parameter(input1,input2)
-
-        # check if output parameters match
-        for j, output1 in enumerate(entry1.output_parameters):
-            output2 = entry2.find_output_parameter(output1.name)
-            if not output2 :
-                continue
-            compare_output_parameter(output1, output2)
-
-        # compare output files
-        for j, output_file1, in enumerate(entry1.output_files):
-            output_file2 = entry2.find_output_file(output_file1.path)
-            if not output_file2 :
-                continue
-            compare_output_file(output_file1, output_file2)
-
 
 def html_regression_data(path1 : str | test_entry_store = "./regression_data.dat",
                         output_path : str = None) -> _Path :
