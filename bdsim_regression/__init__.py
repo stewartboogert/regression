@@ -10,6 +10,7 @@ from .regression_data import (
     test_input_parameter,
     test_output_file,
     test_output_parameter,
+    test_entry_store_comparison
 )
 
 from . import plot_json
@@ -25,4 +26,5 @@ __all__ = [
     "test_input_parameter",
     "test_output_file",
     "test_output_parameter",
+    "test_entry_store_comparison"
 ]
