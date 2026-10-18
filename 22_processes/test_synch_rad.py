@@ -19,8 +19,7 @@ def test(geant4_version, bdsim_version,
     sproc, timing = pybdsim.Run.Bdsim(gmad_name, base_name, ngenerate=nprimary, seed=1, returnTiming=True)
 
     ac = synch_rad_analysis.analysis(root_name)
-    ac.write_persistent_data("synch_rad.json")
+    ac.write_persistent_data(json_name)
 
     te = testdata_store.new_test_entry("22_processes/synch_rad", __file__, nprimary, timing)
     te.add_output_file(os.path.dirname(__file__)+"/"+json_name, "json")
-    te.add_output_parameter_dict(ac.get_persistent_data())
