@@ -26,7 +26,7 @@ def test(geant4_version, bdsim_version,
     gmad_name = base_name + "_"+process+"_"+bias+ ".gmad"
     out_name  = base_name + "_"+process+"_"+bias
     root_name = out_name+".root"
-    python_analysis_name = out_name+".json"
+    json_name = out_name+".json"
 
     params = {
         'BIAS_PROCESS': process,
@@ -45,10 +45,10 @@ def test(geant4_version, bdsim_version,
 
     # analysis
     ac = biasing_vacuum_electron_analysis.analysis(root_name)
-    ac.write_persistent_data(python_analysis_name)
+    ac.write_persistent_data(json_name)
 
     # store test output
     te = testdata_store.new_test_entry("23_biasing/biasing_vacuum_electron_" + pname, __file__, nprimary, timing)
     te.add_input_parameter_dict(params)
-    te.add_output_parameter_dict(ac.get_persistent_data())
+    te.add_output_file(os.path.dirname(__file__)+"/"+json_name, "json")
 
