@@ -12,8 +12,7 @@ option, physicsList="em synch_rad em_extra",
     storeTrajectoryParticleID="22",
     storeTrajectoryMomentumVector=1,
     storeTrajectoryLocal=1,
-    storeTrajectoryStepPoints=1,
-    worldMaterial="G4_Galactic";
+    storeTrajectoryStepPoints=1;
 
 beam, particle = "e+",
       energy = 45.6*GeV,
