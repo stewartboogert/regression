@@ -12,7 +12,6 @@ include LhARA_S1_Beam.gmad;
 !CCCCC = Component name, NN = Numeric identifier
 
 !++++++++    Gabor Lenses    ++++++++
-! Gabor Lenses represented by solenoids, field in T for 15 MeV protons.
 ! Config: 3cm (2 sigma width) - 7.5mm (1 sigma rad)
 GL1B = 1.400;
 GL2B = 0.579;

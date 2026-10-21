@@ -1,7 +1,6 @@
 import os
 import pytest
 import pybdsim
-import subprocess
 from pathlib import Path
 
 def test(test_length, testlength_primaries, testdata_store):
@@ -15,12 +14,8 @@ def test(test_length, testlength_primaries, testdata_store):
 
     nprimary = testlength_primaries.get_nprimary(__file__, test_length)
 
-    sproc, timing = pybdsim.Run.Bdsim(gmad_name, base_name, seed=1, returnTiming=True)
-    subprocess.call(["rebdsimOptics",
-                     root_name,
-                     optics_name,
-                     "--emittanceOnTheFly"],
-                    stdout=open(os.devnull, "wb"))
+    sproc, timing = pybdsim.Run.Bdsim(gmad_name, base_name, nprimary, seed=1, returnTiming=True)
+    pybdsim.Run.RebdsimOptics(root_name, optics_name, emittanceOnTheFly=True)
 
     te = testdata_store.new_test_entry("99_machines/lhara_stage1", __file__, nprimary, timing)
     te.add_output_file(os.path.dirname(__file__)+"/"+optics_name, "optics")
