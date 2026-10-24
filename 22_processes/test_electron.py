@@ -73,3 +73,4 @@ def test(geant4_version, bdsim_version,
     # store test output
     te = testdata_store.new_test_entry("22_processes/electron_" + pname, __file__, nprimary, timing)
     te.add_input_parameter_dict(params)
+    te.add_output_file(os.path.dirname(__file__)+"/"+json_name,"json")
