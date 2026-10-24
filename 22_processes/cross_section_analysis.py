@@ -45,9 +45,6 @@ class AnalysisClass(pybdsim.RootEventAnalysis.RootEventAnalyser) :
     def plot(self):
         pass
 
-    def plot(self):
-        pass
-
 def analysis(file_name  = None) :
     a = pybdsim.RootEventAnalysis.RootEventAnalysis(file_name)
     ac = AnalysisClass()
