@@ -58,6 +58,7 @@ jobs:
           /bdsim/venv-bdsim/bin/pip install rpyc
           /bdsim/venv-bdsim/bin/pip install pytest-xdist
           /bdsim/venv-bdsim/bin/pip install dominate
+          /bdsim/venv-bdsim/bin/pip install plotly
           export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python/
           
           # alma10

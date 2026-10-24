@@ -11,11 +11,15 @@ def test(geant4_version, bdsim_version,
     os.chdir(Path(__file__).resolve().parent)
 
     base_name     = "synch_rad"
+    template_name = base_name + ".tpl"
     gmad_name     = base_name+".gmad"
     root_name     = base_name+".root"
     json_name     = base_name+".json"
 
+    params = {}
+    
     nprimary = testlength_primaries.get_nprimary(__file__,test_length)
+    pybdsim.Run.RenderGmadJinjaTemplate(template_name,gmad_name,params)
     sproc, timing = pybdsim.Run.Bdsim(gmad_name, base_name, ngenerate=nprimary, seed=1, returnTiming=True)
 
     ac = synch_rad_analysis.analysis(root_name)

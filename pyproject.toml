@@ -9,7 +9,8 @@ description = "Physics regression suite and regression-data tools for BDSIM"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = ["pytest>=7",
-                "dominate>=2.8"]
+                "dominate>=2.8",
+                "plotly"]
 
 [project.scripts]
 bdsim-regression-data = "bdsim_regression.regression_data:main"

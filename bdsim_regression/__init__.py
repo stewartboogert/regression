@@ -12,6 +12,9 @@ from .regression_data import (
     test_output_parameter,
 )
 
+from . import plot_json
+from . import plot_rebdsim
+
 __all__ = [
     "copy_regression_data",
     "delete_output_files",
