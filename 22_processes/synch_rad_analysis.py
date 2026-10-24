@@ -23,32 +23,17 @@ class AnalysisClass(pybdsim.RootEventAnalysis.RootEventAnalyser) :
     def terminate(self):
         self.photon_energy = numpy.array(self.photon_energy)
         self.photon_angle = numpy.array(self.photon_angle)/1e-3
-        # self.plot()
 
-    def plot(self):
         xbins = numpy.logspace(numpy.log10(self.photon_energy.min()),numpy.log10(self.photon_energy.max()), 50)
         ybins = numpy.linspace(self.photon_angle.min(), self.photon_angle.max(), 50)
         counts, xedges, yedges = numpy.histogram2d(self.photon_energy, self.photon_angle, bins=[xbins,ybins])  # angle in mrad
 
-        ax = plt.figure(figsize=(7, 7))
-
-        plt.subplot(2,2,1)
-        plt.pcolormesh(xedges, yedges, counts.T, cmap='viridis', norm=LogNorm())
-        plt.gca().set_xscale('log')
-        plt.xlabel('energy/GeV')
-        plt.ylabel('angle/mrad')
-
-        plt.subplot(2,2,2)
-        plt.hist(self.photon_angle,50,range=(self.photon_angle.min(), self.photon_angle.max()), orientation='horizontal')
-
-        plt.subplot(2,2,3)
-        plt.hist(self.photon_energy,50,range=(self.photon_energy.min(), self.photon_energy.max()))
-
         self.add_persistent_data("photon_energy_angle", {"contents": counts,
                                                          "xedges": xedges,
-                                                         "yedges": yedges})
+                                                         "yedges": yedges,
+                                                         "xlabel": "photon_energy",
+                                                         "ylabel": "photon_angle"})
 
-        plt.show()
 
 def analysis(file_name  = None) :
     a = pybdsim.RootEventAnalysis.RootEventAnalysis(file_name)
