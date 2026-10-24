@@ -1,5 +1,4 @@
 import pybdsim
-import numpy
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
@@ -40,6 +39,27 @@ class AnalysisClass(pybdsim.RootEventAnalysis.RootEventAnalyser) :
             self.process_data[processType][processSubType]['partID'].append(s.partID[i])
 
     def terminate(self):
+        for processType in self.process_data :
+            for processSubType in self.process_data[processType] :
+                counts, xedges = np.histogram(self.process_data[processType][processSubType]['totalEnergy'],bins=50)
+                self.process_data[processType][processSubType]['totalEnergy'] = {"contents": counts,
+                                                                                 "xedges": xedges,
+                                                                                 "xlabel": "total energy GeV"}
+
+                counts, xedges = np.histogram(self.process_data[processType][processSubType]['theta'],bins=50, range=(0,np.pi))
+                self.process_data[processType][processSubType]['theta'] = {"contents": counts,
+                                                                           "xedges": xedges,
+                                                                           "xlabel": "theta"}
+
+                partIDHist = {}
+                for partID in  self.process_data[processType][processSubType]['partID'] :
+                    if partID not in partIDHist :
+                        partIDHist[partID] = 0
+
+                    partIDHist[partID] += 1
+                self.process_data[processType][processSubType]['partID'] = {"contents": list(partIDHist.values()),
+                                                                            "xcentres": list(partIDHist.keys()),
+                                                                            "xlabel": "part ID"}
         self.add_persistent_data("process", self.process_data)
 
     def plot(self):
