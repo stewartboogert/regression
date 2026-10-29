@@ -25,7 +25,7 @@ def compare(json_file1, json_file2, show = False, file_name = "comparison_json.h
 
     # number of columns and rows
     nrow, ncol = two_factors(len(hist_set))
-    # print(nrow, ncol)
+    print(nrow, ncol)
 
     # create figure
     fig = figure(nrow, ncol)
@@ -33,8 +33,8 @@ def compare(json_file1, json_file2, show = False, file_name = "comparison_json.h
     # loop over histograms
     for ihist, hist in enumerate(hist_set):
         icol = ihist % ncol
-        irow = int((ihist - icol)/nrow)
-        # print(hist, icol, irow)
+        irow = int((ihist - icol)/ncol)
+        print(hist, irow, icol)
 
         icol = icol + 1
         irow = irow + 1

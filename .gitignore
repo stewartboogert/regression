@@ -10,3 +10,5 @@ __pycache__
 regression_data.dat
 *.json
 *.egg-info
+*.stderr
+*.stdout
